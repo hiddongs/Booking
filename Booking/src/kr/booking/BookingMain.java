@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class BookingMain {
-	
+	   
 	private BufferedReader br;
 	private String me_id; // 로그인한 아이디 저장
 	private boolean flag; // 로그인 여부
