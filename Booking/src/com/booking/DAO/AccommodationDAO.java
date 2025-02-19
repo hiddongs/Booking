@@ -21,7 +21,7 @@ public class AccommodationDAO {
 	// 숙소 넣기(관리) - 예진
 	
 	public void InsertAccommodation(String accommodation_name, String accommodation_address, String accommodation_description,
-			int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
+		    int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;

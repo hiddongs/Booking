@@ -7,18 +7,20 @@ import java.io.InputStreamReader;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
-import com.booking.member.Member;
+
+import com.booking.member.User;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
 
 public class Main {
 
 	static BufferedReader br;
-	static Member member;
+	
 	static Admin admin;
 	static UserDAO userDAO;
 	static boolean loginStatus;
 	static AdminDAO adminDAO;
+	static User user;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -61,12 +63,12 @@ public class Main {
 						adminMenu.menu(br, admin, adminDAO);
 
 					}
-//					else if((member = userDAO.login(ID, passwd)) != null) {
-//						loginStatus = true;
-//						System.out.println("로그인이 완료되었습니다.");
-//						UserMenu userMenu = new UserMenu();
-//						//						userMenu.menu(br);
-//					}
+					else if((user = userDAO.login(ID, passwd)) != null) {
+						loginStatus = true;
+						System.out.println("로그인이 완료되었습니다.");
+						UserMenu userMenu = new UserMenu();
+						userMenu.U_Menu(br, user, userDAO);
+					}
 
 				} catch (Exception e) {
 					e.printStackTrace();
