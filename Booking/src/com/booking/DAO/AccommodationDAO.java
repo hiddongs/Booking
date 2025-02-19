@@ -12,10 +12,49 @@ import java.util.List;
 import com.booking.member.Admin;
 import com.dbutil.DBUtil;
 
+import oracle.sql.NUMBER;
+
 public class AccommodationDAO {
 
 	static AdminDAO adminDAO;
 
+	// 숙소 넣기(관리) - 예진
+	
+	public void InsertAccommodation(String accommodation_name, String accommodation_address, String accommodation_description,
+			int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int cnt = 0;
+		
+		try {
+			// JDBC 수행 1
+			conn = DBUtil.getConnection();
+			// sql문 작성
+			sql = "insert into accommodation values(accommodation_seq.nextval,?,?,?,?,?,?,?,?)";
+			// 3단계
+			pstmt = conn.prepareStatement(sql);
+			// 바인딩
+			pstmt.setString(++cnt,accommodation_name);
+			pstmt.setString(++cnt,accommodation_address);
+			pstmt.setString(++cnt,accommodation_description);
+			pstmt.setInt(++cnt,accommodation_price);
+			pstmt.setString(++cnt,location_name);
+			pstmt.setString(++cnt,recommendation_season);
+			pstmt.setInt(++cnt,accommodation_status);
+			pstmt.setInt(++cnt,allowed_number);
+			
+			// 4단계
+			int count = pstmt.executeUpdate();
+			System.out.println(count + "개의 행을 삽입했습니다.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//자원정리
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}//public
 
 	public int selectAccommodation(BufferedReader br) { // 숙소 목록을 띄우는 메서드
 
@@ -64,7 +103,6 @@ public class AccommodationDAO {
 		return answer;
 	}
 
-	
 
 	private boolean checkSuspension(int accommodation_id) { // 입력된 숙소의 ID가 정지상태인지 확인하는 메서드 true
 		Connection conn = null;
@@ -145,16 +183,16 @@ public class AccommodationDAO {
 		PreparedStatement pstmtU = null;
 		String sqlI = null;
 		String sqlU = null;
-		
+
 		if(!checkSuspension(accommodation_id)) {
 			System.out.println("해당 숙소는 이미 영업가능 상태입니다.");
 			return;
 		}
-		
+
 		try {
 			System.out.println("재개 사유를 입력해주세요");
 			String reason = br.readLine();
-					
+
 			conn = DBUtil.getConnection();
 			sqlI = "INSERT INTO AMMD_MGMT (AMMD_MGMT_ID, ADMIN_ID, ACCOMMODATION_ID, MGMT_REASON, MGMT_DETAILS)"
 					+ " VALUES(AMMD_MGMT_SEQ.NEXTVAL, ? , ?, ?, '영업재개')";
@@ -164,11 +202,11 @@ public class AccommodationDAO {
 			pstmtI.setInt(2, accommodation_id);
 			pstmtI.setString(3, reason);
 			int insert = pstmtI.executeUpdate();
-			
+
 			pstmtU = conn.prepareStatement(sqlU);
 			pstmtU.setInt(1, accommodation_id);
 			int update = pstmtU.executeUpdate();
-			
+
 		} catch (SQLException | ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 			try {conn.rollback();} catch (SQLException e1) {}
@@ -177,8 +215,8 @@ public class AccommodationDAO {
 			try {conn.commit();} catch (SQLException e1) {}
 			System.out.println(accommodation_id + "번 숙소 영업재개완료");
 		}
-		
-		
+
+
 	}
 	private void accommodation_suspension(int accommodation_id, BufferedReader br, Admin admin) { 
 		//영업정지 메서드
@@ -196,23 +234,23 @@ public class AccommodationDAO {
 			System.out.println(accommodation_id+"번 숙소 영업 정지 메뉴입니다");
 			System.out.println("영업정지 사유를 입력해주세요");
 			String reason = br.readLine();
-			
+
 			conn = DBUtil.getConnection();
 			sqlI = "INSERT INTO AMMD_MGMT (AMMD_MGMT_ID, ADMIN_ID, ACCOMMODATION_ID, MGMT_REASON, MGMT_DETAILS)"
 					+ " VALUES(AMMD_MGMT_SEQ.NEXTVAL, ? , ?, ?, '영업정지')";
-			 sqlU = "UPDATE ACCOMMODATION SET ACCOMMODATION_STATUS = 0 WHERE ACCOMMODATION_ID = ?";	
+			sqlU = "UPDATE ACCOMMODATION SET ACCOMMODATION_STATUS = 0 WHERE ACCOMMODATION_ID = ?";	
 			pstmtI = conn.prepareStatement(sqlI);
 			pstmtU = conn.prepareStatement(sqlU);
 			pstmtI.setString(1, admin.getID());
 			pstmtI.setInt(2, accommodation_id);
 			pstmtI.setString(3, reason);
 			pstmtU.setInt(1, accommodation_id);
-			
+
 			int insert = pstmtI.executeUpdate();
 			int update = pstmtU.executeUpdate();
-			
-			
-			
+
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

@@ -5,7 +5,8 @@ import com.booking.Main;
 public class Run {
 
 	public static void main(String[] args) {
-		new Main();
-	}
+		new Main();  
+
 	
-}
+	} // main
+} //class

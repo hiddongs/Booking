@@ -11,7 +11,7 @@ public class Member {
 	Date reg_date;
 	boolean status;
 	Enum Grade;
-	
+	 
 	public Member(String name, String email, int point, int cash, Date reg_date, boolean status, Enum grade) {
 		super();
 		this.name = name;
