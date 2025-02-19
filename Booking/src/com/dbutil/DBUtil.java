@@ -16,7 +16,9 @@ public class DBUtil {
 	
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		Class.forName(DB_DRIVER);
-		return DriverManager.getConnection(DB_URL, DB_ID, DB_PASSWORD);
+		Connection conn = DriverManager.getConnection(DB_URL, DB_ID, DB_PASSWORD);
+		conn.setAutoCommit(false);
+		return conn;
 	}
 	public static void executeClose(ResultSet rs, PreparedStatement pstmt,Connection conn) {
 		if(rs != null) try {rs.close();} catch(SQLException e) {}
