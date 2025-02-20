@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.UserDAO;
+import com.booking.DAO.CashDAO;
 import com.booking.member.Admin;
 
 import com.booking.member.User;
@@ -22,10 +23,12 @@ public class Main {
 	static AdminDAO adminDAO;
 	static User user;
 
+	static CashDAO cashDAO;
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
 		adminDAO = new AdminDAO();
+		cashDAO = new CashDAO();
 		callMenu();
 	}
 
@@ -76,7 +79,7 @@ public class Main {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 						UserMenu userMenu = new UserMenu();
-						userMenu.U_Menu(br, user, userDAO);
+						userMenu.U_Menu(br, user, userDAO, cashDAO);
 					}
 
 				} catch (Exception e) {

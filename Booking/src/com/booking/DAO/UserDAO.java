@@ -153,7 +153,7 @@ public class UserDAO {
 		String sqlU = null;
 		try {
 			conn = DBUtil.getConnection();
-			sqlU =  "UPDATE \"USER\"  SET EMAIL=? WHERE USER_ID=?";
+			sqlU =  "UPDATE \"USER\" SET EMAIL=? WHERE USER_ID=?";
 			pstmtU = conn.prepareStatement(sqlU);
 			pstmtU.setString(1, email);
 			pstmtU.setString(2, ID);
@@ -169,7 +169,7 @@ public class UserDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			try {	conn.rollback(); }catch(SQLException e1){}
+		try {	conn.rollback(); }catch(SQLException e1){}
 		finally {DBUtil.executeClose(null, pstmtU, conn);}
 		}
 	}
