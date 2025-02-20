@@ -38,7 +38,10 @@ public class Main {
 			
 			while(true) {
 				try {
-				System.out.println("원하시는 메뉴를 입력해주세요");
+			    System.out.println("================================================================================");
+			    System.out.println("                         ✨🌟  우와놀자 - 콘솔 예약 시스템  🌟✨                    ");
+	            System.out.println("================================================================================");
+				System.out.println("👉 원하시는 메뉴를 입력해주세요");
 				System.out.println("1. 로그인");
 				System.out.println("2. 회원가입");
 				System.out.println("0. 프로그램 종료");
@@ -49,7 +52,7 @@ public class Main {
 				}else break;
 
 				}catch (Exception e) {
-					System.out.println("잘못된 입력입니다");
+					System.out.println("❌ 잘못된 입력입니다 ❌");
 					continue;
 				}
 			}

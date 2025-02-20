@@ -15,11 +15,11 @@ public class User {
 	Date reg_date;
 	public User(String iD, String email, String passwd, String name, Enum grade, int point, int cash, Date reg_date) {
 		super();
-		ID = iD;
+		this.ID = iD;
 		this.email = email;
 		this.passwd = passwd;
 		this.name = name;
-		Grade = grade;
+		this.Grade = grade;
 		this.point = point;
 		this.cash = cash;
 		this.reg_date = reg_date;
@@ -66,7 +66,7 @@ public class User {
 
 
 	public void setGrade(Enum grade) {
-		Grade = grade;
+		this.Grade = grade;
 	}
 
 
@@ -75,7 +75,7 @@ public class User {
 	}
 
 	public void setID(String iD) {
-		ID = iD;
+		this.ID = iD;
 	}
 
 	public String getEmail() {
