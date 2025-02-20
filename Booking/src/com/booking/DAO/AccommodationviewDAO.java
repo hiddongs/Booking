@@ -1,9 +1,11 @@
 package com.booking.DAO;
 
+import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.util.ArrayList;
+import java.util.List;
 import com.dbutil.DBUtil;
 
 public class AccommodationviewDAO {
@@ -78,6 +80,5 @@ public class AccommodationviewDAO {
 		}finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
-	}
-	
+	} // public
 } // class

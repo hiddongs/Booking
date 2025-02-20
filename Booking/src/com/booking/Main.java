@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.UserDAO;
+import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
 
 import com.booking.member.User;
+import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
 
@@ -21,11 +24,15 @@ public class Main {
 	static boolean loginStatus;
 	static AdminDAO adminDAO;
 	static User user;
-
+	static Accommodation accommodation; 
+	static AccommodationviewDAO accommodationviewDAO;
+	static AccommodationMenu accommodationMenu;
+	
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
 		adminDAO = new AdminDAO();
+		accommodationviewDAO = new AccommodationviewDAO();
 		callMenu();
 	}
 
@@ -72,8 +79,11 @@ public class Main {
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
-						UserMenu userMenu = new UserMenu();
-						userMenu.U_Menu(br, user, userDAO);
+						System.out.println("숙소 메뉴 입니다.");
+						AccommodationMenu accommodationMenu = new AccommodationMenu();
+						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, userDAO);
 					}
 
 				} catch (Exception e) {

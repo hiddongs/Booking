@@ -1,6 +1,6 @@
 package com.booking.accommodation;
 
-public class Accommodation_bak {
+public class Accommodation {
 	int accommodation_id;
 	String accommodation_name;
 	String accommodation_address;
@@ -11,7 +11,7 @@ public class Accommodation_bak {
 	int accommodation_status;
 	int allowed_number;
 	
-	public Accommodation_bak(int accommodation_id, String accommodation_name, String accommodation_address,
+	public Accommodation(int accommodation_id, String accommodation_name, String accommodation_address,
 			String accommodation_description, int accommodation_price, String location_name,
 			String recommendation_season, int accommodation_status, int allowed_number) {
 		super();
