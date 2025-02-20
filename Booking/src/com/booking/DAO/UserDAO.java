@@ -10,10 +10,12 @@ import java.sql.SQLException;
 
 import com.booking.member.Grade;
 import com.booking.member.User;
+import com.booking.menu.UserMenu;
 import com.dbutil.DBUtil;
 
 public class UserDAO {
 
+	
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public User login(String ID, String passwd) {
 
@@ -116,23 +118,34 @@ public class UserDAO {
 		String sqlU = null;
 		try {
 			conn = DBUtil.getConnection();
+			conn.setAutoCommit(false);
 			sqlU =  "UPDATE \"USER\" SET NAME=? WHERE USER_ID=?";
 			pstmtU = conn.prepareStatement(sqlU);
 			pstmtU.setString(1, name);
 			pstmtU.setString(2, ID);
 			int update = pstmtU.executeUpdate();
 			if(update == 1) {
-				// conn.commit();
+				 conn.commit();
 				System.out.println("이름 변경 완료");
 			}
 			else {
-				// conn.rollback();
+				 conn.rollback();
+				 System.out.println("사용자가 없습니다.");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-//			try {// conn.rollback();}catch(SQLException e1){}}finally {DBUtil.executeClose(null, pstmtU, conn);}		
+			try {
+				if(conn!=null)conn.rollback();
+			}
+			catch(SQLException e1){
+				
+				e1.printStackTrace();
+			}
+		}finally {
+			DBUtil.executeClose(null, pstmtU, conn);
+		}		
+		
 	}
 	public void changeUserEmail(String ID, String email) {
 		Connection conn = null;
@@ -140,53 +153,65 @@ public class UserDAO {
 		String sqlU = null;
 		try {
 			conn = DBUtil.getConnection();
-			sqlU =  "UPDATE \"USER\"  SET EMAIL=? WHERE USER_ID=?";
+			sqlU =  "UPDATE \"USER\" SET EMAIL=? WHERE USER_ID=?";
 			pstmtU = conn.prepareStatement(sqlU);
 			pstmtU.setString(1, email);
 			pstmtU.setString(2, ID);
 			int update = pstmtU.executeUpdate();
 			if(update == 1)
 			{
-				// conn.commit();
+				 conn.commit();
 				System.out.println("이메일 변경 완료");
 			}
 			else {
-				// conn.rollback();
+				 conn.rollback();
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			//try {	conn.rollback(); }catch(SQLException e1){}}finally {DBUtil.executeClose(null, pstmtU, conn);}}
+		try {	conn.rollback(); }catch(SQLException e1){}
+		finally {DBUtil.executeClose(null, pstmtU, conn);}
 		}
 	}
 
-	public void changeUserPW(String ID, String passwd) {
+	public void changeUserPW(String ID, String passwd,BufferedReader br) {
 		Connection conn = null;
 		PreparedStatement pstmtU = null;
 		String sqlU = null;
+		String passWd2;
 		try {
 			conn = DBUtil.getConnection();
-			sqlU =  "UPDATE \"USER\" SET PASSWORD=? WHERE USER_ID=?";
-			pstmtU = conn.prepareStatement(sqlU);
-			pstmtU.setString(1, passwd);
-			pstmtU.setString(2, ID);
-			int update = pstmtU.executeUpdate();
-//			if(update == 1) {
-//				conn.commit();
-//			}
-//			else {
-//				conn.rollback();
-//			}
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//			
-//		}finally {DBUtil.executeClose(null, pstmtU, conn);}
-//	}
-		}catch (Exception e) {
+			System.out.println("변경할 비밀번호를 한번 더 입력하세요.");
+			passWd2 = br.readLine();
+			if(passWd2.equals(passwd)) {
+				sqlU =  "UPDATE \"USER\" SET PASSWORD=? WHERE USER_ID=?";
+				pstmtU = conn.prepareStatement(sqlU);
+				pstmtU.setString(1, passwd);
+				pstmtU.setString(2, ID);
+				int update = pstmtU.executeUpdate();
+				if(update == 1) {
+					conn.commit();
+					System.out.println("비밀번호가 성공적으로 변경 됐습니다.");
+				}
+				else {
+					conn.rollback();
+					System.out.println("비밀번호가 변경 실패");
+
+				}
+			}else {
+				System.out.println("재입력한 비밀번호가 일치하지 않습니다.");
+			}
+		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+
+		}finally {
+			DBUtil.executeClose(null, pstmtU, conn);
 		}
-		}
+	}
+
+		
+		
 	
 	public void checkGrade(String ID, Enum<?> Grade) {
 		Connection conn = null;
@@ -195,7 +220,7 @@ public class UserDAO {
 		ResultSet rs = null;
 		try {
 			conn = DBUtil.getConnection();
-			sqlS =  "SELECT USER_GRADE FROM \"USER\" WHERE USER_ID=? AND WHERE USER_GRADE=?";
+			sqlS =  "SELECT USER_GRADE FROM \"USER\" WHERE USER_ID=? AND USER_GRADE=?";
 			pstmtS = conn.prepareStatement(sqlS);
 			pstmtS.setString(1, ID);
 			pstmtS.setString(2, Grade.name());
@@ -203,7 +228,7 @@ public class UserDAO {
 			
 			rs = pstmtS.executeQuery();
 			if(rs.next()) {
-				 System.out.print("사용자의 등급은 = " + rs.getString("USER_GRADE"));
+				 System.out.print("사용자의 등급은 = " + rs.getString("USER_GRADE") + "\n");
 			}
 			else {
 				System.out.println("해당 등급의 사용자가 없습니다.");
@@ -215,24 +240,11 @@ public class UserDAO {
 		}finally {DBUtil.executeClose(null, pstmtS, conn);}
 	}
 	
-	public int showCash(String ID) {
+	public int showCash(String ID, int cash) {
 		return 0;
 	}
-	/*
-	public void chargeCash(String ID, BufferedReader br) {
-		Connection conn = null;
-		PreparedStatement pstmtU = null;
-		String sqlU = null;
-		String sqlI = null;
-		int cash = 0;
-		
-		conn = DBUtil.getConnection();
-		sqlI = "INSERT INTO test3 (num,title,name,memo,email,reg_date) VALUES (test3_seq.nextval,?,?,?,?,SYSDATE)";
-		sqlU = "UPDATE USER SET CASH=? WHERE USER_ID=?";
-		pstmtU = conn.prepareStatement(sqlU);
-		pstmtU.setInt(1, cash);
-		pstmtU.setString(2, ID);
+	
+    public void chargeCash(String ID){
 		
 	}
-*/
 }

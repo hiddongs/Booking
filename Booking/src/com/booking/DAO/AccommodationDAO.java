@@ -19,7 +19,7 @@ public class AccommodationDAO {
 	static AdminDAO adminDAO;
 
 	// 숙소 넣기(관리) - 예진
-	
+
 	public void InsertAccommodation(String accommodation_name, String accommodation_address, String accommodation_description,
 		    int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
 		Connection conn = null;
@@ -31,7 +31,9 @@ public class AccommodationDAO {
 			// JDBC 수행 1
 			conn = DBUtil.getConnection();
 			// sql문 작성
-			sql = "insert into accommodation values(accommodation_seq.nextval,?,?,?,?,?,?,?,?)";
+			sql = "insert into accommodation(accommodation_id,accommodation_name,accommodation_address,accommodation_description,"
+					+ "accommodation_price, location_name, recommendation_season, accommodation_status,allowed_number)"
+					+ " values(accommodation_seq.nextval,?,?,?,?,?,?,?,?)";
 			// 3단계
 			pstmt = conn.prepareStatement(sql);
 			// 바인딩
