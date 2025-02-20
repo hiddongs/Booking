@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.booking.DAO.AdminDAO;
-import com.booking.DAO.UserDAO;
 import com.booking.DAO.CashDAO;
+import com.booking.DAO.ReviewDAO;
+import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
-
+import com.booking.member.Review;
 import com.booking.member.User;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
@@ -22,6 +23,8 @@ public class Main {
 	static boolean loginStatus;
 	static AdminDAO adminDAO;
 	static User user;
+	static Review review;
+	static ReviewDAO reviewDAO;
 
 	static CashDAO cashDAO;
 	public Main(){
@@ -29,6 +32,7 @@ public class Main {
 		userDAO = new UserDAO();
 		adminDAO = new AdminDAO();
 		cashDAO = new CashDAO();
+		reviewDAO = new ReviewDAO();
 		callMenu();
 	}
 
@@ -79,7 +83,7 @@ public class Main {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 						UserMenu userMenu = new UserMenu();
-						userMenu.U_Menu(br, user, userDAO, cashDAO);
+						userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
 					}
 
 				} catch (Exception e) {

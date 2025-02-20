@@ -243,24 +243,7 @@ public class UserDAO {
 	public int showCash(String ID, int cash) {
 		return 0;
 	}
-	/*
-	public void chargeCash(String ID, BufferedReader br) {
-		Connection conn = null;
-		PreparedStatement pstmtU = null;
-		String sqlU = null;
-		String sqlI = null;
-		int cash = 0;
-		
-		conn = DBUtil.getConnection();
-		sqlI = "INSERT INTO test3 (num,title,name,memo,email,reg_date) VALUES (test3_seq.nextval,?,?,?,?,SYSDATE)";
-		sqlU = "UPDATE USER SET CASH=? WHERE USER_ID=?";
-		pstmtU = conn.prepareStatement(sqlU);
-		pstmtU.setInt(1, cash);
-		pstmtU.setString(2, ID);
-		
-	}
-
-*/
+	
     public void chargeCash(String ID){
 		
 	}

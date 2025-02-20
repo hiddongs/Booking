@@ -3,23 +3,29 @@ package com.booking.menu;
 import java.io.BufferedReader;
 
 import com.booking.DAO.CashDAO;
+import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
+import com.booking.member.Review;
 import com.booking.member.User;
 
 public class UserMenu {
 
 //	private BufferedReader br = null;
 	static User user;
+	static Review review;
 	static UserDAO userDAO;
     static CashDAO cashDAO;
+    static ReviewDAO reviewDAO;
 
 
-	public void U_Menu(BufferedReader br, User user, UserDAO userDAO, CashDAO cashDAO)  {
+	public void U_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
 		UserMenu.user = user;
+		UserMenu.review = review;
 		UserMenu.userDAO = userDAO;
 		UserMenu.cashDAO = cashDAO;
+		UserMenu.reviewDAO = reviewDAO;
 		try {
 			while(true) {
 				System.out.println("1. 회원 이름 변경");
@@ -101,7 +107,9 @@ public class UserMenu {
 
 					try {
 						System.out.println("작성 리뷰 내역 확인");
+						reviewDAO.showReview(ID);
 					}catch(Exception e){
+						e.printStackTrace();
 						
 					}
 					
@@ -123,6 +131,9 @@ public class UserMenu {
 		}
 
 	} // userMenu
+
+
+	
 } // class
 
 
