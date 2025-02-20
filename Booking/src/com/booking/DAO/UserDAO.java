@@ -1,17 +1,21 @@
 package com.booking.DAO;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.booking.member.Grade;
-import com.booking.member.Member;
+import com.booking.member.User;
 import com.dbutil.DBUtil;
 
 public class UserDAO {
 
-	public Member login(String ID, String passwd) {
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public User login(String ID, String passwd) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -21,7 +25,8 @@ public class UserDAO {
 
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM USER WHERE USER_ID = ? AND PASSWORD = ?";
+			
+			sql = "SELECT * FROM \"USER\" WHERE USER_ID = ? AND PASSWORD = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ID);
 			pstmt.setString(2, passwd);
@@ -30,14 +35,18 @@ public class UserDAO {
 
 			if(rs.next()) {
 				// 회원 ID는 하나이기 떄문에 do-while 사용 X
+				System.out.println("로그인 성공");
 				String name = rs.getString("NAME");
 				String email = rs.getString("EMAIL");
 				int point = rs.getInt("POINT");
 				int cash = rs.getInt("CASH");
 				Date reg_date = rs.getDate("REG_DATE");
-				boolean status = rs.getInt("STATUS") == 0 ? false : true;
-				Enum grade = Grade.valueOf(rs.getString("LEVEL_ID"));
-				return new Member(name, email, point, cash, reg_date, status, grade);
+				
+				// boolean status = rs.getInt("STATUS") == 0 ? false : true;
+				Enum grade = Grade.valueOf(rs.getString("USER_GRADE"));
+				return new User(ID, email, passwd, name, grade, point,cash,reg_date);
+				//String iD, String email, String passwd, String name, Enum grade, int point, int cash, Date reg_date
+				// status
 			}else {
 				System.out.println("잘못된 ID나 잘못된 passwd입니다");
 				return null;
@@ -57,6 +66,7 @@ public class UserDAO {
 	public static boolean checkIDDuplicate(String ID) { // 증복 아이디 확인
 		
 		Connection conn = null;
+		
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs =  null;
@@ -100,5 +110,129 @@ public class UserDAO {
 		}
 		return false;
 	}
+	public void changeUserName(String ID, String name) {
+		Connection conn = null;
+		PreparedStatement pstmtU = null;
+		String sqlU = null;
+		try {
+			conn = DBUtil.getConnection();
+			sqlU =  "UPDATE \"USER\" SET NAME=? WHERE USER_ID=?";
+			pstmtU = conn.prepareStatement(sqlU);
+			pstmtU.setString(1, name);
+			pstmtU.setString(2, ID);
+			int update = pstmtU.executeUpdate();
+			if(update == 1) {
+				// conn.commit();
+				System.out.println("이름 변경 완료");
+			}
+			else {
+				// conn.rollback();
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+//			try {// conn.rollback();}catch(SQLException e1){}}finally {DBUtil.executeClose(null, pstmtU, conn);}		
+	}
+	public void changeUserEmail(String ID, String email) {
+		Connection conn = null;
+		PreparedStatement pstmtU = null;
+		String sqlU = null;
+		try {
+			conn = DBUtil.getConnection();
+			sqlU =  "UPDATE \"USER\"  SET EMAIL=? WHERE USER_ID=?";
+			pstmtU = conn.prepareStatement(sqlU);
+			pstmtU.setString(1, email);
+			pstmtU.setString(2, ID);
+			int update = pstmtU.executeUpdate();
+			if(update == 1)
+			{
+				// conn.commit();
+				System.out.println("이메일 변경 완료");
+			}
+			else {
+				// conn.rollback();
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			//try {	conn.rollback(); }catch(SQLException e1){}}finally {DBUtil.executeClose(null, pstmtU, conn);}}
+		}
+	}
 
+	public void changeUserPW(String ID, String passwd) {
+		Connection conn = null;
+		PreparedStatement pstmtU = null;
+		String sqlU = null;
+		try {
+			conn = DBUtil.getConnection();
+			sqlU =  "UPDATE \"USER\" SET PASSWORD=? WHERE USER_ID=?";
+			pstmtU = conn.prepareStatement(sqlU);
+			pstmtU.setString(1, passwd);
+			pstmtU.setString(2, ID);
+			int update = pstmtU.executeUpdate();
+//			if(update == 1) {
+//				conn.commit();
+//			}
+//			else {
+//				conn.rollback();
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//			
+//		}finally {DBUtil.executeClose(null, pstmtU, conn);}
+//	}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		}
+	
+	public void checkGrade(String ID, Enum<?> Grade) {
+		Connection conn = null;
+		PreparedStatement pstmtS = null;
+		String sqlS = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtil.getConnection();
+			sqlS =  "SELECT USER_GRADE FROM \"USER\" WHERE USER_ID=? AND WHERE USER_GRADE=?";
+			pstmtS = conn.prepareStatement(sqlS);
+			pstmtS.setString(1, ID);
+			pstmtS.setString(2, Grade.name());
+			
+			
+			rs = pstmtS.executeQuery();
+			if(rs.next()) {
+				 System.out.print("사용자의 등급은 = " + rs.getString("USER_GRADE"));
+			}
+			else {
+				System.out.println("해당 등급의 사용자가 없습니다.");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+		}finally {DBUtil.executeClose(null, pstmtS, conn);}
+	}
+	
+	public int showCash(String ID) {
+		return 0;
+	}
+	/*
+	public void chargeCash(String ID, BufferedReader br) {
+		Connection conn = null;
+		PreparedStatement pstmtU = null;
+		String sqlU = null;
+		String sqlI = null;
+		int cash = 0;
+		
+		conn = DBUtil.getConnection();
+		sqlI = "INSERT INTO test3 (num,title,name,memo,email,reg_date) VALUES (test3_seq.nextval,?,?,?,?,SYSDATE)";
+		sqlU = "UPDATE USER SET CASH=? WHERE USER_ID=?";
+		pstmtU = conn.prepareStatement(sqlU);
+		pstmtU.setInt(1, cash);
+		pstmtU.setString(2, ID);
+		
+	}
+*/
 }

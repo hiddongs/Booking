@@ -7,18 +7,20 @@ import java.io.InputStreamReader;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
-import com.booking.member.Member;
+
+import com.booking.member.User;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
 
 public class Main {
 
 	static BufferedReader br;
-	static Member member;
+	
 	static Admin admin;
 	static UserDAO userDAO;
 	static boolean loginStatus;
 	static AdminDAO adminDAO;
+	static User user;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,8 +30,12 @@ public class Main {
 	}
 
 	private void callMenu(){
+		
+		
 		while(true) {
 			int menuNum = Integer.MAX_VALUE;
+			
+			
 			while(true) {
 				try {
 				System.out.println("원하시는 메뉴를 입력해주세요");
@@ -38,7 +44,7 @@ public class Main {
 				System.out.println("0. 프로그램 종료");
 				menuNum = Integer.parseInt(br.readLine());
 				if(menuNum != 1 && menuNum != 2 && menuNum != 0) {
-					System.out.println("유효하지않은 입력입니다.");
+					System.out.println("1,2,0 번 메뉴중 하나를 입력해주세요");
 					continue;
 				}else break;
 
@@ -47,6 +53,8 @@ public class Main {
 					continue;
 				}
 			}
+			
+			
 			if(menuNum == 1) {
 				
 				try {
@@ -55,18 +63,18 @@ public class Main {
 					System.out.println("비밀번호를 입력해주세요");
 					String passwd = br.readLine();
 
-					if((admin = adminDAO.adminLogin(ID, passwd)) != null) {
+					if((admin = adminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
 						loginStatus = true;
 						AdminMenu adminMenu = new AdminMenu();
 						adminMenu.menu(br, admin, adminDAO);
 
 					}
-//					else if((member = userDAO.login(ID, passwd)) != null) {
-//						loginStatus = true;
-//						System.out.println("로그인이 완료되었습니다.");
-//						UserMenu userMenu = new UserMenu();
-//						//						userMenu.menu(br);
-//					}
+					else if((user = userDAO.login(ID, passwd)) != null) {
+						loginStatus = true;
+						System.out.println("로그인이 완료되었습니다.");
+						UserMenu userMenu = new UserMenu();
+						userMenu.U_Menu(br, user, userDAO);
+					}
 
 				} catch (Exception e) {
 					e.printStackTrace();

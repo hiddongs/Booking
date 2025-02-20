@@ -2,6 +2,7 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.AdminDAO;
@@ -77,63 +78,15 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		else if (answer == 0) return;
 	}
 
-	private void accommodation_insert(BufferedReader br) {
-		String accommodation_name = null;
-		String accommodation_address = null;
-		String accommodation_description = null;
-		int accommodation_price = 0;
-		String location_name = null;
-		int accommodation_allowed_num = 0;
-		while(true) {
-			try {
-				System.out.println("숙소 등록 메뉴입니다.");
-				System.out.println("숙소의 이름을 입력해주세요");
-				accommodation_name = br.readLine();
-				System.out.println("숙소의 주소를 입력해주세요");
-				accommodation_address = br.readLine();
-				System.out.println("숙소에 대한 설명을 입력해주세요");
-				accommodation_description = br.readLine();
-
-				while(true) {
-					try {
-						System.out.println("숙소의 가격을 입력해주세요");
-						accommodation_price = Integer.parseInt(br.readLine());
-						break;
-					} catch (NumberFormatException e) {
-						System.out.println("잘못된 입력입니다. 숙소 가격은 숫자만 입력해주세요");
-						continue;
-					}
-				}
-				System.out.println("큰 지역구 이름을 선택해주세요");
-				location_name = br.readLine();
-				System.out.println("숙소를 추천하는 계절을 입력해주세요");
-				String recommendation_season = br.readLine();
-
-
-				while(true) {
-					try {
-						System.out.println("수용가능한 숙소의 인원수를 입력해주세요");
-						accommodation_allowed_num = Integer.parseInt(br.readLine());
-						break;
-					} catch (NumberFormatException e) {
-						System.out.println("잘못된 입력입니다. 숙소 수용가능인원수는 숫자만 입력해주세요");
-						continue;
-					}
-				}
-
-			} catch (IOException | NumberFormatException e) {
-				System.out.println("잘못된 입력입니다.");
-				continue;
-			}
-
-		}
+	private void accommodation_insert(BufferedReader br) { // 만들다 말았음 숙소 INSERT 부분
+		
 	}
 
 
 
 	private void qnaManagement(BufferedReader br) {
 		int answer = Integer.MIN_VALUE;
-		QnADAO qnADAO = new QnADAO();
+		QnADAO qnaDAO = new QnADAO();
 		while(true) {
 			System.out.println("문의 관련 페이지 입니다.");
 			System.out.println("1.미답변 QnA 답변하기");
@@ -155,10 +108,16 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		}
 		
 		if(answer == 1) {
-			qnADAO.answerToQNA(br,admin);
+			qnaDAO.answerToQNA(br,admin);
+		}else if(answer == 2) {
+			qnaDAO.answerUpdate(br, admin);
+		}else if(answer == 3) {
+			qnaDAO.showQnA();
+		}else if(answer == 0) {
+			return;
 		}
 	}
-	private void couponManagement(BufferedReader br) {
+	private void couponManagement(BufferedReader br) { // 쿠폰 관리 메뉴
 
 	}
 }
