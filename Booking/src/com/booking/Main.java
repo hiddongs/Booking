@@ -1,16 +1,27 @@
 package com.booking;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.AdminDAO;
+<<<<<<< HEAD
+=======
+import com.booking.DAO.UserDAO;
+import com.booking.accommodation.Accommodation;
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import com.booking.DAO.CashDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
+<<<<<<< HEAD
 import com.booking.member.Review;
+=======
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import com.booking.member.User;
+import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
 
@@ -23,16 +34,31 @@ public class Main {
 	static boolean loginStatus;
 	static AdminDAO adminDAO;
 	static User user;
+<<<<<<< HEAD
 	static Review review;
 	static ReviewDAO reviewDAO;
+=======
+	static Accommodation accommodation; 
+	static AccommodationviewDAO accommodationviewDAO;
+	static AccommodationMenu accommodationMenu;
+	
+
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 
 	static CashDAO cashDAO;
+
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
 		adminDAO = new AdminDAO();
+
+		accommodationviewDAO = new AccommodationviewDAO();
 		cashDAO = new CashDAO();
+<<<<<<< HEAD
 		reviewDAO = new ReviewDAO();
+=======
+
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 		callMenu();
 	}
 
@@ -82,8 +108,20 @@ public class Main {
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
+
+						System.out.println("숙소 메뉴 입니다.");
+						AccommodationMenu accommodationMenu = new AccommodationMenu();
+						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, userDAO);
+
 						UserMenu userMenu = new UserMenu();
+<<<<<<< HEAD
 						userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
+=======
+						userMenu.U_Menu(br, user, userDAO, cashDAO);
+
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 					}
 
 				} catch (Exception e) {

@@ -1,9 +1,11 @@
 package com.booking.DAO;
 
+import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.util.ArrayList;
+import java.util.List;
 import com.dbutil.DBUtil;
 
 public class AccommodationviewDAO {
@@ -22,7 +24,6 @@ public class AccommodationviewDAO {
 			System.out.println("================================================");
 			if(rs.next()) {
 				System.out.println("숙소번호\t숙소이름\t\t지역\t주소");
-			
 				do {
 					System.out.print(rs.getInt("accommodation_id"));
 					System.out.print("\t");
@@ -34,7 +35,7 @@ public class AccommodationviewDAO {
 					
 				} while (rs.next());
 			}else {
-				System.out.println();
+				System.out.println("검색된 정보가 없습니다.");
 			}
 			//System.out.println("2.숙소 상세정보 보기");
 			//System.out.println("3.예약하기");
@@ -78,6 +79,5 @@ public class AccommodationviewDAO {
 		}finally {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
-	}
-	
+	} // public
 } // class
