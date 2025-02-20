@@ -99,6 +99,12 @@ public class UserMenu {
 			
 				}else if(no == 5) {
 
+					try {
+						System.out.println("작성 리뷰 내역 확인");
+					}catch(Exception e){
+						
+					}
+					
 				}else if(no == 6) {
 
 				}else if(no == 7) {
