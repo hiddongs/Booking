@@ -1,11 +1,6 @@
 package com.booking;
 
 import java.io.BufferedReader;
-<<<<<<< HEAD
-
-
-=======
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -16,19 +11,12 @@ import com.booking.DAO.CouponDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
-import com.booking.member.Admin;
-<<<<<<< HEAD
-
 import com.booking.accommodation.Review;
-
-=======
+import com.booking.member.Admin;
 import com.booking.member.Coupon;
-import com.booking.member.Review;
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
-import com.booking.menu.ReviewMenu;
 import com.booking.menu.UserMenu;
 
 
@@ -141,11 +129,6 @@ public class Main {
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
 
-<<<<<<< HEAD
-								//userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO);
-=======
-								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");
