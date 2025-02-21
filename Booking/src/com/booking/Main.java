@@ -25,27 +25,19 @@ import com.booking.menu.UserMenu;
 public class Main {
 
 	static BufferedReader br;
-	
 	static Admin admin;
 	static UserDAO userDAO;
-	static boolean loginStatus;
-	static AdminDAO adminDAO;
 	static User user;
-
 	static Review review;
 	static ReviewDAO reviewDAO;
-
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
 	static AccommodationMenu accommodationMenu;
-
-
 	static CashDAO cashDAO;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
-		adminDAO = new AdminDAO();
 
 		accommodationviewDAO = new AccommodationviewDAO();
 		cashDAO = new CashDAO();
@@ -92,16 +84,12 @@ public class Main {
 					System.out.println("비밀번호를 입력해주세요");
 					String passwd = br.readLine();
 
-					if((admin = adminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
-						loginStatus = true;
-						AdminMenu adminMenu = new AdminMenu();
-						adminMenu.menu(br, admin, adminDAO);
-
+					if((admin = AdminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
+						System.out.println("Admin계정 로그인 성공");
+						new AdminMenu(br, admin);
 					}
 					else if((user = userDAO.login(ID, passwd)) != null) {
-						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
-
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
 						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);

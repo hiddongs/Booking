@@ -130,14 +130,14 @@ public class AccommodationDAO {
 		return false;
 	}
 
-	public void accommodation_management(BufferedReader br, AccommodationDAO accommodationDAO, Admin admin) {
+	public void accommodation_management(BufferedReader br, Admin admin) {
 
 
 		int accommodation_id = Integer.MIN_VALUE;
 
 		while(true) {
 			System.out.println("관리를 희망하는 숙소를 선택해주세요");
-			accommodation_id = accommodationDAO.selectAccommodation(br);
+			accommodation_id = selectAccommodation(br);
 			if(accommodation_id != 0 || accommodation_id != -1) {
 				break;
 			}else {
@@ -171,9 +171,9 @@ public class AccommodationDAO {
 		if(answer == 0) {
 			return;
 		}else if(answer == 1) {
-			accommodationDAO.accommodation_suspension(accommodation_id, br, admin);
+			accommodation_suspension(accommodation_id, br, admin);
 		}else if(answer == 2) {
-			accommodationDAO.accommodation_resume(accommodation_id,br,admin);
+			accommodation_resume(accommodation_id,br,admin);
 		}
 
 	}
@@ -251,20 +251,23 @@ public class AccommodationDAO {
 			int insert = pstmtI.executeUpdate();
 			int update = pstmtU.executeUpdate();
 
-
+			if(insert != 1 || update != 1 ) {
+				System.out.println("오류가 발생했습니다.");
+				try {conn.rollback();} catch (SQLException e) {}
+			}else {
+				System.out.println(accommodation_id + "번 숙소 영업정지완료");
+				try {conn.commit();} catch (SQLException e) {}
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		} catch (SQLException e) {
 			try {conn.rollback();} catch (SQLException e1) {}
-			e.printStackTrace();
 		} finally {
 			DBUtil.executeClose(null, pstmtU, conn);
-			try {conn.commit();} catch (SQLException e) {}
-			System.out.println(accommodation_id + "번 숙소 영업정지완료");
 		}
 
 
