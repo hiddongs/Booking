@@ -6,12 +6,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.booking.member.Admin;
 import com.dbutil.DBUtil;
 
 public class CouponDAO {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	
+	public void updateCoupon(Admin ID) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		try {
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}	
+	
+		
+	}
 	public void showUserCoupon(String ID) {
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

@@ -127,8 +127,6 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		try {
 			int num = Integer.parseInt(br.readLine());
 			try{
-				try {
-
 					if(num == 1) {
 						System.out.println("쿠폰 종류 조회");
 					}else if(num == 2) 
@@ -139,13 +137,10 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 					// TODO: handle exception
 				}
 
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 	}
 }
