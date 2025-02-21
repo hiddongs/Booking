@@ -37,8 +37,6 @@ public class AccommodationviewDAO {
 			}else {
 				System.out.println("검색된 정보가 없습니다.");
 			}
-			//System.out.println("2.숙소 상세정보 보기");
-			//System.out.println("3.예약하기");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

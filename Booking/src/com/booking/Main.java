@@ -2,6 +2,7 @@ package com.booking;
 
 import java.io.BufferedReader;
 
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -15,11 +16,12 @@ import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
 
-import com.booking.member.Review;
+import com.booking.accommodation.Review;
 
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
+import com.booking.menu.ReviewMenu;
 import com.booking.menu.UserMenu;
 
 public class Main {
@@ -105,14 +107,14 @@ public class Main {
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
 						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, userDAO);
 
-						UserMenu userMenu = new UserMenu();
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
 
-						userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
-
-			
+						
 
 					}
 
