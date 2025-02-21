@@ -1,6 +1,7 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 
 import com.booking.DAO.AccommodationDAO;
@@ -34,6 +35,8 @@ public class AccommodationMenu {
 				System.out.println("3.예약하기");
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
+					System.out.println("1.국내 2.해외");
+					int num1 = Integer.parseInt(br.readLine());
 					
 					accommodationviewDAO.selectInfo();
 					

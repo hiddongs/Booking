@@ -261,10 +261,10 @@ public class ReviewDAO {
 				System.out.println("검색된 숙소 리뷰가 없습니다.");
 			}
 			System.out.println("========================");
-		} catch(NumberFormatException | InputMismatchException | ClassNotFoundException | SQLException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBUtil.executeClose(rs,  pstmt, conn);
+			DBUtil.executeClose(rs, pstmt, conn);
 		}
 	}
 }

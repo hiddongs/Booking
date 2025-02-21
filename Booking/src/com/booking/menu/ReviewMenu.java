@@ -18,9 +18,10 @@ public class ReviewMenu {
 	//
 	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) {
 		// 선택된 숙소의 리뷰 보기
-		
+		// 초기화를 안했
 		ReviewMenu.review = review;
-		ReviewMenu.reviewDAO = reviewDAO;
+		ReviewMenu.reviewDAO = new ReviewDAO();
+		
 		
 		try {
 			while(true) {
@@ -32,12 +33,13 @@ public class ReviewMenu {
 				System.out.println("숙소번호 입력하세요>");
 				int num = Integer.parseInt(br.readLine());
 				
-				System.out.println("------------------------------------------");
-				
-				reviewDAO.selectdetailReview(num);
+				System.out.println("================================================");
+				ReviewMenu.reviewDAO.selectdetailReview(num);
 				
 			}else if(no == 2) {
-				// 예약하기 메뉴로
+				// 예약하기 화면으로
+				//AccommodationMenu accommodationMenu= new AccommodationMenu();
+				//accommodationMenu.AccMenu(br,accommodation, adao);
 				
 			}
 			
