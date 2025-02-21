@@ -10,7 +10,7 @@ import com.dbutil.DBUtil;
 public class AdminDAO {
 
 
-	public Admin adminLogin(String ID, String passwd) {
+	public static Admin adminLogin(String ID, String passwd) {
 
 		Connection conn = null;
 		String sql = null;

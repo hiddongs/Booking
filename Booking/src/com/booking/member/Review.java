@@ -13,6 +13,7 @@ public class Review {
 	
 	public Review(int review_ID, String iD, int accomodation_ID, Date review_date, String review_content,
 			int review_rating) {
+		
 		super();
 		this.review_ID = review_ID;
 		ID = iD;
@@ -20,6 +21,7 @@ public class Review {
 		this.review_date = review_date;
 		this.review_content = review_content;
 		this.review_rating = review_rating;
+		
 	}
 	public int getReview_ID() {
 		return review_ID;

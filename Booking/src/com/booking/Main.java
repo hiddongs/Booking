@@ -26,28 +26,21 @@ import com.booking.menu.UserMenu;
 public class Main {
 
 	static BufferedReader br;
-
 	static Admin admin;
 	static UserDAO userDAO;
-	static boolean loginStatus;
-	static AdminDAO adminDAO;
 	static User user;
-
 	static Review review;
 	static ReviewDAO reviewDAO;
-
-
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
 	static AccommodationMenu accommodationMenu;
-
-
 	static CashDAO cashDAO;
+	static AdminDAO adminDAO;
+	static boolean loginStatus;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
-		adminDAO = new AdminDAO();
 
 		accommodationviewDAO = new AccommodationviewDAO();
 		cashDAO = new CashDAO();
@@ -97,7 +90,7 @@ public class Main {
 					if((admin = adminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
 						loginStatus = true;
 						AdminMenu adminMenu = new AdminMenu();
-						adminMenu.menu(br, admin, adminDAO);
+						adminMenu.menu(br, admin);
 
 					}
 					else if((user = userDAO.login(ID, passwd)) != null) {
@@ -144,11 +137,6 @@ public class Main {
 						}
 
 					}
-
-
-
-
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
@@ -203,4 +191,6 @@ public class Main {
 		}
 	}
 }
+
+
 

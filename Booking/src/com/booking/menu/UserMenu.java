@@ -107,7 +107,6 @@ public class UserMenu {
 					}
 			
 				}else if(no == 5) {
-
 					try {
 						System.out.println("작성 리뷰 내역 확인");
 						reviewDAO.showReview(ID);
@@ -145,8 +144,13 @@ public class UserMenu {
 					continue;
 				}
 			}
+
 		}catch(NumberFormatException | IOException e) {
 			e.printStackTrace();	
+
+		}catch(Exception e) {
+			System.out.println("오류발생");
+
 		}
 	} // userMenu	
 } // class

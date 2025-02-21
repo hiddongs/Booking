@@ -219,6 +219,9 @@ public class ReviewDAO {
 
 		finally {
 			DBUtil.executeClose(rs, pstmt, conn);
+
+//			if(br != null) try {br.close();} catch(IOException e1) {}
+
 		}
 	}
 }
