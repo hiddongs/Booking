@@ -34,12 +34,12 @@ public class AccommodationMenu {
 				System.out.println("3.예약하기");
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
+					
 					accommodationviewDAO.selectInfo();
-
 					
 					// 생성하고 다음 메뉴 부르기(reviewMenu)
 					ReviewMenu reviewMenu = new ReviewMenu();
-					reviewMenu.R_menu(br,review, reviewDAO, accommodation);
+					reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
 				
 
 				}else if(no==2){

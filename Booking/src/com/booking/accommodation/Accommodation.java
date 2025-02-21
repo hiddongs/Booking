@@ -1,6 +1,7 @@
 package com.booking.accommodation;
-
+/*
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,8 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import com.dbutil.DBUtil;
+
+*/
 
 public class Accommodation {
 	int accommodation_id;

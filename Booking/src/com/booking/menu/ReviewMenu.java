@@ -16,7 +16,7 @@ public class ReviewMenu {
 	static AccommodationviewDAO adao;
 	
 	//
-	public static void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation) {
+	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) {
 		// 선택된 숙소의 리뷰 보기
 		
 		ReviewMenu.review = review;
