@@ -1,5 +1,18 @@
 package com.booking.accommodation;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
+
+import com.dbutil.DBUtil;
+
 public class Accommodation {
 	int accommodation_id;
 	String accommodation_name;
@@ -10,7 +23,8 @@ public class Accommodation {
 	String recommendation_season; 
 	int accommodation_status;
 	int allowed_number;
-	
+
+
 	public Accommodation(int accommodation_id, String accommodation_name, String accommodation_address,
 			String accommodation_description, int accommodation_price, String location_name,
 			String recommendation_season, int accommodation_status, int allowed_number) {
@@ -25,8 +39,8 @@ public class Accommodation {
 		this.accommodation_status = accommodation_status;
 		this.allowed_number = allowed_number;
 	}
-	
-	
+
+
 	public int getAccommodation_id() {
 		return accommodation_id;
 	}
@@ -98,9 +112,4 @@ public class Accommodation {
 	public void setAllowed_number(int allowed_number) {
 		this.allowed_number = allowed_number;
 	}
-
-	
-	
-	
-	
 }

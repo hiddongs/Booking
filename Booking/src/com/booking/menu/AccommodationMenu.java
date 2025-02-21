@@ -3,6 +3,7 @@ package com.booking.menu;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.accommodation.Accommodation;
 
@@ -43,6 +44,7 @@ public class AccommodationMenu {
 				}
 				// 희동쿤이 해야할 예약 하기
 				else if(no == 3) {
+					AccommodationDAO accommodationDAO = new AccommodationDAO();
 
 					System.out.println("예약을 위해 국내 / 해외 선택하세요 (1번을 누르면 [국내] 2번을 누르면 [해외] 입니다 ");
 					int areaNum = Integer.parseInt(br.readLine());
@@ -50,10 +52,12 @@ public class AccommodationMenu {
 						if(areaNum == 1) {
 							System.out.println("국내 예약");
 							try {
+								System.out.println("2번 추천여행지 보기");
 								int sugNum = Integer.parseInt(br.readLine());
 								try {
 									if(sugNum == 2) { // 추천 여행지 메뉴판
 										System.out.println("추천 여행지 보기");
+										accommodationDAO.suggest_accommodation(br, null);
 									}
 
 								}catch (Exception e) {
@@ -68,10 +72,12 @@ public class AccommodationMenu {
 						else if(areaNum == 2) {
 							System.out.println("해외 예약");
 
+							System.out.println("2번 추천 여행지 보기");
 							int sugNum = Integer.parseInt(br.readLine());
 							try {
 								if(sugNum == 2) {// 추천 여행지 메뉴판
-									System.out.println("추천 여행지 보기");
+									accommodationDAO.suggest_accommodation(br, "해외");
+									
 								}
 							}catch (Exception e) {
 								// TODO: handle exception
