@@ -69,7 +69,7 @@ public class ReviewDAO {
 		}
 	}
 
-
+	
 	// 목록 수정
 	public void updateReview() {
 
@@ -91,7 +91,7 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-					
+					review = reviewDAO.showReview(ID);
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
 					
@@ -182,7 +182,7 @@ public class ReviewDAO {
 		
 	}
 
-	public void showReview(String ID) {
+	public Review showReview(String ID) {
 
 		Review review = null;
 		try {
@@ -197,7 +197,13 @@ public class ReviewDAO {
 
 			if(rs.next()) {
 				do {
-				   
+				    review = new Review(); // Review 객체 생성
+			        review.setReview_ID(rs.getInt("REVIEW_ID"));
+			        review.setID(rs.getString("USER_ID"));
+			        review.setAccomodation_ID(rs.getInt("ACCOMODATION_ID"));
+			        review.setReview_date(rs.getDate("REVIEW_DATE"));
+			        review.setReview_content(rs.getString("REVIEW_CONTENT"));
+			        review.setReview_rating(rs.getInt("REVIEW_RATING"));
 					System.out.println("----------------------------------------------");
 					System.out.println("번호 : " + rs.getInt("REVIEW_ID"));
 					System.out.println("작성자 이름 : " + rs.getString("USER_ID"));
@@ -227,6 +233,43 @@ public class ReviewDAO {
 //			if(br != null) try {br.close();} catch(IOException e1) {}
 
 		}
-		
+		return review; 
+	}
+
+
+	public void selectdetailReview(int accomodation_ID) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		System.out.println("메서드 작동");
+		try {
+			conn = DBUtil.getConnection();
+			sql ="SELECT * FROM REVIEW WHERE ACCOMODATION_ID =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, accomodation_ID);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()){
+				System.out.println("-------------------------------------------------");
+				System.out.println("사용자 ID:" + rs.getString("USER_ID"));
+				System.out.println("리뷰 대상 숙소 번호:" + rs.getInt("ACCOMODATION_ID"));
+				System.out.println("리뷰 작성일:" + rs.getDate("REVIEW_DATE"));
+				System.out.println("리뷰 내용:"+rs.getString("REVIEW_CONTENT"));
+				System.out.println("리뷰 평점:"+rs.getInt("REVIEW_RATING"));
+				System.out.println("-------------------------------------------------");
+			}else {
+				System.out.println("검색된 숙소 리뷰가 없습니다.");
+			}
+			System.out.println("========================");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+
+			DBUtil.executeClose(rs, pstmt, conn);
+
+//			DBUtil.executeClose(rs,  pstmt, conn);
+
+		}
 	}
 }

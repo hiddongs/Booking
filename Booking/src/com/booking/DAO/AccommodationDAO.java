@@ -1,6 +1,7 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ import java.util.Random;
 import com.booking.member.Admin;
 import com.dbutil.DBUtil;
 
-import oracle.sql.NUMBER;
+//import oracle.sql.NUMBER;
 
 public class AccommodationDAO {
 

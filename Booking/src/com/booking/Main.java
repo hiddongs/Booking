@@ -13,7 +13,6 @@ import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
 import com.booking.member.Coupon;
-import com.booking.member.Review;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
@@ -26,11 +25,11 @@ public class Main {
 	static Admin admin;
 	static UserDAO userDAO;
 	static User user;
-	static Review review;
+	static com.booking.member.Review review;
 	static ReviewDAO reviewDAO;
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
-	static AccommodationMenu accommodationMenu = new AccommodationMenu();
+	static AccommodationMenu accommodationMenu;
 	static CashDAO cashDAO;
 	static AdminDAO adminDAO;
 	static boolean loginStatus;
@@ -97,10 +96,22 @@ public class Main {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 
+
+						System.out.println("숙소 메뉴 입니다.");
+						AccommodationMenu accommodationMenu = new AccommodationMenu();
+						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, userDAO);
+
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
+
 						UserMenu userMenu = new UserMenu();
 						System.out.println("우와! 환영합니다! 😊 우와놀자에서 최고의 여행을 경험하세요!");
 
-						System.out.println("원하시는 항목을 선택하세요 ! ! !\n");
+
+				System.out.println("원하시는 항목을 선택하세요 ! ! !\n");
 						System.out.println("1. 숙소 예약");	
 						System.out.println("2. 마이페이지");
 						System.out.println("3. 문의하기");
@@ -114,10 +125,15 @@ public class Main {
 								System.out.println("\n숙소 예약");
 								System.out.println("숙소 메뉴 입니다.");
 								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
+<<<<<<< HEAD
 
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO, couponDAO);
+=======
+								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");
