@@ -352,7 +352,6 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 				return;
 			}
 			int colNum = new Random().nextInt(1,size + 1);
-			System.out.println("사이즈" + size);
 			rs.absolute(colNum);
 			int accd_id = rs.getInt(1);
 			String accd_name = rs.getString(2);
@@ -370,10 +369,5 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 		}
 
 	}
-
-
-
-
-
 
 }
