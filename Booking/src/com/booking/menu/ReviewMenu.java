@@ -31,6 +31,7 @@ public class ReviewMenu {
 			if(no == 1) {
 				System.out.println("숙소번호 입력하세요>");
 				int num = Integer.parseInt(br.readLine());
+				
 				System.out.println("------------------------------------------");
 				
 				reviewDAO.selectdetailReview(num);
