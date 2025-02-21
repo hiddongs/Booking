@@ -20,7 +20,7 @@ public class ReviewMenu {
 		// 선택된 숙소의 리뷰 보기
 		
 		ReviewMenu.review = review;
-		ReviewMenu.reviewDAO = reviewDAO;
+		ReviewMenu.reviewDAO = new ReviewDAO();
 		
 		try {
 			while(true) {
@@ -33,9 +33,7 @@ public class ReviewMenu {
 				int num = Integer.parseInt(br.readLine());
 				
 				System.out.println("------------------------------------------");
-				
-				reviewDAO.selectdetailReview(num);
-				
+				ReviewMenu.reviewDAO.selectdetailReview(num);
 			}else if(no == 2) {
 				// 예약하기 메뉴로
 				
