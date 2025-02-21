@@ -124,7 +124,7 @@ public class ReviewDAO {
 					}
 					finally {
 						DBUtil.executeClose(null, pstmt, conn);
-						if(br != null) try {br.close();} catch(IOException e) {}
+						
 					}
 
 
@@ -163,7 +163,6 @@ public class ReviewDAO {
 						}
 						finally {
 							DBUtil.executeClose(null, pstmt, conn);
-							if(br != null) try {br.close();}catch (IOException e) {}
 						}
 					}
 
@@ -185,7 +184,7 @@ public class ReviewDAO {
 
 		try {
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM \"REVIEW\" WHERE USER_ID=?";
+			sql = "SELECT * FROM REVIEW WHERE USER_ID=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,ID);
 
@@ -220,7 +219,6 @@ public class ReviewDAO {
 
 		finally {
 			DBUtil.executeClose(rs, pstmt, conn);
-			if(br != null) try {br.close();} catch(IOException e1) {}
 		}
 	}
 }
