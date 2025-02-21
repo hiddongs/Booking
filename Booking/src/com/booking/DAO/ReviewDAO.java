@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.InputMismatchException;
 
 import com.booking.member.Review;
@@ -74,11 +75,11 @@ public class ReviewDAO {
 
 	}
 	// 사용자 리뷰 수정
-	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content) {
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
-
+         
 		try {
 
 			System.out.println("원하는 번호를 선택하세요.");
@@ -90,21 +91,22 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-
+					review = reviewDAO.showReview(ID);
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
-					num = Integer.parseInt(br.readLine());
+					
 					try{
-						if(num == review.getReview_ID()) {
+						
+						int s_num = Integer.parseInt(br.readLine());
+						if(s_num == review.getReview_ID()) {
 							System.out.println("수정할 내용을 입력하세요");
 							review_content = br.readLine();
-							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE REVIEW_ID=? AND USER_ID";
+							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE USER_ID=?";
 							pstmt = conn.prepareStatement(sql);
 
 							pstmt.setString(1, review_content);
-							pstmt.setInt(2, review_ID);
-							pstmt.setString(3, ID);
-
+							pstmt.setString(2, ID);
+							
 
 							int update = pstmt.executeUpdate();
 							if(update == 1) {
@@ -180,8 +182,9 @@ public class ReviewDAO {
 		
 	}
 
-	public void showReview(String ID) {
+	public Review showReview(String ID) {
 
+		Review review = null;
 		try {
 			conn = DBUtil.getConnection();
 			sql = "SELECT * FROM REVIEW WHERE USER_ID=?";
@@ -194,6 +197,13 @@ public class ReviewDAO {
 
 			if(rs.next()) {
 				do {
+				    review = new Review(); // Review 객체 생성
+			        review.setReview_ID(rs.getInt("REVIEW_ID"));
+			        review.setID(rs.getString("USER_ID"));
+			        review.setAccomodation_ID(rs.getInt("ACCOMODATION_ID"));
+			        review.setReview_date(rs.getDate("REVIEW_DATE"));
+			        review.setReview_content(rs.getString("REVIEW_CONTENT"));
+			        review.setReview_rating(rs.getInt("REVIEW_RATING"));
 					System.out.println("----------------------------------------------");
 					System.out.println("번호 : " + rs.getInt("REVIEW_ID"));
 					System.out.println("작성자 이름 : " + rs.getString("USER_ID"));
@@ -223,5 +233,6 @@ public class ReviewDAO {
 //			if(br != null) try {br.close();} catch(IOException e1) {}
 
 		}
+		return review; 
 	}
 }
