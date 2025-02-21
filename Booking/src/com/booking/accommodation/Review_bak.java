@@ -2,7 +2,7 @@ package com.booking.accommodation;
 
 import java.util.Date;
 
-public class Review {
+public class Review_bak {
 	int reviewid;
 	String userid;
 	int accomodationid;
@@ -10,7 +10,7 @@ public class Review {
 	String reviewcontent;
 	int reviewrating;
 	
-	public Review(int reviewid, String userid, int accomodationid, Date reviewdate, String reviewcontent,
+	public Review_bak(int reviewid, String userid, int accomodationid, Date reviewdate, String reviewcontent,
 			int reviewrating) {
 		super();
 		this.reviewid = reviewid;
