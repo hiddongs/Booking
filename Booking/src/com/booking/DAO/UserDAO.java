@@ -1,12 +1,14 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 
 import com.booking.member.Grade;
 import com.booking.member.User;
@@ -247,4 +249,52 @@ public class UserDAO {
     public void chargeCash(String ID){
 		
 	}
+    public void deleteUser(String ID,BufferedReader br) {
+    	Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			conn = DBUtil.getConnection();
+			System.out.println("데이터 삭제 준비 완료");
+			System.out.println("정말로 삭제하시겠습니까? 삭제하시면 돌이킬 수 없습니다.");
+			System.out.println("삭제를 원하시면 y 아니면 n을 입력하세요.");
+			char answer = br.readLine().charAt(0);
+			try {
+				if(answer == 'y') {
+					 
+					 
+				     sql = "DELETE FROM \"USER\" WHERE USER_ID=?";
+				     pstmt = conn.prepareStatement(sql);
+				     pstmt.setString(1, ID);
+				     
+				     int update = pstmt.executeUpdate();
+				     if(update == 1) {
+				    	 conn.commit();
+				    	 System.out.println("사용자가 삭제되었습니다.");
+				    	 System.out.println("프로그램을 종료합니다");
+				    	 System.exit(0); 
+				     }
+				     else if(update == 0) {
+				    	 conn.rollback();
+				    	 System.out.println("계정 삭제가 실패했습니다.");
+				     }
+				}else if(answer == 'n') {
+					
+				}
+			} catch (InputMismatchException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
+				e.printStackTrace();
+				System.out.println("y/n글자만 입력하세요");
+			} 
+			
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			// 자원 정리
+			DBUtil.executeClose(null, pstmt, conn);
+			
+		}
+    }
 }

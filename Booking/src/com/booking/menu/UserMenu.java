@@ -1,6 +1,8 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.InputMismatchException;
 
 import com.booking.DAO.CashDAO;
 import com.booking.DAO.ReviewDAO;
@@ -99,26 +101,43 @@ public class UserMenu {
 						System.out.println("충전할 금액을 입력하세요.");
 						cash = Integer.parseInt(br.readLine());
 						cashDAO.chargeCash(ID, cash, br);
-						}catch(Exception e) {
+						}catch(NumberFormatException e) {
 						e.printStackTrace();
+						System.out.println("숫자만 입력하세요 ");
 					}
 			
 				}else if(no == 5) {
-
+					
 					try {
 						System.out.println("작성 리뷰 내역 확인");
-						reviewDAO.showReview(ID);
-					}catch(Exception e){
+						review = reviewDAO.showReview(ID);
+						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
+						char answer = br.readLine().charAt(0);
+						if(answer == 'y') {
+							int review_ID = review.getReview_ID();
+							String review_content = review.getReview_content();
+							reviewDAO.manageReview(ID, br,review_ID, review_content,reviewDAO);
+						}else if(answer == 'n') {
+							
+						}
+					} catch (InputMismatchException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
 						e.printStackTrace();
-						
-					}
+						System.out.println("y/n글자만 입력하세요");
+					} 
 					
 				}else if(no == 6) {
+					
+					
 
 				}else if(no == 7) {
 
+					System.out.println("🚪 로그아웃되었습니다. 프로그램을 종료합니다.");
+				    System.exit(0); // 프로그램 완전 종료
+				    
 				}else if(no == 8) {
 
+					userDAO.deleteUser(ID,br);
+					
 				}
 
 				else if(no > 8 ) { 
@@ -126,14 +145,16 @@ public class UserMenu {
 					continue;
 				}
 			}
+
+		}catch(NumberFormatException | IOException e) {
+			e.printStackTrace();	
+
 		}catch(Exception e) {
+			System.out.println("오류발생");
 
+			e.printStackTrace();
 		}
-
-	} // userMenu
-
-
-	
+	} // userMenu	
 } // class
 
 

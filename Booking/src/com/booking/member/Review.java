@@ -11,15 +11,19 @@ public class Review {
 	String review_content; // 리뷰 작성 내용
 	int review_rating; // 리뷰 평점 
 	
-	public Review(int review_ID, String iD, int accomodation_ID, Date review_date, String review_content,
+	public Review(int review_ID, String ID, int accomodation_ID, Date review_date, String review_content,
 			int review_rating) {
+		
 		super();
 		this.review_ID = review_ID;
-		ID = iD;
+		this.ID = ID;
 		this.accomodation_ID = accomodation_ID;
 		this.review_date = review_date;
 		this.review_content = review_content;
 		this.review_rating = review_rating;
+		
+	}
+	public Review() {
 	}
 	public int getReview_ID() {
 		return review_ID;
