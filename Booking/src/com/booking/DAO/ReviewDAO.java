@@ -23,15 +23,6 @@ public class ReviewDAO {
 
 	static Review review;
 
-
-	// 숙소 목록을 띄우고 -> 숙소 번호 선택했을 때 상세정보 출력
-	// 숙소 리뷰 보시겠습니까? 멘트 나오고 '(1)예/(2)아니오' 선택
-	// 예 선택 했들 때 해당 숙소번호 입력해주세요 > 
-	// 관련 숙소에 대한 상세 리뷰 보기 
-
-
-	// 이 부분 다시 확인하기
-
 	// 리뷰 작성
 	/*
 	 * int reviewid;
@@ -49,7 +40,6 @@ public class ReviewDAO {
 
 	// 목록 출력
 
-
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public void insertReview(int USER_ID, int ACCOMMODATION_ID, String REVIEW_CONTENT, int REVIEW_RATING) {
 		Connection conn = null;
@@ -64,7 +54,7 @@ public class ReviewDAO {
 			sql = "INSERT INTO REVIEW (REVIEW_ID, ACCOMMODATION_ID, REVIEW_DATE, REVIEW_CONTENT, REVIEW_RATING) VALUES(?,?,?,SYSDATE,?,?)";
 			// JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
-			// pstmt.getInt(++cnt, USER_ID);
+			//pstmt.getInt(++cnt, USER_ID);
 			pstmt.setInt(++cnt, ACCOMMODATION_ID);
 			pstmt.setString(++cnt, REVIEW_CONTENT);
 			pstmt.setInt(++cnt, REVIEW_RATING);
@@ -80,50 +70,16 @@ public class ReviewDAO {
 	}
 
 
-	// 해당 숙소에 대한 리뷰 보기
-	public void selectdetailReview(int accomodation_ID) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		try {
-			conn = DBUtil.getConnection();
-			sql ="SELECT * FROM REVIEW WHERE ACCOMODATION_ID =? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, accomodation_ID);
-			rs = pstmt.executeQuery();
-
-			if(rs.next()){
-				System.out.println("-------------------------------------------------");
-				System.out.println("사용자 ID:" + rs.getString("user_ID"));
-				System.out.println("리뷰 대상 숙소 번호:" + rs.getInt("accomodation_ID"));
-				System.out.println("리뷰 작성일:" + rs.getDate("review_date"));
-				System.out.println("리뷰 내용:"+rs.getString("review_content"));
-				System.out.println("리뷰 평점:"+rs.getInt("review_rating"));
-				System.out.println("-------------------------------------------------");
-			}else {
-				System.out.println("검색된 숙소 리뷰가 없습니다.");
-			}
-			System.out.println("========================");
-		} catch(NumberFormatException | InputMismatchException | ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}finally {
-			DBUtil.executeClose(rs,  pstmt, conn);
-		}
-	}
-	
 	// 목록 수정
 	public void updateReview() {
 
 	}
-
 	// 사용자 리뷰 수정
-	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) throws NumberFormatException {
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
          
-
 		try {
 
 			System.out.println("원하는 번호를 선택하세요.");
@@ -135,7 +91,7 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-					
+					review = reviewDAO.showReview(ID);
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
 					
@@ -166,15 +122,11 @@ public class ReviewDAO {
 						}
 					}catch(NumberFormatException  | InputMismatchException e)
 					{
-
-
-
 						System.out.println("목록 내 번호만 입력하세요.");
 					}
 					finally {
 						DBUtil.executeClose(null, pstmt, conn);
 						
-
 					}
 
 
@@ -219,22 +171,18 @@ public class ReviewDAO {
 				}
 
 
-			}catch(Exception e) {
-
-
+			}catch(InputMismatchException | NumberFormatException | IOException e) {
+				e.printStackTrace();
 			}
 
-
-
-		}catch(Exception e) {
-
-
 			
+		}catch(InputMismatchException | NumberFormatException | ClassNotFoundException | SQLException | IOException e) {
+			e.printStackTrace();
 		}
-
+		
 	}
 
-	public void showReview(String ID) {
+	public Review showReview(String ID) {
 
 		Review review = null;
 		try {
@@ -249,7 +197,13 @@ public class ReviewDAO {
 
 			if(rs.next()) {
 				do {
-				   
+				    review = new Review(); // Review 객체 생성
+			        review.setReview_ID(rs.getInt("REVIEW_ID"));
+			        review.setID(rs.getString("USER_ID"));
+			        review.setAccomodation_ID(rs.getInt("ACCOMODATION_ID"));
+			        review.setReview_date(rs.getDate("REVIEW_DATE"));
+			        review.setReview_content(rs.getString("REVIEW_CONTENT"));
+			        review.setReview_rating(rs.getInt("REVIEW_RATING"));
 					System.out.println("----------------------------------------------");
 					System.out.println("번호 : " + rs.getInt("REVIEW_ID"));
 					System.out.println("작성자 이름 : " + rs.getString("USER_ID"));
@@ -259,7 +213,7 @@ public class ReviewDAO {
 					System.out.println("평점 : " + rs.getInt("REVIEW_RATING"));
 					System.out.println("----------------------------------------------");
 				}while(rs.next());
-
+				
 
 			}	
 			else {
@@ -270,7 +224,7 @@ public class ReviewDAO {
 		catch(NumberFormatException | InputMismatchException | ClassNotFoundException | SQLException e1) {
 
 			e1.printStackTrace();
-
+			
 		}
 
 		finally {
@@ -279,6 +233,6 @@ public class ReviewDAO {
 //			if(br != null) try {br.close();} catch(IOException e1) {}
 
 		}
-		
+		return review; 
 	}
 }

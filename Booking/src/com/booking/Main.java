@@ -1,9 +1,6 @@
 package com.booking;
 
 import java.io.BufferedReader;
-
-
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -15,16 +12,10 @@ import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
-
-
-//import com.booking.accommodation.Review;
-
-
 import com.booking.member.Coupon;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
-import com.booking.menu.ReviewMenu;
 import com.booking.menu.UserMenu;
 
 
@@ -137,7 +128,6 @@ public class Main {
 								
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
-
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
 							}
 							else if(num == 3) { 
