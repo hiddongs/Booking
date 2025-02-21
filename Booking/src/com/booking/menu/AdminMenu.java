@@ -36,6 +36,8 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 					qnaManagement(br);
 				}else if(answer == 3) {
 					couponManagement(br);
+					
+					
 				}else if(answer == 0){
 					return;
 				}else {
@@ -121,5 +123,29 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 	}
 	private void couponManagement(BufferedReader br) { // 쿠폰 관리 메뉴
 
+		// 쿠폰 종류 조회
+		try {
+			int num = Integer.parseInt(br.readLine());
+			try{
+				try {
+
+					if(num == 1) {
+						System.out.println("쿠폰 종류 조회");
+					}else if(num == 2) 
+					{
+						System.out.println("쿠폰 등록");
+					}
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

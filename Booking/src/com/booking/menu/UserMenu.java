@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 
 import com.booking.DAO.CashDAO;
+import com.booking.DAO.CouponDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.member.Review;
@@ -18,9 +19,11 @@ public class UserMenu {
 	static UserDAO userDAO;
     static CashDAO cashDAO;
     static ReviewDAO reviewDAO;
+    static CouponDAO couponDAO;
 
 
-	public void U_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO)  {
+	public void U_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
+			           ,CouponDAO couponDAO)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
 		UserMenu.user = user;
@@ -28,6 +31,7 @@ public class UserMenu {
 		UserMenu.userDAO = userDAO;
 		UserMenu.cashDAO = cashDAO;
 		UserMenu.reviewDAO = reviewDAO;
+		UserMenu.couponDAO = couponDAO;
 		try {
 			while(true) {
 				System.out.println("1. 회원 이름 변경");
@@ -110,7 +114,6 @@ public class UserMenu {
 					
 					try {
 						System.out.println("작성 리뷰 내역 확인");
-						review = reviewDAO.showReview(ID);
 						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
 						char answer = br.readLine().charAt(0);
 						if(answer == 'y') {

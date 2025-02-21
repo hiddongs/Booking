@@ -1,23 +1,30 @@
 package com.booking;
 
 import java.io.BufferedReader;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.CashDAO;
-import com.booking.DAO.UserDAO;
-import com.booking.accommodation.Accommodation;
-
+import com.booking.DAO.CouponDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
+import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
+<<<<<<< HEAD
 
 import com.booking.accommodation.Review;
 
+=======
+import com.booking.member.Coupon;
+import com.booking.member.Review;
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
@@ -39,6 +46,8 @@ public class Main {
 	static CashDAO cashDAO;
 	static AdminDAO adminDAO;
 	static boolean loginStatus;
+	static Coupon coupon;
+	static CouponDAO couponDAO;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,6 +56,7 @@ public class Main {
 		accommodationviewDAO = new AccommodationviewDAO();
 		cashDAO = new CashDAO();
 
+		couponDAO = new CouponDAO();
 		reviewDAO = new ReviewDAO();
 
 		callMenu();
@@ -131,7 +141,11 @@ public class Main {
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
 
+<<<<<<< HEAD
 								//userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO);
+=======
+								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");
