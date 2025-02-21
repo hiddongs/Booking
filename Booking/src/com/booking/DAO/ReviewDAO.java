@@ -91,7 +91,7 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-					review = reviewDAO.showReview(ID);
+					
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
 					
@@ -182,7 +182,7 @@ public class ReviewDAO {
 		
 	}
 
-	public Review showReview(String ID) {
+	public void showReview(String ID) {
 
 		Review review = null;
 		try {
@@ -197,13 +197,7 @@ public class ReviewDAO {
 
 			if(rs.next()) {
 				do {
-				    review = new Review(); // Review 객체 생성
-			        review.setReview_ID(rs.getInt("REVIEW_ID"));
-			        review.setID(rs.getString("USER_ID"));
-			        review.setAccomodation_ID(rs.getInt("ACCOMODATION_ID"));
-			        review.setReview_date(rs.getDate("REVIEW_DATE"));
-			        review.setReview_content(rs.getString("REVIEW_CONTENT"));
-			        review.setReview_rating(rs.getInt("REVIEW_RATING"));
+				   
 					System.out.println("----------------------------------------------");
 					System.out.println("번호 : " + rs.getInt("REVIEW_ID"));
 					System.out.println("작성자 이름 : " + rs.getString("USER_ID"));
@@ -233,6 +227,6 @@ public class ReviewDAO {
 //			if(br != null) try {br.close();} catch(IOException e1) {}
 
 		}
-		return review; 
+		
 	}
 }
