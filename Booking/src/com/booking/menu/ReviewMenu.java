@@ -2,15 +2,17 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 
+
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.accommodation.Accommodation;
-import com.booking.accommodation.Review;
+import com.booking.member.Review;
 
 public class ReviewMenu {
 	static Review review;
 	static ReviewDAO reviewDAO;
 	static Accommodation accommodation;
+	//숙소 뷰
 	static AccommodationviewDAO adao;
 	
 	//
@@ -27,12 +29,11 @@ public class ReviewMenu {
 			
 			int no = Integer.parseInt(br.readLine());
 			if(no == 1) {
-				//adao.selectInfo();
-				System.out.println("숙소번호 입력하세요 >");
+				System.out.println("숙소번호 입력하세요>");
 				int num = Integer.parseInt(br.readLine());
 				System.out.println("------------------------------------------");
 				
-				//reviewDAO.selectdetailReview(num);
+				reviewDAO.selectdetailReview(num);
 				
 			}else if(no == 2) {
 				// 예약하기 메뉴로

@@ -1,6 +1,7 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -117,7 +118,7 @@ public class ReviewDAO {
 	}
 
 	// 사용자 리뷰 수정
-	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) {
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) throws NumberFormatException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -221,9 +222,6 @@ public class ReviewDAO {
 			}catch(Exception e) {
 
 
-			}catch(InputMismatchException | NumberFormatException | IOException e) {
-
-				e.printStackTrace();
 			}
 
 
@@ -232,8 +230,6 @@ public class ReviewDAO {
 
 
 			
-		}catch(InputMismatchException | NumberFormatException | ClassNotFoundException | SQLException | IOException e) {
-			e.printStackTrace();
 		}
 
 	}

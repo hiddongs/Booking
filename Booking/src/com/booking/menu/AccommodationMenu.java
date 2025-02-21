@@ -7,7 +7,7 @@ import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.accommodation.Accommodation;
-import com.booking.accommodation.Review;
+import com.booking.member.Review;
 
 public class AccommodationMenu { 
 	private BufferedReader br;
@@ -27,22 +27,11 @@ public class AccommodationMenu {
 		//1. 숙소보기
 		try {
 
-			System.out.println("원하는 항목을 선택하세요.");
-			System.out.println("1.전체 숙소 보기");
-			System.out.println("2.숙소 상세보기");
-			System.out.println("3.예약하기");
-
-
-
 			while (true) {
-
-			
 				System.out.println("원하는 항목을 선택하세요.");
 				System.out.println("1.전체 숙소 보기");
 				System.out.println("2.숙소 상세보기");
 				System.out.println("3.예약하기");
-
-
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
 					accommodationviewDAO.selectInfo();

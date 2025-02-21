@@ -1,11 +1,9 @@
 package com.booking;
 
 import java.io.BufferedReader;
-<<<<<<< HEAD
 
 
-=======
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -17,14 +15,12 @@ import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
-<<<<<<< HEAD
 
-import com.booking.accommodation.Review;
 
-=======
+//import com.booking.accommodation.Review;
+
+
 import com.booking.member.Coupon;
-import com.booking.member.Review;
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
@@ -38,11 +34,11 @@ public class Main {
 	static Admin admin;
 	static UserDAO userDAO;
 	static User user;
-	static Review review;
+	static com.booking.member.Review review;
 	static ReviewDAO reviewDAO;
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
-	static AccommodationMenu accommodationMenu = new AccommodationMenu();
+	static AccommodationMenu accommodationMenu;
 	static CashDAO cashDAO;
 	static AdminDAO adminDAO;
 	static boolean loginStatus;
@@ -138,14 +134,11 @@ public class Main {
 								System.out.println("\n숙소 예약");
 								System.out.println("숙소 메뉴 입니다.");
 								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
 
-<<<<<<< HEAD
-								//userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO);
-=======
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");
