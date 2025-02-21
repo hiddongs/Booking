@@ -235,4 +235,36 @@ public class ReviewDAO {
 		}
 		return review; 
 	}
+
+
+	public void selectdetailReview(int accomodation_ID) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		try {
+			conn = DBUtil.getConnection();
+			sql ="SELECT * FROM REVIEW WHERE ACCOMODATION_ID =? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, accomodation_ID);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()){
+				System.out.println("-------------------------------------------------");
+				System.out.println("사용자 ID:" + rs.getString("user_ID"));
+				System.out.println("리뷰 대상 숙소 번호:" + rs.getInt("accomodation_ID"));
+				System.out.println("리뷰 작성일:" + rs.getDate("review_date"));
+				System.out.println("리뷰 내용:"+rs.getString("review_content"));
+				System.out.println("리뷰 평점:"+rs.getInt("review_rating"));
+				System.out.println("-------------------------------------------------");
+			}else {
+				System.out.println("검색된 숙소 리뷰가 없습니다.");
+			}
+			System.out.println("========================");
+		} catch(NumberFormatException | InputMismatchException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.executeClose(rs,  pstmt, conn);
+		}
+	}
 }
