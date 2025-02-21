@@ -30,7 +30,7 @@ public class Main {
 	static ReviewDAO reviewDAO;
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
-	static AccommodationMenu accommodationMenu;
+	static AccommodationMenu accommodationMenu = new AccommodationMenu();
 	static CashDAO cashDAO;
 	static AdminDAO adminDAO;
 	static boolean loginStatus;

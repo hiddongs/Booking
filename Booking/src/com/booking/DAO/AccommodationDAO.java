@@ -7,7 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import com.booking.member.Admin;
 import com.dbutil.DBUtil;
@@ -270,6 +272,101 @@ public class AccommodationDAO {
 			DBUtil.executeClose(null, pstmtU, conn);
 		}
 
+
+	}
+	
+public void suggest_accommodation(BufferedReader br, String location_name) throws IOException { // 해외지역에서 호출시 
+		
+	
+	String[] locationNameArr = {
+			"서울",
+			"경기",
+			"전라",
+			"강원",
+			"충청",
+			"경상",
+			"제주"
+	};
+	String[] seasonArr = {"봄","여름","가을","겨울"};
+	
+	List<String> location_list = new ArrayList<>(Arrays.asList(locationNameArr));
+	List<String> season_list = new ArrayList<>(Arrays.asList(seasonArr));
+	
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		
+		
+		if(location_name == null) { // 원하는 지역 입력받는단
+			while(true) {
+				System.out.println("숙소 추천 입니다.");
+				System.out.println("원하시는 국내 지역을 입력해주세요");
+				for(String location : location_list) {
+					System.out.println(location);
+				}
+				String tmp = br.readLine();
+				if(location_list.contains(tmp)) {
+					location_name = tmp;
+					break;
+				}else {
+					System.out.println("유효하지않은 지역입력입니다.");
+					continue;
+				}
+			}
+		}
+		
+		String rcmd_season;
+		while(true) {
+			System.out.println("추천을 원하시는 계절을 입력해주세요");
+			for(String season : season_list) {
+				System.out.printf("%s ", season);
+			}
+			String tmp = br.readLine();
+			if(season_list.contains(tmp)) {
+				rcmd_season = tmp;
+				break;
+			}else {
+				System.out.println("유효하지않은 입력입니다.");
+				continue;
+			}
+		}
+		
+		
+		try {
+			
+			conn = DBUtil.getConnection();
+			sql = "SELECT * FROM ACCOMMODATION WHERE LOCATION_NAME = ? AND RECOMMENDATION_SEASON = ?";
+			pstmt = conn.prepareStatement(sql , ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			pstmt.setString(1, location_name);
+			pstmt.setString(2, rcmd_season);
+			rs = pstmt.executeQuery();
+			int size = 0;
+			while(rs.next()) {
+				size++;
+			}
+			
+			if(size == 0) {
+				System.out.println("선택한 조건의 숙소가 없습니다.");
+				return;
+			}
+			int colNum = new Random().nextInt(1,size + 1);
+			rs.absolute(colNum);
+			int accd_id = rs.getInt(1);
+			String accd_name = rs.getString(2);
+			String accd_address = rs.getString(3);
+			String accd_description = rs.getString(4);
+			int accd_price = rs.getInt(5);
+			
+			System.out.println("추천 결과입니다.");
+			System.out.printf("번호 : %d번 , 숙소이름 : %s , 숙소주소 : %s\n" , accd_id,accd_name,accd_address);
+			System.out.println(accd_description);
+			System.out.println("가격 : " + accd_price);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
