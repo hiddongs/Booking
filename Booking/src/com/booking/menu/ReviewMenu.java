@@ -21,7 +21,7 @@ public class ReviewMenu {
 		// 초기화를 안했
 		ReviewMenu.review = review;
 		ReviewMenu.reviewDAO = new ReviewDAO();
-		
+
 		
 		try {
 			while(true) {
@@ -36,6 +36,10 @@ public class ReviewMenu {
 				System.out.println("================================================");
 				ReviewMenu.reviewDAO.selectdetailReview(num);
 				
+
+				System.out.println("------------------------------------------");
+				ReviewMenu.reviewDAO.selectdetailReview(num);
+
 			}else if(no == 2) {
 				// 예약하기 화면으로
 				//AccommodationMenu accommodationMenu= new AccommodationMenu();
