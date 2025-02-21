@@ -298,7 +298,6 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 		String sql = null;
 		ResultSet rs = null;
 		
-		System.out.println("호출완료");
 		
 		if(location_name == null) { // 원하는 지역 입력받는단
 			while(true) {
@@ -350,6 +349,7 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 			
 			if(size == 0) {
 				System.out.println("선택한 조건의 숙소가 없습니다.");
+				return;
 			}
 			int colNum = new Random().nextInt(1,size + 1);
 			System.out.println("사이즈" + size);
