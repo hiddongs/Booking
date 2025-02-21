@@ -69,7 +69,7 @@ public class ReviewDAO {
 		}
 	}
 
-
+	
 	// 목록 수정
 	public void updateReview() {
 
