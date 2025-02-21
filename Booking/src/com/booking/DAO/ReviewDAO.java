@@ -73,13 +73,20 @@ public class ReviewDAO {
 	public void updateReview() {
 		
 	}
-	public void rewriteReview(String ID, BufferedReader br, Review review_ID) {
-		
+	// 사용자 리뷰 수정
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
 		
 		try {
+			
+			System.out.println("원하는 번호를 선택하세요.");
 			System.out.println("1. 리뷰 수정 하기");
 			System.out.println("2. 리뷰 삭제 하기");
+			
 			int num = Integer.parseInt(br.readLine());
+			
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
@@ -90,24 +97,84 @@ public class ReviewDAO {
 					try{
 						if(num == review.getReview_ID()) {
 							System.out.println("수정할 내용을 입력하세요");
-						}
-					}catch(Exception e)
-					{
+							review_content = br.readLine();
+							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE REVIEW_ID=? AND USER_ID";
+							pstmt = conn.prepareStatement(sql);
+							
+							pstmt.setString(1, review_content);
+							pstmt.setInt(2, review_ID);
+							pstmt.setString(3, ID);
+							
 						
+							int update = pstmt.executeUpdate();
+							if(update == 1) {
+								conn.commit();
+								System.out.println("수정 성공 ! ! ! ");
+								
+							}else
+							{
+								conn.rollback();
+								System.out.println("수정 실패");
+							}
+							
+						}
+					}catch(NumberFormatException  | InputMismatchException e)
+					{
+						System.out.println("목록 내 번호만 입력하세요.");
+					}
+					finally {
+						DBUtil.executeClose(null, pstmt, conn);
+						if(br != null) try {br.close();} catch(IOException e) {}
 					}
 												
 					
 				}else if(num == 2) {
+					
 
+					System.out.println("리뷰 삭제하기");
+					System.out.println("삭제할 리뷰 번호 선택");
+					num = Integer.parseInt(br.readLine());
+					
+					System.out.println("정말 삭제하시겠습니까? ( y / n )");
+					char answer = br.readLine().charAt(0);
+					try {
+						if(answer == 'y') {
+							System.out.printf("%c 번호의 리뷰를 삭제합니다.\n", answer);
+                            sql = "DELETE FROM REVIEW WHERE REVIEW_ID=?";
+                            
+                            pstmt=conn.prepareStatement(sql);
+                            pstmt.setInt(1, review_ID);
+                            
+                            int update = pstmt.executeUpdate();
+                            if(update == 1) {
+                            	conn.commit();
+                            	System.out.println("리뷰를 삭제했습니다.");
+                         
+                            }else {
+                            	conn.rollback();
+                            	System.out.println("삭제에 실패했습니다.");
+                            }
+						}else if(answer == 'n') {
+							manageReview(ID, br, review_ID, review_content);
+						}
+					}catch(InputMismatchException | SQLException e) {
+						e.printStackTrace();
+					}
+					finally {
+						DBUtil.executeClose(null, pstmt, conn);
+						if(br != null) try {br.close();}catch (IOException e) {}
+					}
+					
+					
 				}
 				
-			}catch(Exception e) {
+			}catch(InputMismatchException | NumberFormatException | IOException e) {
 				e.printStackTrace();
 			}
 
 			
-		}catch(Exception e) {
-			
+		}catch(InputMismatchException | NumberFormatException | ClassNotFoundException | SQLException | IOException e) {
+			e.printStackTrace();
 		}
 		
 	}

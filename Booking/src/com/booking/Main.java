@@ -21,6 +21,7 @@ import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
+import com.booking.menu.UserStartMenu;
 
 public class Main {
 
@@ -35,10 +36,11 @@ public class Main {
 	static Review review;
 	static ReviewDAO reviewDAO;
 
+	
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
 	static AccommodationMenu accommodationMenu;
-
+	
 
 	static CashDAO cashDAO;
 
@@ -102,17 +104,10 @@ public class Main {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 
-						System.out.println("숙소 메뉴 입니다.");
-						AccommodationMenu accommodationMenu = new AccommodationMenu();
-						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
-						//UserMenu userMenu = new UserMenu();
-						//userMenu.U_Menu(br, user, userDAO);
-
-						UserMenu userMenu = new UserMenu();
-
-						userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
-
-			
+						UserStartMenu userStartMenu = new UserStartMenu();
+						userStartMenu.showStart();
+						
+	
 
 					}
 
