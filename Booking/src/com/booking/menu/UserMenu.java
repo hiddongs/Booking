@@ -104,10 +104,21 @@ public class UserMenu {
 					}
 			
 				}else if(no == 5) {
-
 					try {
 						System.out.println("작성 리뷰 내역 확인");
 						reviewDAO.showReview(ID);
+						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
+						char answer = br.readLine().charAt(0);
+						if(answer == 'y') {
+							int review_ID = review.getReview_ID();
+							String review_content = review.getReview_content();
+							reviewDAO.manageReview(ID, br,review_ID, review_content);
+						}else if(answer == 'n') {
+							
+						}
+						
+						
+						
 					}catch(Exception e){
 						e.printStackTrace();
 						
@@ -127,7 +138,7 @@ public class UserMenu {
 				}
 			}
 		}catch(Exception e) {
-
+			System.out.println("오류발생");
 		}
 
 	} // userMenu

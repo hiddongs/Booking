@@ -14,17 +14,17 @@ import com.booking.member.Review;
 import com.dbutil.DBUtil;
 
 public class ReviewDAO {
-	
+
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	String sql = null;
-	
+
 	static Review review;
-	
+
 	// 리뷰 작성
-		/*
-		 * int reviewid;
+	/*
+	 * int reviewid;
 		String userid;
 		int accomodationid;
 		Date reviewdate;
@@ -33,19 +33,19 @@ public class ReviewDAO {
 		userid, accomodationid reviewcontent reviewrating
 		REVIEW_CONTENT 
 		숙소 목록 보여준 후 => 리뷰작성
-		 */
-		// 리뷰 작성
-		// 로그인 되어 있음 -> getUser
-		
-		// 목록 출력
-		
+	 */
+	// 리뷰 작성
+	// 로그인 되어 있음 -> getUser
+
+	// 목록 출력
+
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public void insertReview(int USER_ID, int ACCOMMODATION_ID, String REVIEW_CONTENT, int REVIEW_RATING) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		int cnt = 0;
-		
+
 		try {
 			//JDBC 수행 1,2 단계
 			conn=DBUtil.getConnection();
@@ -57,10 +57,10 @@ public class ReviewDAO {
 			pstmt.setInt(++cnt, ACCOMMODATION_ID);
 			pstmt.setString(++cnt, REVIEW_CONTENT);
 			pstmt.setInt(++cnt, REVIEW_RATING);
-		    // JDBC 4단계
+			// JDBC 4단계
 			int count = pstmt.executeUpdate();
 			System.out.println(count + "개의 리뷰를 작성했습니다.");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -68,18 +68,25 @@ public class ReviewDAO {
 		}
 	}
 
-	
+
 	// 목록 수정
 	public void updateReview() {
-		
+
 	}
-	public void rewriteReview(String ID, BufferedReader br, Review review_ID) {
-		
-		
+	// 사용자 리뷰 수정
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+
 		try {
+
+			System.out.println("원하는 번호를 선택하세요.");
 			System.out.println("1. 리뷰 수정 하기");
 			System.out.println("2. 리뷰 삭제 하기");
+
 			int num = Integer.parseInt(br.readLine());
+
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
@@ -90,24 +97,86 @@ public class ReviewDAO {
 					try{
 						if(num == review.getReview_ID()) {
 							System.out.println("수정할 내용을 입력하세요");
+							review_content = br.readLine();
+							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE REVIEW_ID=? AND USER_ID";
+							pstmt = conn.prepareStatement(sql);
+
+							pstmt.setString(1, review_content);
+							pstmt.setInt(2, review_ID);
+							pstmt.setString(3, ID);
+
+
+							int update = pstmt.executeUpdate();
+							if(update == 1) {
+								conn.commit();
+								System.out.println("수정 성공 ! ! ! ");
+
+							}else
+							{
+								conn.rollback();
+								System.out.println("수정 실패");
+							}
+
 						}
-					}catch(Exception e)
+					}catch(NumberFormatException  | InputMismatchException e)
 					{
-						
+						System.out.println("목록 내 번호만 입력하세요.");
 					}
-												
-					
+					finally {
+						DBUtil.executeClose(null, pstmt, conn);
+						if(br != null) try {br.close();} catch(IOException e) {}
+					}
+
+
 				}else if(num == 2) {
 
+					while(true) {
+
+						System.out.println("리뷰 삭제하기");
+						System.out.println("삭제할 리뷰 번호 선택");
+						num = Integer.parseInt(br.readLine());
+
+						System.out.println("정말 삭제하시겠습니까? ( y / n )");
+						char answer = br.readLine().charAt(0);
+						try {
+							if(answer == 'y') {
+								System.out.printf("%c 번호의 리뷰를 삭제합니다.\n", answer);
+								sql = "DELETE FROM REVIEW WHERE REVIEW_ID=?";
+
+								pstmt=conn.prepareStatement(sql);
+								pstmt.setInt(1, review_ID);
+
+								int update = pstmt.executeUpdate();
+								if(update == 1) {
+									conn.commit();
+									System.out.println("리뷰를 삭제했습니다.");
+
+								}else {
+									conn.rollback();
+									System.out.println("삭제에 실패했습니다.");
+								}
+							}else if(answer == 'n') {
+								return; // 뒤로 가기
+							}
+						}catch(InputMismatchException | SQLException e) {
+							e.printStackTrace();
+						}
+						finally {
+							DBUtil.executeClose(null, pstmt, conn);
+							if(br != null) try {br.close();}catch (IOException e) {}
+						}
+					}
+
 				}
-				
-			}catch(Exception e) {
+
+
+			}catch(InputMismatchException | NumberFormatException | IOException e) {
 				e.printStackTrace();
 			}
 
 			
-		}catch(Exception e) {
-			
+		}catch(InputMismatchException | NumberFormatException | ClassNotFoundException | SQLException | IOException e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -151,7 +220,7 @@ public class ReviewDAO {
 
 		finally {
 			DBUtil.executeClose(rs, pstmt, conn);
-			if(br != null) try {br.close();} catch(IOException e1) {}
+//			if(br != null) try {br.close();} catch(IOException e1) {}
 		}
 	}
 }

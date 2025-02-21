@@ -41,6 +41,7 @@ public class AccommodationMenu {
 					accommodationviewDAO.selectDetailInfo(num);
 					
 				}
+				// 희동쿤이 해야할 예약 하기
 		
 			}
 

@@ -16,7 +16,10 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		menu(br, admin);
 	}
 
-	private void menu(BufferedReader br, Admin admin) {
+	public AdminMenu() {
+	}
+
+	public void menu(BufferedReader br, Admin admin) {
 		while(true) {
 			try {
 				System.out.println("관리자 메뉴입니다.");
