@@ -31,7 +31,6 @@ public class Main {
 	static AccommodationviewDAO accommodationviewDAO;
 	static AccommodationMenu accommodationMenu;
 	static CashDAO cashDAO;
-	static AdminDAO adminDAO;
 	static boolean loginStatus;
 	static Coupon coupon;
 	static CouponDAO couponDAO;
@@ -86,10 +85,9 @@ public class Main {
 					System.out.println("비밀번호를 입력해주세요");
 					String passwd = br.readLine();
 
-					if((admin = adminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
+					if((admin = AdminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
 						loginStatus = true;
-						AdminMenu adminMenu = new AdminMenu();
-						adminMenu.menu(br, admin);
+						AdminMenu adminMenu = new AdminMenu(br, admin);
 
 					}
 					else if((user = userDAO.login(ID, passwd)) != null) {
@@ -128,12 +126,7 @@ public class Main {
 								
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
-<<<<<<< HEAD
-
-								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO, couponDAO);
-=======
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");

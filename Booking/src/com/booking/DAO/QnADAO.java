@@ -15,11 +15,15 @@ import com.dbutil.DBUtil;
 
 public class QnADAO {
 
-	public void showQnASubject() {
-
+	BufferedReader br;
+	Admin admin;
+	
+	public QnADAO(BufferedReader br , Admin admin){
+		this.br = br;
+		this.admin = admin;
 	}
 
-	public void answerToQNA(BufferedReader br, Admin admin) {
+	public void answerToQNA() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -68,7 +72,7 @@ public class QnADAO {
 			}
 
 			if(qna_id == 0) return;
-			adminAnswerToQNA(br,qna_id,admin);
+			adminAnswerToQNA(qna_id);
 
 
 
@@ -82,7 +86,7 @@ public class QnADAO {
 
 	}
 
-	private void adminAnswerToQNA(BufferedReader br, int qna_id, Admin admin) {
+	private void adminAnswerToQNA(int qna_id) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -121,14 +125,14 @@ public class QnADAO {
 
 	}
 
-	public void answerUpdate(BufferedReader br, Admin admin) {
+	public void answerUpdate() {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		int qna_id = 0;
 		try {
-			if((qna_id = selectAnsweredQNA(br, admin)) == -1) {
+			if((qna_id = selectAnsweredQNA()) == -1) {
 				return;
 			}
 
@@ -153,7 +157,7 @@ public class QnADAO {
 
 	}
 
-	private int selectAnsweredQNA(BufferedReader br, Admin admin) {
+	private int selectAnsweredQNA() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;

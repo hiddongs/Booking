@@ -7,19 +7,20 @@ import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.QnADAO;
 import com.booking.member.Admin;
 
-public class AdminMenu { // 어드민 메뉴 카테고리
-
-	static Admin admin;
-
+public class AdminMenu { 
+	// 어드민 메뉴 카테고리
+	// 파라미터들 정리해놓음
+	Admin admin;
+	BufferedReader br;
+	
 	public AdminMenu(BufferedReader br, Admin admin){
-		AdminMenu.admin = admin;
-		menu(br, admin);
+		this.br = br;
+		this.admin = admin;
+		menu();
 	}
 
-	public AdminMenu() {
-	}
 
-	public void menu(BufferedReader br, Admin admin) {
+	public void menu() {
 		while(true) {
 			try {
 				System.out.println("관리자 메뉴입니다.");
@@ -31,11 +32,11 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 				int answer = Integer.parseInt(br.readLine());
 				
 				if(answer == 1) {
-					accommodationAdmin(br);
+					accommodationAdmin();
 				}else if(answer == 2) {
-					qnaManagement(br);
+					qnaManagement();
 				}else if(answer == 3) {
-					couponManagement(br);
+					couponManagement();
 					
 					
 				}else if(answer == 0){
@@ -54,7 +55,7 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		}
 	}
 
-	private void accommodationAdmin(BufferedReader br) {
+	private void accommodationAdmin() {
 		AccommodationDAO accommodationDAO = new AccommodationDAO();
 		int answer = Integer.MIN_VALUE;
 
@@ -79,18 +80,18 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		
 		// 입력받아와서 처리
 		if(answer == 1) accommodationDAO.accommodation_management(br, admin);
-		else if(answer == 2 ) accommodation_insert(br);
+		else if(answer == 2 ) accommodation_insert();
 		else if (answer == 0) return;
 	}
 
-	private void accommodation_insert(BufferedReader br) { // 만들다 말았음 숙소 INSERT 부분
+	private void accommodation_insert() { // 만들다 말았음 숙소 INSERT 부분
 
 	}
 
-	private void qnaManagement(BufferedReader br) {
-
+	private void qnaManagement() {
+		QnADAO qnaDAO = new QnADAO(br, admin);
 		int answer = Integer.MIN_VALUE;
-		QnADAO qnaDAO = new QnADAO();
+
 		while(true) {
 			System.out.println("문의 관련 페이지 입니다.");
 			System.out.println("1.미답변 QnA 답변하기");
@@ -112,16 +113,16 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 		}
 
 		if(answer == 1) {
-			qnaDAO.answerToQNA(br,admin);
+			qnaDAO.answerToQNA();
 		}else if(answer == 2) {
-			qnaDAO.answerUpdate(br, admin);
+			qnaDAO.answerUpdate();
 		}else if(answer == 3) {
 			qnaDAO.showQnA();
 		}else if(answer == 0) {
 			return;
 		}
 	}
-	private void couponManagement(BufferedReader br) { // 쿠폰 관리 메뉴
+	private void couponManagement() { // 쿠폰 관리 메뉴
 
 		// 쿠폰 종류 조회
 		try {

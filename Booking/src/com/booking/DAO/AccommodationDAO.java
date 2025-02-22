@@ -352,7 +352,7 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 				System.out.println("선택한 조건의 숙소가 없습니다.");
 				return;
 			}
-			int colNum = new Random().nextInt(1,size + 1);
+			int colNum = new Random().nextInt(size)+1;
 			rs.absolute(colNum);
 			int accd_id = rs.getInt(1);
 			String accd_name = rs.getString(2);
