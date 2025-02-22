@@ -17,18 +17,19 @@ public class QnADAO {
 
 	BufferedReader br;
 	Admin admin;
-	
+
 	public QnADAO(BufferedReader br , Admin admin){
 		this.br = br;
 		this.admin = admin;
 	}
 
-	public void answerToQNA() {
+	public void answerToQNA() { //미답변 문의 메서드 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
-		List<Integer> qna_id_list = new ArrayList<>();
+		List<Integer> qna_id_list = new ArrayList<>(); // 유효한 qna_id를 리스트에 넣어서 입력받을떄 유효한값인지 검사
+		qna_id_list.add(0);
 
 		try { // 답변하지않은 항목들 추출
 			conn = DBUtil.getConnection();
@@ -56,25 +57,25 @@ public class QnADAO {
 				return;
 			}
 
-			int qna_id = Integer.MIN_VALUE;
-			while(!qna_id_list.contains(qna_id)) {
+			int qna_id = Integer.MIN_VALUE; // 기본값 유효하지않은 inf 적용.
+			
+			while(!qna_id_list.contains(qna_id)) { // QnA리스트에 입력한 아이디가 없을경우 계속 Loop
 				System.out.println("답변할 글의 번호를 입력해주세요");
 				System.out.println("뒤로가기를 원하시면 0을 입력해주세요");
 				while(true) {
 					try {
 						qna_id = Integer.parseInt(br.readLine());
 						break;
-					} catch (Exception e) {
+						
+					} catch (NumberFormatException e) { // 파싱시 발생할수있는 NumberFormatException 발생시 숫자가 아닌경우로 인식.
 						System.out.println("유효하지않은 입력값입니다.");
 						continue;
 					}
 				}
 			}
 
-			if(qna_id == 0) return;
-			adminAnswerToQNA(qna_id);
-
-
+			if(qna_id == 0) return; // 0입력시 0 반환.
+			adminAnswerToQNA(qna_id); // 답변로직 분리
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,14 +113,20 @@ public class QnADAO {
 			pstmt.setString(1, answer);
 			pstmt.setString(2, admin.getID());
 			pstmt.setInt(3, qna_id);
-			int update = pstmt.executeUpdate();
+			int update = pstmt.executeUpdate(); 
+			
+			if(update == 1) { // update 유효성 확인 1이면 완료후 커밋처리
+				System.out.println("답변이 완료되었습니다.");
+				if(conn != null) try {conn.commit();} catch (SQLException e1) {}
+			}else { // 이외의값일시 실패 rollback 처리
+				System.out.println("답변이 실패했습니다.");
+				if(conn != null) try {conn.rollback();} catch (SQLException e1) {}
+			}
 
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
-			try {conn.rollback();} catch (SQLException e1) {}
+			if(conn != null) try {conn.rollback();} catch (SQLException e1) {}
 		}finally {
-			System.out.println("답변이 완료되었습니다.");
-			try {conn.commit();} catch (SQLException e1) {}
 			DBUtil.executeClose(null, pstmt, conn);
 		}
 
@@ -132,7 +139,7 @@ public class QnADAO {
 		String sql = null;
 		int qna_id = 0;
 		try {
-			if((qna_id = selectAnsweredQNA()) == -1) {
+			if((qna_id = selectAnsweredQNA()) == -1) { // 답변할 QNA가 존재하지않는경우
 				return;
 			}
 
@@ -143,13 +150,18 @@ public class QnADAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, answer);
 			pstmt.setInt(2, qna_id);
-			int update = pstmt.executeUpdate();
+			int update = pstmt.executeUpdate(); // 업데이트 유효성검사
+			
 			if(update == 1) {
 				System.out.println("수정이 완료되었습니다.");				
-				try {conn.commit();} catch (SQLException e1) {}
+				if(conn != null) try {conn.commit();} catch (SQLException e1) {}
+			}else {
+				System.out.println("수정이 실패했습니다.");
+				if(conn != null) try {conn.rollback();} catch (SQLException e1) {}
 			}
+			
 		} catch (Exception e) {
-			try {conn.rollback();} catch (SQLException e1) {}
+			if(conn != null) try {conn.rollback();} catch (SQLException e1) {}
 			e.printStackTrace();
 		}finally {
 			DBUtil.executeClose(null, pstmt, conn);
@@ -157,7 +169,7 @@ public class QnADAO {
 
 	}
 
-	private int selectAnsweredQNA() {
+	private int selectAnsweredQNA() { // 답변한 문의 출력해주고 문의 ID 선택하는 함수
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -219,7 +231,7 @@ public class QnADAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//			DBUtil.executeClose(rs, pstmt, conn);
+			DBUtil.executeClose(rs, pstmt, conn);
 		}
 		return -1;
 	}
@@ -259,10 +271,10 @@ public class QnADAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//			DBUtil.executeClose(rs, pstmt, conn);
+			DBUtil.executeClose(rs, pstmt, conn);
 		}
 
 	}
-	
-	
+
+
 }
