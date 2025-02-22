@@ -34,11 +34,9 @@ public class ReviewDAO {
 		REVIEW_CONTENT 
 		숙소 목록 보여준 후 => 리뷰작성
 		 */
-		// 리뷰 작성
-		// 로그인 되어 있음 -> getUser
 		
-		// 목록 출력
-		
+	// 목록 출력
+	// 리뷰 작성
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public void insertReview(int USER_ID, int ACCOMMODATION_ID, String REVIEW_CONTENT, int REVIEW_RATING) {
 		Connection conn = null;
@@ -50,6 +48,7 @@ public class ReviewDAO {
 			//JDBC 수행 1,2 단계
 			conn=DBUtil.getConnection();
 			// 목록 출력
+			// 우선 시퀀스 받아야 함
 			sql = "INSERT INTO REVIEW (REVIEW_ID, ACCOMMODATION_ID, REVIEW_DATE, REVIEW_CONTENT, REVIEW_RATING) VALUES(?,?,?,SYSDATE,?,?)";
 			// JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
@@ -153,5 +152,5 @@ public class ReviewDAO {
 			DBUtil.executeClose(rs, pstmt, conn);
 			if(br != null) try {br.close();} catch(IOException e1) {}
 		}
-	}
+	} 
 }
