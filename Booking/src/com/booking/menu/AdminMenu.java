@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.booking.DAO.AccommodationDAO;
+import com.booking.DAO.CouponDAO;
 import com.booking.DAO.QnADAO;
 import com.booking.member.Admin;
 
@@ -124,15 +125,25 @@ public class AdminMenu {
 	}
 	private void couponManagement() { // 쿠폰 관리 메뉴
 
+		
 		// 쿠폰 종류 조회
 		try {
+			
+			System.out.println("쿠폰을 관리하는 페이지입니다.");
+		    System.out.println("1. 쿠폰 종류 조회");
+		    System.out.println("2. 쿠폰 등록");
+			
 			int num = Integer.parseInt(br.readLine());
 			try{
+				CouponDAO coupondao = new CouponDAO();
 					if(num == 1) {
 						System.out.println("쿠폰 종류 조회");
+						
+						coupondao.showAllCoupon(admin.getID());
 					}else if(num == 2) 
 					{
 						System.out.println("쿠폰 등록");
+						coupondao.reg_coupon(br);
 					}
 				}catch (Exception e) {
 					// TODO: handle exception
