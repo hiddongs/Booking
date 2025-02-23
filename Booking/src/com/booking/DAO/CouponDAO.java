@@ -1,6 +1,7 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.Buffer;
 import java.sql.Connection;
@@ -15,6 +16,8 @@ import com.booking.member.Admin;
 import com.booking.member.Coupon;
 import com.booking.member.User;
 import com.dbutil.DBUtil;
+
+
 
 
 public class CouponDAO {
@@ -39,43 +42,53 @@ public class CouponDAO {
 	
 		
 	}
-	// 기본 쿠폰 (신규 사용자에게 기본으로 주는 쿠폰)
-	public Coupon firstCoupon(int coupon_ID) {
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		String sql = null;
-		ResultSet rs = null;
-		try {
-			
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			sql = "SELECT * FROM COUPON WHERE COUPON_ID=?";
-			pstmt.setInt(1, coupon_ID);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				 coupon = new Coupon(
-		                    rs.getInt("COUPON_ID"),
-		                    rs.getInt("ADMIN_ID"),
-		                    rs.getString("COUPON_CODE"),
-		                    rs.getDate("COUPON_ISSUANCE_DATE"),
-		                    rs.getDate("COUPON_EXPIRED_DATE"),
-		                    rs.getInt("COUPON_DISCOUNT")
-		                );
-			}
-			
-			
-		} catch (SQLException | ClassNotFoundException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		finally {
-			DBUtil.executeClose(null, pstmt, conn);
-		}
-		return coupon;
-		
+	
+	// ✅ 신규 사용자에게 기본 쿠폰 지급하는 메서드
+	public void giveNewUserCoupon(int coupon_ID) {
+	    Connection conn = null;
+	    PreparedStatement check_pstmt = null;
+	    PreparedStatement insert_pstmt = null;
+	    ResultSet rs = null;
+	    String check_sql = "SELECT COUNT(*) FROM CP_POSSESS WHERE USER_ID = ?";
+	    String insert_sql = "INSERT INTO CP_POSSESS (COUPON_ID, USER_ID, COUPON_COUNT) VALUES (?, ?, 1)";
+
+	    try {
+	        conn = DBUtil.getConnection();
+	        System.out.print("신규 사용자 ID 입력: ");
+	        String user_ID = br.readLine();  // 신규 사용자 ID 입력 받기
+
+	        // 1️⃣ 사용자가 이미 쿠폰을 가지고 있는지 확인
+	        check_pstmt = conn.prepareStatement(check_sql);
+	        check_pstmt.setString(1, user_ID);
+	        rs = check_pstmt.executeQuery();
+
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            System.out.println("이미 해당 쿠폰을 보유하고 있는 사용자입니다.");
+	            return;
+	        }
+
+	        // 2️⃣ 신규 사용자에게 기본 쿠폰 지급
+	        insert_pstmt = conn.prepareStatement(insert_sql);
+	        insert_pstmt.setInt(1, coupon_ID);
+	        insert_pstmt.setString(2, user_ID);
+
+	        int update = insert_pstmt.executeUpdate();
+	        if (update > 0) {
+	            conn.commit();
+	            System.out.println("기본 쿠폰 지급 완료!");
+	        } else {
+	            conn.rollback();
+	            System.out.println("기본 쿠폰 지급 실패.");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.executeClose(rs, check_pstmt, null);
+	        DBUtil.executeClose(null, insert_pstmt, conn);
+	    }
 	}
+
 	// 사용자가 겹치는 쿠폰이 있는지 확인하는 코드
 	
 	public boolean  isDupUserCoupon(int coupon_ID, String user_ID) {
@@ -106,56 +119,7 @@ public class CouponDAO {
 		
 		
 	
-	// 사용자에게 기본 쿠폰을 지급하는 코드
-	public void giveNewUserCoupon(int coupon_ID) {
-		Connection conn = null;
-		PreparedStatement insert_pstmt = null;
-		PreparedStatement update_pstmt = null;
-		String insert_sql = null;
-		String update_sql = null;
-		
-		try {
-			conn = DBUtil.getConnection();
-			insert_pstmt = conn.prepareStatement(insert_sql);
-			
-			insert_sql = "INSERT INTO \"USER\" (USER_ID, COUPON_ID, ISSUE_DATE, USED) " +
-                    "SELECT U.USER_ID, ?, SYSDATE, 'N' " +
-                    "FROM USERS U WHERE U.JOIN_DATE = SYSDATE";
-			
-			insert_pstmt.setInt(1, coupon.getCoupon_ID());
-			
-			
-			int update = insert_pstmt.executeUpdate();
-			
-			update_sql = "UPDATE COUPON SET COUPON_COUNT = COUPON_COUNT + 1 " +
-                    "WHERE USER_ID IN (SELECT USER_ID FROM USERS WHERE JOIN_DATE = SYSDATE) " +
-                    "AND COUPON_ID = ?";
-			update_pstmt = conn.prepareStatement(update_sql);
-			update_pstmt.setInt(1, coupon_ID);
-			update_pstmt.executeUpdate();
-			
-			int update2 = update_pstmt.executeUpdate();
-			
-			  if (update > 0 || update2 > 0) {
-		            conn.commit();
-		            System.out.println(" 쿠폰 지급 성공!");
-		        } else {
-		            conn.rollback();
-		            System.out.println(" 쿠폰 지급 실패!");
-		        }
-			}catch (Exception e) {
-			// TODO: handle exception
-				e.printStackTrace();
-				
-			
-		}
-		finally {
-			DBUtil.executeClose(null, insert_pstmt, null);
-	        DBUtil.executeClose(null, update_pstmt, conn);
-			
-		}
-
-	}
+	
 	// 어드민이 유저에게 쿠폰을 지급하는 코드 / 만약 이미 있는 쿠폰이면 갯수만 증가
 	public void giveCouponUser(String Admin_ID, int coupon_id,String User_ID) {
 		Connection conn = null;
@@ -184,8 +148,8 @@ public class CouponDAO {
 	                    "FROM USERS U WHERE TRUNC(U.JOIN_DATE) = TRUNC(SYSDATE)";
 	                     
 	                     
-	                     insert_pstmt.setInt(1, coupon.getCoupon_ID());
-	                     insert_pstmt.setString(2, user.getID());
+	                     insert_pstmt.setInt(1, coupon_id);
+	                     insert_pstmt.setString(2, User_ID);
 	                     int update = insert_pstmt.executeUpdate();
 	                     if(update == 1) {
 	                    	 
@@ -320,16 +284,16 @@ public class CouponDAO {
 			sql = "SELECT * FROM COUPON WHERE ADMIN_ID=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, ID);
+			pstmt.setString(1, "ADMIN");
 			
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				
-				System.out.println("쿠폰 코드 : " + rs.getString("COUPON_CODE"));
+				System.out.println("\n쿠폰 코드 : " + rs.getString("COUPON_CODE"));
 				System.out.println("발급 일자 : " + rs.getDate("COUPON_ISSUANCE_DATE"));
 				System.out.println("만료일 : " + rs.getDate("COUPON_EXPIRED_DATE"));
-				System.out.println("할인 금액 : " + rs.getInt("COUPON_DISCOUNT"));
+				System.out.println("할인 금액 : \n" + rs.getInt("COUPON_DISCOUNT"));
 			}
 			
 		}catch(Exception e) {
@@ -368,6 +332,29 @@ public class CouponDAO {
 	}
 	
 	// 사용한 쿠폰이면 지워주는 코드
-	
+	public int getDefaultCouponID() {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = "SELECT COUPON_ID FROM COUPON WHERE ADMIN_ID = 'ADMIN' AND COUPON_CODE = 'NEWUSER1000'";
+	    int couponID = -1;
+
+	    try {
+	        conn = DBUtil.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            couponID = rs.getInt("COUPON_ID");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.executeClose(rs, pstmt, conn);
+	    }
+
+	    return couponID;
+	}
 	
 }

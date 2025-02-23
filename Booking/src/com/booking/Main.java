@@ -87,7 +87,7 @@ public class Main {
 
 					if((admin = AdminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
 						loginStatus = true;
-						AdminMenu adminMenu = new AdminMenu(br, admin);
+						AdminMenu adminMenu = new AdminMenu(br, admin,user,coupon);
 
 					}
 					else if((user = userDAO.login(ID, passwd)) != null) {
