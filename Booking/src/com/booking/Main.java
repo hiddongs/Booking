@@ -128,12 +128,11 @@ public class Main {
 								
 							}else if(num == 2) {
 								System.out.println("\n마이페이지");
-<<<<<<< HEAD
 
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO, couponDAO);
-=======
+
 								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 							}
 							else if(num == 3) { 
 								System.out.println("문의하기");
