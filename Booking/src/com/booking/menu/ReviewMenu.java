@@ -35,15 +35,11 @@ public class ReviewMenu {
 				
 				System.out.println("================================================");
 				ReviewMenu.reviewDAO.selectdetailReview(num);
-				
-
-				System.out.println("------------------------------------------");
-				ReviewMenu.reviewDAO.selectdetailReview(num);
 
 			}else if(no == 2) {
 				// 예약하기 화면으로
-				//AccommodationMenu accommodationMenu= new AccommodationMenu();
-				//accommodationMenu.AccMenu(br,accommodation, adao);
+				AccommodationMenu accommodationMenu= new AccommodationMenu();
+				accommodationMenu.AccMenu(br,accommodation, adao);
 				
 			}
 			
