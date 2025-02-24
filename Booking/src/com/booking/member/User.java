@@ -25,7 +25,17 @@ public class User {
 		this.reg_date = reg_date;
 	}
 	
+	public User(String ID, String email, String name,Enum grade,int Cash){
+		this.ID = ID;
+		this.email = email;
+		this.name = name;
+		this.Grade = grade;
+		this.cash = cash;
+	}
 
+	public User(){
+		
+	}
 	
 	public int getPoint() {
 		return point;

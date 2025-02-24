@@ -63,6 +63,7 @@ public class ReviewDAO {
 			System.out.println(count + "개의 리뷰를 작성했습니다.");
 
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 		} finally {
 			DBUtil.executeClose(null, pstmt, conn);

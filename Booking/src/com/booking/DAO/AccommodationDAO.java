@@ -1,5 +1,6 @@
 package com.booking.DAO;
 
+
 import java.io.BufferedReader;
 
 import java.io.IOException;
@@ -24,12 +25,12 @@ public class AccommodationDAO {
 	// 숙소 넣기(관리) - 예진
 
 	public void InsertAccommodation(String accommodation_name, String accommodation_address, String accommodation_description,
-		    int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
+			int accommodation_price, String location_name, String recommendation_season, int accommodation_status, int allowed_number) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		int cnt = 0;
-		
+
 		try {
 			// JDBC 수행 1
 			conn = DBUtil.getConnection();
@@ -48,11 +49,11 @@ public class AccommodationDAO {
 			pstmt.setString(++cnt,recommendation_season);
 			pstmt.setInt(++cnt,accommodation_status);
 			pstmt.setInt(++cnt,allowed_number);
-			
+
 			// 4단계
 			int count = pstmt.executeUpdate();
 			System.out.println(count + "개의 행을 삽입했습니다.");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -266,7 +267,7 @@ public class AccommodationDAO {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			
+
 		} catch (SQLException e) {
 			try {conn.rollback();} catch (SQLException e1) {}
 		} finally {
@@ -275,31 +276,31 @@ public class AccommodationDAO {
 
 
 	}
-	
-public void suggest_accommodation(BufferedReader br, String location_name) throws IOException { // 해외지역에서 호출시 
-		
-	
-	String[] locationNameArr = {
-			"서울",
-			"경기",
-			"전라",
-			"강원",
-			"충청",
-			"경상",
-			"제주"
-	};
-	String[] seasonArr = {"봄","여름","가을","겨울"};
-	
-	List<String> location_list = new ArrayList<>(Arrays.asList(locationNameArr));
-	List<String> season_list = new ArrayList<>(Arrays.asList(seasonArr));
-	
-		
+
+	public void suggest_accommodation(BufferedReader br, String location_name) throws IOException { // 해외지역에서 호출시 
+
+
+		String[] locationNameArr = {
+				"서울",
+				"경기",
+				"전라",
+				"강원",
+				"충청",
+				"경상",
+				"제주"
+		};
+		String[] seasonArr = {"봄","여름","가을","겨울"};
+
+		List<String> location_list = new ArrayList<>(Arrays.asList(locationNameArr));
+		List<String> season_list = new ArrayList<>(Arrays.asList(seasonArr));
+
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
-		
-		
+
+
 		if(location_name == null) { // 원하는 지역 입력받는단
 			while(true) {
 				System.out.println("숙소 추천 입니다.");
@@ -317,7 +318,7 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 				}
 			}
 		}
-		
+
 		String rcmd_season;
 		while(true) {
 			System.out.println("추천을 원하시는 계절을 입력해주세요");
@@ -333,10 +334,10 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 				continue;
 			}
 		}
-		
-		
+
+
 		try {
-			
+
 			conn = DBUtil.getConnection();
 			sql = "SELECT * FROM ACCOMMODATION WHERE LOCATION_NAME = ? AND RECOMMENDATION_SEASON = ?";
 			pstmt = conn.prepareStatement(sql , ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -347,28 +348,92 @@ public void suggest_accommodation(BufferedReader br, String location_name) throw
 			while(rs.next()) {
 				size++;
 			}
-			
+
 			if(size == 0) {
 				System.out.println("선택한 조건의 숙소가 없습니다.");
 				return;
 			}
-			int colNum = new Random().nextInt(1,size + 1);
+			int colNum = new Random().nextInt(size)+1;
 			rs.absolute(colNum);
 			int accd_id = rs.getInt(1);
 			String accd_name = rs.getString(2);
 			String accd_address = rs.getString(3);
 			String accd_description = rs.getString(4);
 			int accd_price = rs.getInt(5);
-			
+
 			System.out.println("추천 결과입니다.");
 			System.out.printf("번호 : %d번 , 숙소이름 : %s , 숙소주소 : %s\n" , accd_id,accd_name,accd_address);
 			System.out.println(accd_description);
 			System.out.println("가격 : " + accd_price);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
+	public int getAllowedMem(int accommodationId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int allowedMem = -1; // 기본값 (-1: 오류 또는 숙소 없음)
+
+		String sql = "SELECT ALLOWED_NUMBER FROM ACCOMMODATION WHERE ACCOMMODATION_ID = ?";
+
+		try {
+			conn = DBUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, accommodationId);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				allowedMem = rs.getInt("ALLOWED_NUMBER");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (conn != null) conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return allowedMem; // 허용 인원 반환
+	}
+
+
+	    public List<Integer> getAllAccommodationID() {
+	        List<Integer> accommodation_ID = new ArrayList<>();
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+
+	        String sql = "SELECT ACCOMMODATION_ID FROM ACCOMMODATION";
+
+	        try {
+	            conn = DBUtil.getConnection();
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+
+	            while (rs.next()) {
+	                accommodation_ID.add(rs.getInt("ACCOMMODATION_ID"));
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (rs != null) rs.close();
+	                if (pstmt != null) pstmt.close();
+	                if (conn != null) conn.close();
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        return accommodation_ID;
+	    }
+	
 
 }
