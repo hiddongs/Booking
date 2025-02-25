@@ -434,6 +434,24 @@ public class AccommodationDAO {
 	        }
 	        return accommodation_ID;
 	    }
-	
+	    public int getAccommodationID(int accommodationId) {
+	        Integer id = null;
+	        String sql = "SELECT ACCOMMODATION_ID FROM ACCOMMODATION WHERE ACCOMMODATION_ID = ?";
+
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	            pstmt.setInt(1, accommodationId);
+	            ResultSet rs = pstmt.executeQuery();
+
+	            if (rs.next()) {
+	                id = rs.getInt("ACCOMMODATION_ID");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return id; // 숙소가 없으면 null 반환
+	    }
+
 
 }
