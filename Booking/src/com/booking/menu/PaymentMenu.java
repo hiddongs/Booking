@@ -1,6 +1,7 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.PaymentDAO;
@@ -11,6 +12,7 @@ import com.booking.member.User;
 
 public class PaymentMenu {
 	//결제(결제, 사용자, 숙소
+	
 	static Payment payment;
 	static PaymentDAO paymentDAO;
 	static User user;
@@ -18,21 +20,23 @@ public class PaymentMenu {
 	static Accommodation accommodation;
 	static AccommodationviewDAO accommodationviewDAO;
 	
-	public void P_menu(BufferedReader br, Payment payment, User user, Accommodation accommodation) {
+		
+	public void P_menu(BufferedReader br, Payment payment, User user, Accommodation accommodation) throws NumberFormatException, IOException {
+		
 		PaymentMenu.payment = payment;
 		PaymentMenu.accommodationviewDAO = new AccommodationviewDAO();
-		PaymentMenu.paymentDAO = new PaymentDAO();
+		PaymentMenu.paymentDAO = new PaymentDAO(user); // user객체를 전달하여 paymentDAO 생성
+	
 		
-		try {
-			while (true) {
-				System.out.println("결제 메뉴입니다.");
-				System.out.println("1. 숙소예약 확인");
-				
-				
-			}	
-		} catch (Exception e) {
-			e.printStackTrace();
+		
+		while (true) {
+			System.out.println("결제 메뉴입니다.");
+			System.out.println("1.예약현황 보기");
+			int no = Integer.parseInt(br.readLine());
+			if(no == 1) {
+				String user_id = user.getID();
+				paymentDAO.select_procesPayment(user_id);
+			}
 		}
-			
 	}
-	}
+}
