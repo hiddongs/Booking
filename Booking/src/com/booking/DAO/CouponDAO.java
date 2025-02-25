@@ -365,4 +365,35 @@ public class CouponDAO {
 	    return couponID;
 	}
 	
+	 public List<Integer> coupon_ID() {
+	        List<Integer> coupon_ID = new ArrayList<>();
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+
+	        String sql = "SELECT COUPON_ID FROM COUPON";
+
+	        try {
+	            conn = DBUtil.getConnection();
+	            pstmt = conn.prepareStatement(sql);
+	            rs = pstmt.executeQuery();
+
+	            while (rs.next()) {
+	            	coupon_ID.add(rs.getInt("Coupon_ID"));
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (rs != null) rs.close();
+	                if (pstmt != null) pstmt.close();
+	                if (conn != null) conn.close();
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        return coupon_ID;
+	    }
+	
 }

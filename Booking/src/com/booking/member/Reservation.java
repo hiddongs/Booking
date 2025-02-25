@@ -1,5 +1,6 @@
 package com.booking.member;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Reservation {
@@ -7,15 +8,22 @@ public class Reservation {
 	int reservation_id;
 	String user_id;
 	int accomodation_id;
-	Date reservation_start_date;
-	Date reservation_end_date;
+	LocalDate reservation_start_date;
+	LocalDate reservation_end_date;
 	int reservation_price;
 	int reservation_number;
+	int price;
 	
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
 	public Reservation() {
 	}
-	public Reservation(int reservation_id, String user_id, int accomodation_id, Date reservation_start_date,
-			Date reservation_end_date, int reservation_price, int reservation_number) {
+	public Reservation(int reservation_id, String user_id, int accomodation_id, LocalDate reservation_start_date,
+			LocalDate reservation_end_date, int reservation_price, int reservation_number) {
 		super();
 		this.reservation_id = reservation_id;
 		this.user_id = user_id;
@@ -43,16 +51,16 @@ public class Reservation {
 	public void setAccomodation_id(int accomodation_id) {
 		this.accomodation_id = accomodation_id;
 	}
-	public Date getReservation_start_date() {
+	public LocalDate getReservation_start_date() {
 		return reservation_start_date;
 	}
-	public void setReservation_start_date(Date reservation_start_date) {
+	public void setReservation_start_date(LocalDate reservation_start_date) {
 		this.reservation_start_date = reservation_start_date;
 	}
-	public Date getReservation_end_date() {
+	public LocalDate getReservation_end_date() {
 		return reservation_end_date;
 	}
-	public void setReservation_end_date(Date reservation_end_date) {
+	public void setReservation_end_date(LocalDate reservation_end_date) {
 		this.reservation_end_date = reservation_end_date;
 	}
 	public int getReservation_price() {

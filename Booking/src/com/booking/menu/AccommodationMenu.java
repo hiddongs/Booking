@@ -34,15 +34,16 @@ public class AccommodationMenu {
 
 	// 숙소메뉴 호출 함수
 	// 희동 -> 유저 아이디 호출 매개변수 추가
-	public void AccMenu(BufferedReader br, Accommodation accommodation, AccommodationviewDAO accommodationviewDAO,String ID) throws IOException {
+	public void AccMenu(BufferedReader br, Accommodation accommodation, AccommodationviewDAO accommodationviewDAO) throws IOException {
 		//숙소 메뉴
 		AccommodationMenu.accommodation = accommodation;
 		AccommodationMenu.accommodationviewDAO = accommodationviewDAO;
 
+
 		UserMenu.user = user;
 
 		
-		//1. 숙소보기
+
 		try {
 
 			while (true) {
@@ -54,8 +55,7 @@ public class AccommodationMenu {
 				System.out.println("3.예약하기");
 				System.out.println("4.마이페이지");
 
-				System.out.println("1.숙소 보기");
-				System.out.println("2.예약하기");
+
 
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
@@ -63,7 +63,15 @@ public class AccommodationMenu {
 
 					int num1 = Integer.parseInt(br.readLine());
 
+
 					accommodationviewDAO.selectdomesticInfo();
+
+					if(num1 == 1) {
+					    accommodationviewDAO.selectdomesticInfo();
+					}else if(num1 == 2) {
+						accommodationviewDAO.selectoverseasInfo();
+					}
+
 
 					// 생성하고 다음 메뉴 부르기(reviewMenu)
 					ReviewMenu reviewMenu = new ReviewMenu();
@@ -74,11 +82,15 @@ public class AccommodationMenu {
 					//상세 글 한번 보기
 					// 목록에서 선택할 글 번호 확인
 					// (숙소정보 한번 더 보여주기)
-					accommodationviewDAO.selectInfo();
+					
+
 					System.out.print("선택한 숙소 번호 >");
 					int num = Integer.parseInt(br.readLine());
 					System.out.println("============================");
 					accommodationviewDAO.selectDetailInfo(num);
+
+
+
 
 					// 목록을 보여주고
 					int menunum = Integer.parseInt(br.readLine());
@@ -120,7 +132,7 @@ public class AccommodationMenu {
 								// 숙소 상세정보 안봄	-> 전체 메뉴로 돌아가
 							}else if(detailnum2 == 2) {
 								AccommodationMenu accommodationMenu = new AccommodationMenu();
-								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO, null);
+								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
 							}
 							
 						}else {
@@ -135,75 +147,16 @@ public class AccommodationMenu {
 				}
 				// 희동쿤이 해야할 예약 하기
 				else if(no == 3) {
-					AccommodationDAO accommodationDAO = new AccommodationDAO();
-
-					ReservationDAO reservationDAO = new ReservationDAO();
-					System.out.println("예약을 위해 국내 / 해외 선택하세요 (1번을 누르면 [국내] 2번을 누르면 [해외] 입니다 ");
-					int areaNum = Integer.parseInt(br.readLine());
-					try {
-						if(areaNum == 1) {
-							System.out.println("국내 예약");
-							try {
-								System.out.println("1. 국내 여행지");	
-								System.out.println("2. 추천여행지 보기");
-								int sugNum = Integer.parseInt(br.readLine());
-								try {
-									if(sugNum == 1) {
-										System.out.println("국내 여행지 목록");
-
-									}
-									else if(sugNum == 2) { // 추천 여행지 메뉴판
-										System.out.println("추천 여행지 보기");
-										accommodationDAO.suggest_accommodation(br, null);
-									}
-
-								}catch (Exception e) {
-									// TODO: handle exception
-								}
-
-
-							}catch (Exception e) {
-								// TODO: handle exception
-							}
-						}
-						else if(areaNum == 2) {
-							
-							String location_name = "해외";
-							try {
-								
-								System.out.println("1. 해외 예약");
-								System.out.println("2. 추천 여행지 보기");
-								int sugNum = Integer.parseInt(br.readLine());
-								if(sugNum == 1) {
-									System.out.println("1. 해외 예약");
-									System.out.println("해외 여행지 목록");
-									reservationDAO.select_overseas(br,location_name,accommodationDAO.getAllAccommodationID());
-
-								}
-								else if(sugNum == 2) { // 추천 여행지 메뉴판
-									System.out.println("추천 여행지 보기");
-									accommodationDAO.suggest_accommodation(br, "해외");
-								}
-
-							}catch (Exception e) {
-								// TODO: handle exception
-							}
-
-						
-							
-							
-						}
-
-					}catch(Exception e) {
-
-					}
-
-
+					
+					ReservationMenu reservationMenu = new ReservationMenu();
+					reservationMenu.reservationMenu();
+					
 				}
 				else if(no == 4 ) {
 					UserMenu userMenu = new UserMenu();
 					CouponDAO couponDAO = new CouponDAO();
-					userMenu.u_Menu(br, user, review, userDAO, cashDAO, reviewDAO, couponDAO, ID);
+					String ID = UserDAO.getCurrentUserID();
+					userMenu.u_Menu(br, user, review, userDAO, cashDAO, reviewDAO, couponDAO,ID);
 				}
 
 			} 

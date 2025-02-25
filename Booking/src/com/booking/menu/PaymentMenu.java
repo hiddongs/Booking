@@ -35,7 +35,7 @@ public class PaymentMenu {
 			int no = Integer.parseInt(br.readLine());
 			if(no == 1) {
 				String user_id = user.getID();
-				paymentDAO.select_procesPayment(user_id);
+				paymentDAO.select_procesPayment();
 			}
 		}
 	}

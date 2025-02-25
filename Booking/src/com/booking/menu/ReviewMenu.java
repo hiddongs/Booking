@@ -1,10 +1,15 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
+
+
 import java.io.IOException;
 
+import com.booking.Main;
 import com.booking.DAO.AccommodationviewDAO;
+import com.booking.DAO.ReservationDAO;
 import com.booking.DAO.ReviewDAO;
+import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Review;
 
@@ -14,7 +19,8 @@ public class ReviewMenu {
 	static Accommodation accommodation;
 	//숙소 뷰
 	static AccommodationviewDAO adao;
-	
+	static ReservationDAO reservationDAO;
+	static UserDAO userDAO;
 	//
 	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) throws IOException {
 		// 선택된 숙소의 리뷰 보기
@@ -39,7 +45,7 @@ public class ReviewMenu {
 			}else if(no == 2) {
 				// 예약하기 화면으로
 				AccommodationMenu accommodationMenu= new AccommodationMenu();
-				accommodationMenu.AccMenu(br,accommodation, adao, null);
+				accommodationMenu.AccMenu(br,accommodation, adao);
 				
 			}	
 			
