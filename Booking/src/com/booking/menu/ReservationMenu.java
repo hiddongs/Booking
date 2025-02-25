@@ -13,11 +13,19 @@ public class ReservationMenu {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
-	static ReservationDAO reservationDAO = new ReservationDAO();
+	static ReservationDAO reserVationDAO = new ReservationDAO();
+	ReservationDAO reservationDAO;
 	
+	
+//	public ReservationMenu()
+//	{
+//		reservationDAO = new ReservationDAO(user);
+//	}
 	public void reservationMenu() {
 		System.out.println("에약하기");
-		System.out.println("예약을 위해 국내 / 해외 선택하세요 (1번을 누르면 [국내] 2번을 누르면 [해외] 입니다 ");
+		System.out.println("1. 국내");
+		System.out.println("2. 해외");
+        System.out.println("3. 예약 목록 조회 및 삭제");
 		int areaNum;
 		try {
 			areaNum = Integer.parseInt(br.readLine());
@@ -94,6 +102,19 @@ public class ReservationMenu {
 			
 				
 				
+			}
+			else if(areaNum == 3) {
+				System.out.println("1. 예약 목록 조회");
+				System.out.println("2. 예약 삭제");
+				int num = Integer.parseInt(br.readLine());
+				if(num == 1) {
+					reservationDAO.showReservation();
+				}else if(num == 2) {
+					System.out.println("삭제할 번호를 입력하세요");
+					int num2  = Integer.parseInt(br.readLine());
+					reservationDAO.showReservation();
+					reservationDAO.deleteReservation(num2);
+				}
 			}
 
 		}catch(Exception e) {
