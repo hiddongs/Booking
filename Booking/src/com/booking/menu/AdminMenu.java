@@ -4,18 +4,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.booking.DAO.AccommodationDAO;
+import com.booking.DAO.CouponDAO;
 import com.booking.DAO.QnADAO;
+import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
+import com.booking.member.Coupon;
+import com.booking.member.User;
 
 public class AdminMenu { 
 	// 어드민 메뉴 카테고리
 	// 파라미터들 정리해놓음
 	Admin admin;
 	BufferedReader br;
+	User user;
+	Coupon coupon;
 	
-	public AdminMenu(BufferedReader br, Admin admin){
+	static UserDAO userDAO = new UserDAO();
+	static CouponDAO couponDAO = new CouponDAO();
+	
+	public AdminMenu(BufferedReader br, Admin admin,User user,Coupon coupon){
 		this.br = br;
 		this.admin = admin;
+		this.user = user;
+		this.coupon = coupon;
 		menu();
 	}
 
@@ -124,15 +135,49 @@ public class AdminMenu {
 	}
 	private void couponManagement() { // 쿠폰 관리 메뉴
 
+		
 		// 쿠폰 종류 조회
 		try {
+			
+			System.out.println("쿠폰을 관리하는 페이지입니다.");
+		    System.out.println("1. 쿠폰 종류 조회");
+		    System.out.println("2. 쿠폰 등록");
+		    System.out.println("3. 신규 사용자에게 기본 쿠폰 발급");
+		    System.out.println("4. 사용자에게 쿠폰 발급");
+		    
+			
 			int num = Integer.parseInt(br.readLine());
 			try{
+				CouponDAO coupondao = new CouponDAO();
+				
+				
 					if(num == 1) {
 						System.out.println("쿠폰 종류 조회");
+						
+						coupondao.showAllCoupon(admin.getID());
 					}else if(num == 2) 
 					{
 						System.out.println("쿠폰 등록");
+						coupondao.reg_coupon(br);
+					}
+					else if(num == 3) {
+						System.out.println("신규 사용자에게 기본 쿠폰 발급");
+						
+						
+						coupondao.giveNewUserCoupon(coupondao.getDefaultCouponID());
+					}
+					else if(num == 4) {
+						System.out.println("사용자에게 쿠폰 발급");
+						userDAO.showAllUser();
+						System.out.println("쿠폰을 지급할 사용자 아이디를 입력하세요");
+						String ID = br.readLine();
+						
+						
+						coupondao.showAllCoupon(admin.getID());
+						System.out.println("사용자에게 줄 쿠폰 번호를 입력하세요");
+						int coupon_id = Integer.parseInt(br.readLine());
+						couponDAO.giveCouponUser("ADMIN",coupon_id,ID);
+						
 					}
 				}catch (Exception e) {
 					// TODO: handle exception

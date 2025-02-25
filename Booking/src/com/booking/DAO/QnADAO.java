@@ -83,7 +83,6 @@ public class QnADAO {
 			System.out.println("유효하지않은 입력입니다.");
 		} finally {
 			DBUtil.executeClose(rs, pstmt, conn);
-
 		}
 
 	}

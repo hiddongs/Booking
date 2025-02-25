@@ -3,8 +3,13 @@ package com.booking.menu;
 import java.io.BufferedReader;
 
 
+import java.io.IOException;
+
+import com.booking.Main;
 import com.booking.DAO.AccommodationviewDAO;
+import com.booking.DAO.ReservationDAO;
 import com.booking.DAO.ReviewDAO;
+import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Review;
 
@@ -14,11 +19,18 @@ public class ReviewMenu {
 	static Accommodation accommodation;
 	//숙소 뷰
 	static AccommodationviewDAO adao;
-	
+	static ReservationDAO reservationDAO;
+	static UserDAO userDAO;
 	//
+
 	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) {
 		// 선택된 숙소 보기
 		// 초기화 안함
+
+	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) throws IOException {
+		// 선택된 숙소의 리뷰 보기
+		// 초기화를 안했
+
 		ReviewMenu.review = review;
 		ReviewMenu.reviewDAO = new ReviewDAO();
 
@@ -34,22 +46,31 @@ public class ReviewMenu {
 				int num = Integer.parseInt(br.readLine());
 				
 				ReviewMenu.reviewDAO.selectdetailReview(num);
+
 				
+
 
 			}else if(no == 2) {
 				// 예약하기 화면으로
 				AccommodationMenu accommodationMenu= new AccommodationMenu();
 				accommodationMenu.AccMenu(br,accommodation, adao);
 				
+
 			}
+
+			}	
+			
+
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
+
+		} catch (NumberFormatException e) {
+			System.out.println("[숫자만 입력 가능]");
 		}finally {
-		
+			
 		}
-		
 	}
-	
 	
 }// class

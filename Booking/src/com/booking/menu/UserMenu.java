@@ -1,7 +1,6 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.util.InputMismatchException;
 
@@ -21,10 +20,12 @@ public class UserMenu {
     static CashDAO cashDAO;
     static ReviewDAO reviewDAO;
     static CouponDAO couponDAO;
-
-
-	public void U_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
-			           ,CouponDAO couponDAO)  {
+    
+  
+   
+  
+	public void u_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
+			           ,CouponDAO couponDAO,String ID)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
 		UserMenu.user = user;
@@ -33,19 +34,26 @@ public class UserMenu {
 		UserMenu.cashDAO = cashDAO;
 		UserMenu.reviewDAO = reviewDAO;
 		UserMenu.couponDAO = couponDAO;
+		
+		
 		try {
 			while(true) {
+				
+				System.out.println("--------------------------------");
+				System.out.println("사용자 메뉴");
+				System.out.printf("사용자 ID : %s\n", ID);
+			    System.out.println("--------------------------------");
 				System.out.println("1. 회원 이름 변경");
                 System.out.println("2. 비밀번호 변경");
                 System.out.println("3. 등급 확인");
-                System.out.println("4. 금액 충전");
+                System.out.println("4. 금액 및 포인트 관리");
                 System.out.println("5. 작성 리뷰 내역");
                 System.out.println("6. 쿠폰 확인");
                 System.out.println("7. 로그아웃");
                 System.out.println("8. 회원 탈퇴");
                 
-				String ID = user.getID();
 				
+                
 				int no = Integer.parseInt(br.readLine());
 				if(no == 1) {
 					System.out.println("회원 정보 변경");
@@ -101,14 +109,37 @@ public class UserMenu {
 				}else if(no == 4) {
 
 					try {
-						System.out.println("금액 충전");
-						int cash = user.getCash();
-						System.out.println("충전할 금액을 입력하세요.");
-						cash = Integer.parseInt(br.readLine());
-						cashDAO.chargeCash(ID, cash, br);
-						}catch(NumberFormatException e) {
+						System.out.println("금액 및 포인트 관리");
+						
+						int num =Integer.parseInt(br.readLine());
+						
+						try {
+							if(num == 1) {
+								System.out.println("금액 충전");
+								int cash = user.getCash();
+								System.out.println("충전할 금액을 입력하세요.");
+								cash = Integer.parseInt(br.readLine());
+								cashDAO.chargeCash(ID, cash, br);
+								cashDAO.showCash(ID, cash);
+							}
+							else if(num == 2){
+								System.out.println("금액 확인");
+								
+							}
+							else if(num == 3) {
+								System.out.println("포인트 확인");
+								cashDAO.showPoint(ID);
+							}
+							
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+					}catch(NumberFormatException e) {
 						e.printStackTrace();
 						System.out.println("숫자만 입력하세요 ");
+
+						
 					}
 			
 				}else if(no == 5) {
@@ -130,7 +161,8 @@ public class UserMenu {
 					} 
 					
 				}else if(no == 6) {
-					
+					System.out.printf("%s 님이 보유하신 쿠폰입니다 \n", ID);
+					couponDAO.showUserCoupon(ID);
 					
 
 				}else if(no == 7) {

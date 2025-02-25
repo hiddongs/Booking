@@ -8,7 +8,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 
 import com.booking.member.Grade;
 import com.booking.member.User;
@@ -17,7 +19,8 @@ import com.dbutil.DBUtil;
 
 public class UserDAO {
 
-	
+
+    private static String currentUserID; // 현재 로그인한 유저 ID 저장
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public User login(String ID, String passwd) {
 
@@ -242,13 +245,7 @@ public class UserDAO {
 		}finally {DBUtil.executeClose(null, pstmtS, conn);}
 	}
 	
-	public int showCash(String ID, int cash) {
-		return 0;
-	}
-	
-    public void chargeCash(String ID){
-		
-	}
+
     public void deleteUser(String ID,BufferedReader br) {
     	Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -297,4 +294,90 @@ public class UserDAO {
 			
 		}
     }
+    
+    public List<String> getAllUser_ID() {
+        List<String> user_ID = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT USER_ID FROM \"USER\"";
+
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                user_ID.add(rs.getString("USER_ID"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return user_ID;
+    }
+    
+   
+
+        public static void setCurrentUserID(String userID) {
+            currentUserID = userID;
+        }
+
+        public static String getCurrentUserID() {
+            return currentUserID;
+        }
+    public String getUserID(String User_ID) {
+        String id = null;
+        String sql = "SELECT USER_ID FROM \"USER\" WHERE USER_ID = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,  User_ID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getString("USER_ID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id; // 숙소가 없으면 null 반환
+    }
+    
+    public void showAllUser() {
+    	   
+           String sql = "SELECT USER_ID FROM \"USER\"";
+
+           try (
+        		   Connection conn = DBUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                
+               ResultSet rs = pstmt.executeQuery();
+
+               if (rs.next()) {
+            	   do
+            	   {
+            		   
+            		   System.out.println("USER ID : " + rs.getString("USER_ID"));
+                   
+            	   }
+            	   while(rs.next());
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           
+    }
+   
 }
