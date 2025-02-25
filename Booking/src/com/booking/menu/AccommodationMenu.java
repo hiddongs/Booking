@@ -31,7 +31,6 @@ public class AccommodationMenu {
 			while (true) {
 				System.out.println("원하는 항목을 선택하세요.");
 				System.out.println("1.숙소 보기");
-				//System.out.println("2.숙소 상세보기");
 				System.out.println("2.예약하기");
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {

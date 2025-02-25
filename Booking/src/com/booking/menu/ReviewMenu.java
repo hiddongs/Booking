@@ -1,7 +1,7 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
-
+import java.io.IOException;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.ReviewDAO;
@@ -16,7 +16,7 @@ public class ReviewMenu {
 	static AccommodationviewDAO adao;
 	
 	//
-	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) {
+	public void R_menu(BufferedReader br, Review review, ReviewDAO reviewDAO, Accommodation accommodation, AccommodationviewDAO adao ) throws IOException {
 		// 선택된 숙소의 리뷰 보기
 		// 초기화를 안했
 		ReviewMenu.review = review;
@@ -41,18 +41,14 @@ public class ReviewMenu {
 				AccommodationMenu accommodationMenu= new AccommodationMenu();
 				accommodationMenu.AccMenu(br,accommodation, adao);
 				
-			}
-			
-			
-			
+			}	
 			
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (NumberFormatException e) {
+			System.out.println("[숫자만 입력 가능]");
 		}finally {
-		
+			
 		}
-		
 	}
 	
 	
