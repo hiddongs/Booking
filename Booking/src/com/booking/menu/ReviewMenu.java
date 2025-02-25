@@ -39,7 +39,7 @@ public class ReviewMenu {
 			}else if(no == 2) {
 				// 예약하기 화면으로
 				AccommodationMenu accommodationMenu= new AccommodationMenu();
-				accommodationMenu.AccMenu(br,accommodation, adao);
+				accommodationMenu.AccMenu(br,accommodation, adao, null);
 				
 			}	
 			

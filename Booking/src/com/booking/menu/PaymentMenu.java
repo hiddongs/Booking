@@ -27,9 +27,11 @@ public class PaymentMenu {
 			while (true) {
 				System.out.println("결제 메뉴입니다.");
 				System.out.println("1. 숙소예약 확인");
+				
+				
 			}	
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 			
 	}

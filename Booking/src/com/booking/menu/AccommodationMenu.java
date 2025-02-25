@@ -38,33 +38,32 @@ public class AccommodationMenu {
 		//숙소 메뉴
 		AccommodationMenu.accommodation = accommodation;
 		AccommodationMenu.accommodationviewDAO = accommodationviewDAO;
-<<<<<<< HEAD
+
 		UserMenu.user = user;
-=======
+
 		
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 		//1. 숙소보기
 		try {
 
 			while (true) {
 				System.out.println("우와! 환영합니다! 😊 우와놀자에서 최고의 여행을 경험하세요!");
 				System.out.println("원하는 항목을 선택하세요.");
-<<<<<<< HEAD
+
 				System.out.println("1.전체 숙소 보기");
 				System.out.println("2.숙소 상세보기");
 				System.out.println("3.예약하기");
 				System.out.println("4.마이페이지");
-=======
+
 				System.out.println("1.숙소 보기");
 				System.out.println("2.예약하기");
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
 					System.out.println("1.국내 2.해외");
-<<<<<<< HEAD
+
 					int num1 = Integer.parseInt(br.readLine());
 
-					accommodationviewDAO.selectInfo();
+					accommodationviewDAO.selectdomesticInfo();
 
 					// 생성하고 다음 메뉴 부르기(reviewMenu)
 					ReviewMenu reviewMenu = new ReviewMenu();
@@ -81,7 +80,6 @@ public class AccommodationMenu {
 					System.out.println("============================");
 					accommodationviewDAO.selectDetailInfo(num);
 
-=======
 					// 목록을 보여주고
 					int menunum = Integer.parseInt(br.readLine());
 					try {
@@ -122,7 +120,7 @@ public class AccommodationMenu {
 								// 숙소 상세정보 안봄	-> 전체 메뉴로 돌아가
 							}else if(detailnum2 == 2) {
 								AccommodationMenu accommodationMenu = new AccommodationMenu();
-								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO, null);
 							}
 							
 						}else {
@@ -133,7 +131,7 @@ public class AccommodationMenu {
 					
 					}
 				
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 				}
 				// 희동쿤이 해야할 예약 하기
 				else if(no == 3) {
