@@ -2,40 +2,43 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import com.booking.DAO.AccommodationDAO;
-import com.booking.DAO.AdminDAO;
 import com.booking.DAO.QnADAO;
 import com.booking.member.Admin;
 
-public class AdminMenu { // 어드민 메뉴 카테고리
+public class AdminMenu { 
+	// 어드민 메뉴 카테고리
+	// 파라미터들 정리해놓음
+	Admin admin;
+	BufferedReader br;
+	
+	public AdminMenu(BufferedReader br, Admin admin){
+		this.br = br;
+		this.admin = admin;
+		menu();
+	}
 
-	static Admin admin;
-	static int answer;
-	static AdminDAO adminDAO;
-	static AccommodationDAO accommodationDAO;
 
-	public void menu(BufferedReader br, Admin admin, AdminDAO adminDAO) {
-
-		AdminMenu.admin = admin;
-		AdminMenu.adminDAO = adminDAO;
-
-		try {
-			while(true) {
+	public void menu() {
+		while(true) {
+			try {
 				System.out.println("관리자 메뉴입니다.");
 				System.out.println("원하시는 항목을 골라주세요");
 				System.out.println("1.숙소 관리");
 				System.out.println("2.문의 관리 페이지");
 				System.out.println("3.쿠폰 관리 페이지");
 				System.out.println("0.로그아웃");
-				answer = Integer.parseInt(br.readLine());
+				int answer = Integer.parseInt(br.readLine());
+				
 				if(answer == 1) {
-					accommodationAdmin(br);
+					accommodationAdmin();
 				}else if(answer == 2) {
-					qnaManagement(br);
+					qnaManagement();
 				}else if(answer == 3) {
-					couponManagement(br);
+					couponManagement();
+					
+					
 				}else if(answer == 0){
 					return;
 				}else {
@@ -43,16 +46,17 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 					continue;
 				}
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			catch (NumberFormatException e) {
+				System.out.println("숫자만 입력해주세요");
+				continue;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void accommodationAdmin(BufferedReader br) {
-
-		accommodationDAO = new AccommodationDAO();
+	private void accommodationAdmin() {
+		AccommodationDAO accommodationDAO = new AccommodationDAO();
 		int answer = Integer.MIN_VALUE;
 
 		while(true) {
@@ -73,20 +77,21 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 				continue;
 			}
 		}
-		if(answer == 1) accommodationDAO.accommodation_management(br, accommodationDAO, admin);
-		else if(answer == 2 ) accommodation_insert(br);
+		
+		// 입력받아와서 처리
+		if(answer == 1) accommodationDAO.accommodation_management(br, admin);
+		else if(answer == 2 ) accommodation_insert();
 		else if (answer == 0) return;
 	}
 
-	private void accommodation_insert(BufferedReader br) { // 만들다 말았음 숙소 INSERT 부분
-		
+	private void accommodation_insert() { // 만들다 말았음 숙소 INSERT 부분
+
 	}
 
-
-
-	private void qnaManagement(BufferedReader br) {
+	private void qnaManagement() {
+		QnADAO qnaDAO = new QnADAO(br, admin);
 		int answer = Integer.MIN_VALUE;
-		QnADAO qnaDAO = new QnADAO();
+
 		while(true) {
 			System.out.println("문의 관련 페이지 입니다.");
 			System.out.println("1.미답변 QnA 답변하기");
@@ -102,22 +107,41 @@ public class AdminMenu { // 어드민 메뉴 카테고리
 					break;
 				}
 			} catch (Exception e) {
-				System.out.println("비정상적인 입력입니다.");
+				System.out.println("숫자만 입력해주세요.");
 				continue;
 			}
 		}
-		
+
 		if(answer == 1) {
-			qnaDAO.answerToQNA(br,admin);
+			qnaDAO.answerToQNA();
 		}else if(answer == 2) {
-			qnaDAO.answerUpdate(br, admin);
+			qnaDAO.answerUpdate();
 		}else if(answer == 3) {
 			qnaDAO.showQnA();
 		}else if(answer == 0) {
 			return;
 		}
 	}
-	private void couponManagement(BufferedReader br) { // 쿠폰 관리 메뉴
+	private void couponManagement() { // 쿠폰 관리 메뉴
+
+		// 쿠폰 종류 조회
+		try {
+			int num = Integer.parseInt(br.readLine());
+			try{
+					if(num == 1) {
+						System.out.println("쿠폰 종류 조회");
+					}else if(num == 2) 
+					{
+						System.out.println("쿠폰 등록");
+					}
+				}catch (Exception e) {
+					// TODO: handle exception
+				}
+
+			} catch (NumberFormatException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	}
 }

@@ -1,124 +1,155 @@
 package com.booking;
 
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.CashDAO;
-import com.booking.DAO.UserDAO;
-import com.booking.accommodation.Accommodation;
-
+import com.booking.DAO.CouponDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
+import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
-
-import com.booking.member.Review;
-
+import com.booking.member.Coupon;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
 import com.booking.menu.UserMenu;
 
+
 public class Main {
 
 	static BufferedReader br;
-	
 	static Admin admin;
 	static UserDAO userDAO;
-	static boolean loginStatus;
-	static AdminDAO adminDAO;
 	static User user;
-
-	static Review review;
+	static com.booking.member.Review review;
 	static ReviewDAO reviewDAO;
-
 	static Accommodation accommodation; 
 	static AccommodationviewDAO accommodationviewDAO;
 	static AccommodationMenu accommodationMenu;
-
-
 	static CashDAO cashDAO;
+	static boolean loginStatus;
+	static Coupon coupon;
+	static CouponDAO couponDAO;
 
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
-		adminDAO = new AdminDAO();
 
 		accommodationviewDAO = new AccommodationviewDAO();
 		cashDAO = new CashDAO();
 
+		couponDAO = new CouponDAO();
 		reviewDAO = new ReviewDAO();
 
 		callMenu();
 	}
 
 	private void callMenu(){
-		
-		
+
+
 		while(true) {
 			int menuNum = Integer.MAX_VALUE;
-			
-			
+
+
 			while(true) {
 				try {
-			    System.out.println("================================================================================");
-			    System.out.println("                         ✨🌟  우와놀자 - 콘솔 예약 시스템  🌟✨                    ");
-	            System.out.println("================================================================================");
-				System.out.println("👉 원하시는 메뉴를 입력해주세요");
-				System.out.println("1. 로그인");
-				System.out.println("2. 회원가입");
-				System.out.println("0. 프로그램 종료");
-				menuNum = Integer.parseInt(br.readLine());
-				if(menuNum != 1 && menuNum != 2 && menuNum != 0) {
-					System.out.println("1,2,0 번 메뉴중 하나를 입력해주세요");
-					continue;
-				}else break;
+					System.out.println("================================================================================");
+					System.out.println("                         ✨🌟  우와놀자 - 콘솔 예약 시스템  🌟✨                    ");
+					System.out.println("================================================================================");
+					System.out.println("👉 원하시는 메뉴를 입력해주세요");
+					System.out.println("1. 로그인");
+					System.out.println("2. 회원가입");
+					System.out.println("0. 프로그램 종료");
+					menuNum = Integer.parseInt(br.readLine());
+					if(menuNum != 1 && menuNum != 2 && menuNum != 0) {
+						System.out.println("1,2,0 번 메뉴중 하나를 입력해주세요");
+						continue;
+					}else break;
 
 				}catch (Exception e) {
 					System.out.println("❌ 잘못된 입력입니다 ❌");
 					continue;
 				}
 			}
-			
-			
+
+
 			if(menuNum == 1) {
-				
+
 				try {
 					System.out.println("로그인할 ID를 입력해주세요");
 					String ID = br.readLine();
 					System.out.println("비밀번호를 입력해주세요");
 					String passwd = br.readLine();
 
-					if((admin = adminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
+					if((admin = AdminDAO.adminLogin(ID, passwd)) != null) { // 로그인할떄 admin이 잡히면 admin을 부여
 						loginStatus = true;
-						AdminMenu adminMenu = new AdminMenu();
-						adminMenu.menu(br, admin, adminDAO);
+						AdminMenu adminMenu = new AdminMenu(br, admin);
 
 					}
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 
+
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
 						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, userDAO);
 
+						//UserMenu userMenu = new UserMenu();
+						//userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
+
 						UserMenu userMenu = new UserMenu();
+						System.out.println("우와! 환영합니다! 😊 우와놀자에서 최고의 여행을 경험하세요!");
 
-						userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
 
-			
+				System.out.println("원하시는 항목을 선택하세요 ! ! !\n");
+						System.out.println("1. 숙소 예약");	
+						System.out.println("2. 마이페이지");
+						System.out.println("3. 문의하기");
+						System.out.println("4. 뒤로 가기");
+
+						System.out.println("0. 로그아웃");
+						int num;
+						try {
+							num = Integer.parseInt(br.readLine());
+							if(num == 1) {
+								System.out.println("\n숙소 예약");
+								System.out.println("숙소 메뉴 입니다.");
+								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								
+							}else if(num == 2) {
+								System.out.println("\n마이페이지");
+								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
+							}
+							else if(num == 3) { 
+								System.out.println("문의하기");
+							}
+							else if(num == 4) {
+								System.out.println("🔙 뒤로 가기 완료!");
+
+							}else if (num == 0) {
+								System.out.println("로그아웃 완료");
+
+
+							}
+
+						} catch (NumberFormatException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
+
 			}else if(menuNum == 2) {
 
 				String emailFormat = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -169,4 +200,6 @@ public class Main {
 		}
 	}
 }
+
+
 

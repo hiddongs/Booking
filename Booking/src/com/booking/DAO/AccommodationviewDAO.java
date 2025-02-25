@@ -1,16 +1,19 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.booking.accommodation.Accommodation;
 import com.dbutil.DBUtil;
 
 public class AccommodationviewDAO {
-	//
-	public void selectInfo() {
+	// 국내
+	public void selectdomesticInfo() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -18,7 +21,7 @@ public class AccommodationviewDAO {
 		
 		try {
 			conn = DBUtil.getConnection();
-			sql = "select * from accommodation order by accommodation_id desc";
+			sql = "select * from accommodation where location_name != '해외'";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			System.out.println("================================================");
@@ -37,8 +40,6 @@ public class AccommodationviewDAO {
 			}else {
 				System.out.println("검색된 정보가 없습니다.");
 			}
-			//System.out.println("2.숙소 상세정보 보기");
-			//System.out.println("3.예약하기");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -46,6 +47,42 @@ public class AccommodationviewDAO {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 	}
+	
+	// 해외
+		public void selectOverseasInfo() {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			
+			try {
+				conn = DBUtil.getConnection();
+				sql = "select * from accommodation where location_name = '해외'";
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				System.out.println("================================================");
+				if(rs.next()) {
+					System.out.println("숙소번호\t숙소이름\t\t지역\t주소");
+					do {
+						System.out.print(rs.getInt("accommodation_id"));
+						System.out.print("\t");
+						System.out.print(rs.getString("accommodation_name"));
+						System.out.print("\t");
+						System.out.print(rs.getString("location_name"));
+						System.out.print("\t");
+						System.out.println(rs.getString("accommodation_address"));
+						
+					} while (rs.next());
+				}else {
+					System.out.println("검색된 정보가 없습니다.");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				//자원관리
+				DBUtil.executeClose(rs, pstmt, conn);
+			}
+		}
 	
 	public void selectDetailInfo(int accommodation_id) {
 		// 숙소 상세 정보 보기
