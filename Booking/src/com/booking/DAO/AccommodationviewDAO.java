@@ -24,7 +24,7 @@ public class AccommodationviewDAO {
 			rs = pstmt.executeQuery();
 			System.out.println("================================================");
 			if(rs.next()) {
-				System.out.println("숙소번호\t숙소이름\t\t지역\t주소\t운영상태\t예약 가능 인원");
+				System.out.println("숙소번호\t숙소이름\t지역\t주소\t운영상태\t예약 가능 인원");
 				do {
 					System.out.print(rs.getInt("accommodation_id"));
 					System.out.print("\t");
@@ -32,12 +32,13 @@ public class AccommodationviewDAO {
 					System.out.print("\t");
 					System.out.print(rs.getString("location_name"));
 					System.out.print("\t");
-					System.out.println(rs.getString("accommodation_address"));
+					System.out.print(rs.getString("accommodation_address"));
 					System.out.print("\t");
-					System.out.println(rs.getString("accommodation_status"));
+					System.out.print(rs.getString("accommodation_status"));
 					System.out.print("\t");
-					System.out.println(rs.getString("allowed_number"));
-					System.out.print("\t");
+					System.out.print(rs.getString("allowed_number"));
+					System.out.println();
+					
 					
 				} while (rs.next());
 			}else {
@@ -64,7 +65,7 @@ public class AccommodationviewDAO {
 				rs = pstmt.executeQuery();
 				System.out.println("================================================");
 				if(rs.next()) {
-					System.out.println("숙소번호\t숙소이름\t\t지역\t주소\t운영상태\\t예약 가능 인원");
+					System.out.println("숙소번호\t숙소이름\t지역\t주소\t운영상태\t\t예약 가능 인원");
 					do {
 						System.out.print(rs.getInt("accommodation_id"));
 						System.out.print("\t");
@@ -72,12 +73,12 @@ public class AccommodationviewDAO {
 						System.out.print("\t");
 						System.out.print(rs.getString("location_name"));
 						System.out.print("\t");
-						System.out.println(rs.getString("accommodation_address"));
+						System.out.print(rs.getString("accommodation_address"));
 						System.out.print("\t");
-						System.out.println(rs.getString("accommodation_status"));
+						System.out.print(rs.getString("accommodation_status"));
 						System.out.print("\t");
-						System.out.println(rs.getString("allowed_number"));
-						System.out.print("\t");
+						System.out.print(rs.getString("allowed_number"));
+						System.out.println();
 						
 					} while (rs.next());
 				}else {

@@ -93,12 +93,12 @@ public class Main {
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
-						
+						UserDAO.setCurrentUserID(ID);
 
 
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
-						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO,ID);
+						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
 						
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, userDAO);

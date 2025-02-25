@@ -19,7 +19,8 @@ import com.dbutil.DBUtil;
 
 public class UserDAO {
 
-	
+
+    private static String currentUserID; // 현재 로그인한 유저 ID 저장
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public User login(String ID, String passwd) {
 
@@ -331,5 +332,32 @@ public class UserDAO {
         return user_ID;
     }
     
+   
+
+        public static void setCurrentUserID(String userID) {
+            currentUserID = userID;
+        }
+
+        public static String getCurrentUserID() {
+            return currentUserID;
+        }
+    public String getUserID(String User_ID) {
+        String id = null;
+        String sql = "SELECT USER_ID FROM \"USER\" WHERE USER_ID = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1,  User_ID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getString("USER_ID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id; // 숙소가 없으면 null 반환
+    }
    
 }

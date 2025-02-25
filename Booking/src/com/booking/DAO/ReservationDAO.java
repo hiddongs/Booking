@@ -24,9 +24,13 @@ public class ReservationDAO {
 	
 	static Accommodation accomo;
 	static AccommodationDAO accommodationDAO;
-	static AccommodationviewDAO accommodationViewDAO;
+	static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
 	
 
+	private LocalDate s_date;
+	private LocalDate e_date;
+	private int price;
+	private int accommodation_ID;
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	/* 더 좋은 코드
@@ -90,26 +94,22 @@ public class ReservationDAO {
 	
 	// 해외 선택
 	
-	public void select_overseas(BufferedReader br, String location_name) {
-	    Connection conn = null;
-	    PreparedStatement i_pstmt = null;
-	    ResultSet rs = null;
-	    
+	public boolean select_overseas(BufferedReader br, String location_name,int num) {
+	 
 	    try {
 	        AccommodationDAO accommodationDAO = new AccommodationDAO();
 	        accommodationViewDAO.selectoverseasInfo();
 
-	        // 숙소 번호 체크
-	        System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
-	        int num = Integer.parseInt(br.readLine());
-
 	        // 날짜 체크
 	        System.out.println("예약하고 싶은 시작 날짜를 입력하세요 (yyyy-MM-dd):");
 	        LocalDate today = LocalDate.now();
-	        LocalDate s_date = LocalDate.parse(br.readLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        String input_s_date = br.readLine().trim();
+	        this.s_date = LocalDate.parse(input_s_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        
+	       
 	        System.out.println("예약하고 싶은 종료 날짜를 입력하세요 (yyyy-MM-dd):");
-	        LocalDate e_date = LocalDate.parse(br.readLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        String input_e_date = br.readLine().trim();
+	        this.e_date = LocalDate.parse(input_e_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 	        boolean isDateValid = posDate(br, s_date, e_date, today); // 날짜 유효성 체크
 
@@ -121,58 +121,47 @@ public class ReservationDAO {
 
 	        // 운영 여부 체크
 	        boolean isOpen = openCheck(accommodationDAO.getAccommodationID(num));
+	        
+	        this.accommodation_ID = num;
 
 	        // 예약 가능 여부 확인
 	        if (isMemValid && isDateValid && isOpen) {
 	            System.out.println("예약 가능");
+	            return true;
+	            
+	         
+	            
 	        } else {
 	            System.out.println("예약 불가");
+	            return false;
 	        }
 
-	        // 데이터베이스 연결 및 정보 조회
-	        conn = DBUtil.getConnection();
-	        String i_sql = "SELECT * FROM ACCOMMODATION WHERE location_name = ? AND is_open = 1";
-	        i_pstmt = conn.prepareStatement(i_sql);
-	        i_pstmt.setString(1, location_name);
-	        rs = i_pstmt.executeQuery();
+	    
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	    } finally {
-	        // 리소스 닫기
-	        try {
-	            if (rs != null) rs.close();
-	            if (i_pstmt != null) i_pstmt.close();
-	            if (conn != null) conn.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
 	    }
+		return false; 
 	}
 
 	// 국내 선택했을 시 예약 기능
-	public void select_domestic(BufferedReader br,String location_name) {
-		Connection conn = null;
-		String s_sql = null;
+	public boolean select_domestic(BufferedReader br,int num) {
 
-		PreparedStatement s_pstmt = null;
-
-		ResultSet rs = null;
 		try {
 	        AccommodationDAO accommodationDAO = new AccommodationDAO();
 	        accommodationViewDAO.selectdomesticInfo();
-
-	        // 숙소 번호 체크
-	        System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
-	        int num = Integer.parseInt(br.readLine());
+ 
+	       
 
 	        // 날짜 체크
 	        System.out.println("예약하고 싶은 시작 날짜를 입력하세요 (yyyy-MM-dd):");
 	        LocalDate today = LocalDate.now();
-	        LocalDate s_date = LocalDate.parse(br.readLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        String input_s_date = br.readLine().trim();
+	        this.s_date = LocalDate.parse(input_s_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        
 	        System.out.println("예약하고 싶은 종료 날짜를 입력하세요 (yyyy-MM-dd):");
-	        LocalDate e_date = LocalDate.parse(br.readLine(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        String input_e_date = br.readLine().trim();
+	        this.e_date = LocalDate.parse(input_e_date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 	        boolean isDateValid = posDate(br, s_date, e_date, today); // 날짜 유효성 체크
 
@@ -182,69 +171,143 @@ public class ReservationDAO {
 	        int allowedMem = accommodationDAO.getAllowedMem(mem);
 	        boolean isMemValid = memCheck(num, mem, allowedMem); // 인원 수 체크
 
+	        
+	        this.accommodation_ID = num;
 	        // 운영 여부 체크
 	        boolean isOpen = openCheck(accommodationDAO.getAccommodationID(num));
+	        
+	        
 
 	        // 예약 가능 여부 확인
 	        if (isMemValid && isDateValid && isOpen) {
 	            System.out.println("예약 가능");
+	            return true;
 	        } else {
 	            System.out.println("예약 불가");
+	            return false;
 	        }
 
-	        // 데이터베이스 연결 및 정보 조회
-	        conn = DBUtil.getConnection();
-	        s_sql = "SELECT * FROM ACCOMMODATION WHERE location_name = ? AND is_open = 1";
-	        s_pstmt = conn.prepareStatement(s_sql);
-	        s_pstmt.setString(1, location_name);
-	        rs = s_pstmt.executeQuery();
 
+	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	    } finally {
-	        // 리소스 닫기
-	        try {
-	            if (rs != null) rs.close();
-	            if (s_pstmt != null) s_pstmt.close();
-	            if (conn != null) conn.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
 	    }
+		return false; 
 	}
+	public void domestic_reservation(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement price_pstmt = null;
+		String i_sql = null;
+		String s_sql_prcie = "SELECT ACCOMMODATION_PRICE FROM ACCOMMODATION WHERE ACCOMMODATION_ID=?";
+		ResultSet rs = null;
+		try {
+			String user_ID = UserDAO.getCurrentUserID();
+			conn = DBUtil.getConnection();
 		
-		public void reservation() {
-			try {
-				AccommodationDAO accommodationDAO = new AccommodationDAO();
+					i_sql = "INSERT INTO RESERVATION ("
+							+ "RESERVATION_ID, "  // ✅ PRIMARY KEY (시퀀스로 자동 증가)
+							+ "USER_ID, "
+							+ "ACCOMMODATION_ID, "
+							+ "RESERVATION_START_DATE, "
+							+ "RESERVATION_END_DATE, "
+							+ "RESERVATION_PRICE) "
+							+ "VALUES (RESERVATION_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
+
+					pstmt = conn.prepareStatement(i_sql);
+					price_pstmt= conn.prepareStatement(s_sql_prcie);
+					price_pstmt.setInt(1,accommodation_ID);
+					rs = price_pstmt.executeQuery();
+
+					if(rs.next()) {
+						price = rs.getInt("ACCOMMODATION_PRICE");
+					}
+
+
+					pstmt.setString(1, user_ID);
+					pstmt.setInt(2, accommodation_ID);
+					pstmt.setDate(3, java.sql.Date.valueOf(s_date));
+					pstmt.setDate(4, java.sql.Date.valueOf(e_date));
+					pstmt.setInt(5, price);
 				
-				System.out.println("예약하고 싶은 숙소 번호를 입력하세요");
-				int num = Integer.parseInt(br.readLine());
-				System.out.println("예약하고 싶은 인원 수를 입력하세요");
-				int mem = Integer.parseInt(br.readLine());
-				int allowedMem = accommodationDAO.getAllowedMem(mem); // 허용 인원 가져오기
-				memCheck(num,mem,allowedMem);
-				System.out.println("예약하고 싶은 날짜를 입력하세요");
-				LocalDate today = LocalDate.now();
-				LocalDate s_date = null; // 예약 시작 날짜 초기값
-				String start = br.readLine();
-				s_date = LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				LocalDate e_date = null; // 예약 종료 날짜 초기값
-				String end = br.readLine();
-				e_date = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					int update = pstmt.executeUpdate();
+					if(update == 1) {
+						conn.commit();
+						System.out.println("예약이 완료되었습니다!");
+					}
+					else {
+						conn.rollback();
+						System.out.println("예약 실패 ! ! !");
+					}
+
 				
-				posDate(br,s_date,e_date,today);
-				
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
 
 			
+	}
 		
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	
+	public void overeas_reservation(int num) {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement price_pstmt = null;
+		String i_sql = null;
+		String s_sql_prcie = "SELECT ACCOMMODATION_PRICE FROM ACCOMMODATION WHERE ACCOMMODATION_ID=?";
+		ResultSet rs = null;
+		try {
+			String user_ID = UserDAO.getCurrentUserID();
+
+
+			conn = DBUtil.getConnection();
+			
+				
+					
+					i_sql = "INSERT INTO RESERVATION ("
+							+ "RESERVATION_ID, "  // PRIMARY KEY (시퀀스로 자동 증가)
+							+ "USER_ID, "
+							+ "ACCOMMODATION_ID, "
+							+ "RESERVATION_START_DATE, "
+							+ "RESERVATION_END_DATE, "
+							+ "RESERVATION_PRICE) "
+							+ "VALUES (RESERVATION_SEQ.NEXTVAL, ?, ?, ?, ?, ?)";
+
+					pstmt = conn.prepareStatement(i_sql);
+					price_pstmt= conn.prepareStatement(s_sql_prcie);
+					price_pstmt.setInt(1,accommodation_ID);
+					rs = price_pstmt.executeQuery();
+
+					if(rs.next()) {
+						price = rs.getInt("ACCOMMODATION_PRICE");
+					}
+
+
+
+					pstmt.setString(1, user_ID);
+					pstmt.setInt(2, accommodation_ID);
+					pstmt.setDate(3, java.sql.Date.valueOf(s_date));
+					pstmt.setDate(4, java.sql.Date.valueOf(e_date));
+					pstmt.setInt(5, price);
+					
+					int update = pstmt.executeUpdate();
+					if(update == 1) {
+						conn.commit();
+						System.out.println("예약이 완료되었습니다!");
+					}
+					else {
+						conn.rollback();
+						System.out.println("예약 실패 ! ! !");
+					}
+
+				
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
 
 	}
 
-	
+
 
 	public boolean memCheck(int num,int allow_mem, int mem) {
 		Connection conn = null;
@@ -293,37 +356,32 @@ public class ReservationDAO {
 	// 날짜 가능 여부 
 	public boolean posDate(BufferedReader br,LocalDate s_date, LocalDate e_date,LocalDate today) {
 		
-		
+		try {
 
-		while(true) {
+			
 			try {
 				
-				String end = br.readLine();
-				s_date = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				if (!e_date.isAfter(s_date)) {
 					System.out.println("종료 날짜는 시작 날짜(" + s_date + ") 이후여야 합니다. 다시 입력하세요.");
-				} else {
-					break;
+					return false;
 				}
-			}catch(DateTimeParseException | IOException e) {
-				System.out.println("날짜 형식이 올바르지 않습니다.yyyy-MM-dd");
-			}
-		}
-		while(true) {
-			try {
-				
 				if(!s_date .isAfter(today)) {
+					
 					System.out.println(today + "이후 날짜만 예약 가능합니다.");
+					return false;
+
 				}
-				else {
-					break;
-				}
+				return true;
+			
+				
 			}catch(DateTimeParseException e) {
 				System.out.println("날짜 형식이 올바르지 않습니다.yyyy-MM-dd");
 			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
 		return false;
-
 }
 	
 	// 운영 중 인지 여부
@@ -363,12 +421,8 @@ public class ReservationDAO {
 		
 	}
 	
-	// 장바구니에 추가
 	
-    public void addCart() {
-    	
-    }
-
+	
 	
 	
 }
