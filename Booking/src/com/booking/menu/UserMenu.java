@@ -21,10 +21,12 @@ public class UserMenu {
     static CashDAO cashDAO;
     static ReviewDAO reviewDAO;
     static CouponDAO couponDAO;
-
-
-	public void U_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
-			           ,CouponDAO couponDAO)  {
+    
+    
+   
+  
+	public void u_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
+			           ,CouponDAO couponDAO,String ID)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
 		UserMenu.user = user;
@@ -33,8 +35,15 @@ public class UserMenu {
 		UserMenu.cashDAO = cashDAO;
 		UserMenu.reviewDAO = reviewDAO;
 		UserMenu.couponDAO = couponDAO;
+		
+		
 		try {
 			while(true) {
+				
+				System.out.println("--------------------------------");
+				System.out.println("사용자 메뉴");
+				System.out.printf("사용자 ID : %s\n", ID);
+			    System.out.println("--------------------------------");
 				System.out.println("1. 회원 이름 변경");
                 System.out.println("2. 비밀번호 변경");
                 System.out.println("3. 등급 확인");
@@ -44,8 +53,8 @@ public class UserMenu {
                 System.out.println("7. 로그아웃");
                 System.out.println("8. 회원 탈퇴");
                 
-				String ID = user.getID();
 				
+                
 				int no = Integer.parseInt(br.readLine());
 				if(no == 1) {
 					System.out.println("회원 정보 변경");
@@ -130,7 +139,8 @@ public class UserMenu {
 					} 
 					
 				}else if(no == 6) {
-					
+					System.out.printf("%s 님이 보유하신 쿠폰입니다 \n", ID);
+					couponDAO.showUserCoupon(ID);
 					
 
 				}else if(no == 7) {

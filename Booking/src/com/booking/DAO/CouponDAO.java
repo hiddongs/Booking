@@ -145,7 +145,7 @@ public class CouponDAO {
 	        	
 	               insert_sql = "INSERT INTO CP_POSSESS (COUPON_ID, USER_ID,COUPON_COUNT)" +
 	                    "SELECT ?,U.USER_ID, 1" +
-	                    "FROM USERS U WHERE TRUNC(U.JOIN_DATE) = TRUNC(SYSDATE)";
+	                    "FROM \"USER\" U WHERE TRUNC(U.REG_DATE) = TRUNC(SYSDATE)";
 	                     
 	                     
 	                     insert_pstmt.setInt(1, coupon_id);
@@ -196,7 +196,15 @@ public class CouponDAO {
 		try {
 			System.out.println(" 보유한 쿠폰 목록 조회 ");
 			conn = DBUtil.getConnection();
-			sql = "SELECT * FROM COUPON WHERE USER_ID=?";
+			sql = "SELECT * " +
+				      "FROM CP_POSSESS cp " +
+				      "LEFT JOIN coupon c ON cp.coupon_id = c.coupon_id " + 
+				      "WHERE cp.user_id = ?";
+
+			
+			
+			
+
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ID);
@@ -205,7 +213,7 @@ public class CouponDAO {
 			
 			if(rs.next()) {
 				
-				System.out.println("쿠폰 번호 : " + rs.getInt("COUPON_CODE"));
+				System.out.println("쿠폰 번호 : " + rs.getString("COUPON_CODE"));
 				System.out.println("발급 일자 : " + rs.getDate("COUPON_ISSUANCE_DATE"));
 				System.out.println("만료일 : " + rs.getDate("COUPON_EXPIRED_DATE"));
 				System.out.println("할인 금액 : " + rs.getInt("COUPON_DISCOUNT"));

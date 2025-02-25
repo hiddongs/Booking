@@ -93,11 +93,12 @@ public class Main {
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
+						
 
 
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
-						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO,ID);
 						
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, userDAO);
@@ -105,46 +106,7 @@ public class Main {
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
 
-						UserMenu userMenu = new UserMenu();
-						System.out.println("우와! 환영합니다! 😊 우와놀자에서 최고의 여행을 경험하세요!");
-
-
-				System.out.println("원하시는 항목을 선택하세요 ! ! !\n");
-						System.out.println("1. 숙소 예약");	
-						System.out.println("2. 마이페이지");
-						System.out.println("3. 문의하기");
-						System.out.println("4. 뒤로 가기");
-
-						System.out.println("0. 로그아웃");
-						int num;
-						try {
-							num = Integer.parseInt(br.readLine());
-							if(num == 1) {
-								System.out.println("\n숙소 예약");
-								System.out.println("숙소 메뉴 입니다.");
-								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
-								
-							}else if(num == 2) {
-								System.out.println("\n마이페이지");
-								userMenu.U_Menu(br,user,review, userDAO, cashDAO, reviewDAO,couponDAO);
-							}
-							else if(num == 3) { 
-								System.out.println("문의하기");
-							}
-							else if(num == 4) {
-								System.out.println("🔙 뒤로 가기 완료!");
-
-							}else if (num == 0) {
-								System.out.println("로그아웃 완료");
-
-
-							}
-
-						} catch (NumberFormatException | IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
+					
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
