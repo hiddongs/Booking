@@ -39,6 +39,11 @@ public class AccommodationMenu {
 		AccommodationMenu.accommodation = accommodation;
 		AccommodationMenu.accommodationviewDAO = accommodationviewDAO;
 
+
+		UserMenu.user = user;
+
+		
+
 		try {
 
 			while (true) {
@@ -51,17 +56,22 @@ public class AccommodationMenu {
 				System.out.println("4.마이페이지");
 
 
+
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
 					System.out.println("1.국내 2.해외");
 
 					int num1 = Integer.parseInt(br.readLine());
 
+
+					accommodationviewDAO.selectdomesticInfo();
+
 					if(num1 == 1) {
 					    accommodationviewDAO.selectdomesticInfo();
 					}else if(num1 == 2) {
 						accommodationviewDAO.selectoverseasInfo();
 					}
+
 
 					// 생성하고 다음 메뉴 부르기(reviewMenu)
 					ReviewMenu reviewMenu = new ReviewMenu();
@@ -78,6 +88,8 @@ public class AccommodationMenu {
 					int num = Integer.parseInt(br.readLine());
 					System.out.println("============================");
 					accommodationviewDAO.selectDetailInfo(num);
+
+
 
 
 					// 목록을 보여주고

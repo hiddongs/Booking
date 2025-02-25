@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 
 import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.AccommodationviewDAO;
+import com.booking.DAO.PaymentDAO;
 import com.booking.DAO.ReservationDAO;
+import com.booking.member.User;
 
 public class ReservationMenu {
 
@@ -15,7 +17,8 @@ public class ReservationMenu {
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
 	static ReservationDAO reserVationDAO = new ReservationDAO();
 	ReservationDAO reservationDAO;
-	
+	User user;
+	PaymentDAO paymentDAO;
 	
 //	public ReservationMenu()
 //	{
@@ -60,12 +63,12 @@ public class ReservationMenu {
 						}
 
 					}catch (Exception e) {
-						// TODO: handle exception
+						
 					}
 
 
 				}catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 			else if(areaNum == 2) {
@@ -109,6 +112,9 @@ public class ReservationMenu {
 				int num = Integer.parseInt(br.readLine());
 				if(num == 1) {
 					reservationDAO.showReservation();
+					//여기
+					// 여기에 그 메뉴 가져와
+					paymentDAO.select_CheckPayment();
 				}else if(num == 2) {
 					System.out.println("삭제할 번호를 입력하세요");
 					int num2  = Integer.parseInt(br.readLine());

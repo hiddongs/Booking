@@ -8,6 +8,7 @@ import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.AdminDAO;
 import com.booking.DAO.CashDAO;
 import com.booking.DAO.CouponDAO;
+import com.booking.DAO.PaymentDAO;
 import com.booking.DAO.ReviewDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
@@ -16,6 +17,7 @@ import com.booking.member.Coupon;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
+import com.booking.menu.PaymentMenu;
 import com.booking.menu.UserMenu;
 
 
@@ -34,7 +36,11 @@ public class Main {
 	static boolean loginStatus;
 	static Coupon coupon;
 	static CouponDAO couponDAO;
-
+	static PaymentDAO paymentDAO;
+	static PaymentMenu paymentMenu;
+	
+	
+	
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
 		userDAO = new UserDAO();
