@@ -43,6 +43,7 @@ public class CouponDAO {
 		
 	}
 	
+	
 	// ✅ 신규 사용자에게 기본 쿠폰 지급하는 메서드
 	public void giveNewUserCoupon(int coupon_ID) {
 	    Connection conn = null;
@@ -89,35 +90,33 @@ public class CouponDAO {
 	    }
 	}
 
-	// 사용자가 겹치는 쿠폰이 있는지 확인하는 코드
-	
-	public boolean  isDupUserCoupon(int coupon_ID, String user_ID) {
-	
-			Connection conn = null;
-		    PreparedStatement pstmt = null;
-		    ResultSet rs = null;
-		    String sql = "SELECT COUNT(*) FROM COUPON WHERE COUPON_ID = ?";
-		    try {
-		        conn = DBUtil.getConnection();
-		        pstmt = conn.prepareStatement(sql);
-		        pstmt.setInt(1, coupon_ID);
-		        pstmt.setString(2,user_ID);
-		        rs = pstmt.executeQuery();
+	public boolean isDupUserCoupon(int coupon_ID, String user_ID) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = "SELECT COUNT(*) FROM CP_POSSESS WHERE COUPON_ID = ? AND USER_ID = ?";
 
-		        if (rs.next() && rs.getInt(1) > 0) {
-		            return true;  // 중복된 쿠폰 코드가 있음
-		        }
+	    try {
+	        conn = DBUtil.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, coupon_ID);
+	        pstmt.setString(2, user_ID);
 
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    } finally {
-		        DBUtil.executeClose(rs, pstmt, conn);
-		    }
+	        rs = pstmt.executeQuery();
 
-		    return false;  // 중복된 쿠폰 코드 없음
-		}
-		
-		
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            return true;  // 사용자가 이미 해당 쿠폰을 가지고 있음
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtil.executeClose(rs, pstmt, conn);
+	    }
+
+	    return false;  // 중복된 쿠폰 없음
+	}
+
 	
 	
 	// 어드민이 유저에게 쿠폰을 지급하는 코드 / 만약 이미 있는 쿠폰이면 갯수만 증가
@@ -134,6 +133,7 @@ public class CouponDAO {
 			conn = DBUtil.getConnection();
 			
 			String select_sql = "SELECT COUPON_ID, COUPON_CODE,COUPON_DISCOUNT FROM COUPON";
+			select_pstmt = conn.prepareStatement(select_sql);
 			rs = select_pstmt.executeQuery();
 
 	        List<Integer> couponList = new ArrayList<>();
@@ -147,7 +147,7 @@ public class CouponDAO {
 	                    "SELECT ?,U.USER_ID, 1" +
 	                    "FROM \"USER\" U WHERE TRUNC(U.REG_DATE) = TRUNC(SYSDATE)";
 	                     
-	                     
+	                     insert_pstmt =conn.prepareStatement(insert_sql);
 	                     insert_pstmt.setInt(1, coupon_id);
 	                     insert_pstmt.setString(2, User_ID);
 	                     int update = insert_pstmt.executeUpdate();
@@ -165,10 +165,10 @@ public class CouponDAO {
 	        	update_pstmt = conn.prepareStatement(update_sql);
 
 	        	        update_pstmt.setInt(1, coupon_id);
-	        	        update_pstmt.setString(1, User_ID);
+	        	        update_pstmt.setString(2, User_ID);
 	        	        int update= update_pstmt.executeUpdate();
 
-	        	        if (update > 0) {
+	        	        if (update == 1) {
 	        	            conn.commit();
 	        	            System.out.println(" 기존 쿠폰 업데이트 완료 (보유 수 증가)");
 	        	        } else {
@@ -179,7 +179,8 @@ public class CouponDAO {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-			
+			e.printStackTrace();
+
 		}finally {
 			DBUtil.executeClose(rs, update_pstmt, conn);
 			DBUtil.executeClose(rs, insert_pstmt, conn);
@@ -212,8 +213,8 @@ public class CouponDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				
-				System.out.println("쿠폰 번호 : " + rs.getString("COUPON_CODE"));
+				System.out.println("쿠폰 번호 : " + rs.getInt("COUPON_ID"));
+				System.out.println("쿠폰 코드 : " + rs.getString("COUPON_CODE"));
 				System.out.println("발급 일자 : " + rs.getDate("COUPON_ISSUANCE_DATE"));
 				System.out.println("만료일 : " + rs.getDate("COUPON_EXPIRED_DATE"));
 				System.out.println("할인 금액 : " + rs.getInt("COUPON_DISCOUNT"));
@@ -297,8 +298,8 @@ public class CouponDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				
-				System.out.println("\n쿠폰 코드 : " + rs.getString("COUPON_CODE"));
+				System.out.println("쿠폰 번호 : " + rs.getInt("COUPON_ID"));
+				System.out.println("쿠폰 코드 : " + rs.getString("COUPON_CODE"));
 				System.out.println("발급 일자 : " + rs.getDate("COUPON_ISSUANCE_DATE"));
 				System.out.println("만료일 : " + rs.getDate("COUPON_EXPIRED_DATE"));
 				System.out.println("할인 금액 : \n" + rs.getInt("COUPON_DISCOUNT"));

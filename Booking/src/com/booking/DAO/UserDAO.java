@@ -245,13 +245,7 @@ public class UserDAO {
 		}finally {DBUtil.executeClose(null, pstmtS, conn);}
 	}
 	
-	public int showCash(String ID, int cash) {
-		return 0;
-	}
-	
-    public void chargeCash(String ID){
-		
-	}
+
     public void deleteUser(String ID,BufferedReader br) {
     	Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -358,6 +352,32 @@ public class UserDAO {
             e.printStackTrace();
         }
         return id; // 숙소가 없으면 null 반환
+    }
+    
+    public void showAllUser() {
+    	   
+           String sql = "SELECT USER_ID FROM \"USER\"";
+
+           try (
+        		   Connection conn = DBUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                
+               ResultSet rs = pstmt.executeQuery();
+
+               if (rs.next()) {
+            	   do
+            	   {
+            		   
+            		   System.out.println("USER ID : " + rs.getString("USER_ID"));
+                   
+            	   }
+            	   while(rs.next());
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           
     }
    
 }
