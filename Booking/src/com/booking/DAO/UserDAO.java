@@ -139,13 +139,12 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 			try {
 				if(conn!=null)conn.rollback();
 			}
 			catch(SQLException e1){
-				
-				e1.printStackTrace();
+			
 			}
 		}finally {
 			DBUtil.executeClose(null, pstmtU, conn);
@@ -173,7 +172,7 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 		try {	conn.rollback(); }catch(SQLException e1){}
 		finally {DBUtil.executeClose(null, pstmtU, conn);}
 		}
@@ -208,7 +207,7 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 
 		}finally {
 			DBUtil.executeClose(null, pstmtU, conn);
@@ -279,7 +278,7 @@ public class UserDAO {
 					
 				}
 			} catch (InputMismatchException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
-				e.printStackTrace();
+				
 				System.out.println("y/n글자만 입력하세요");
 			} 
 			

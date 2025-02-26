@@ -18,8 +18,8 @@ public class UserMenu {
 	User user;
 	
 	Review review;
-	static UserDAO userDAO;
-    static CashDAO cashDAO;
+	UserDAO userDAO = new UserDAO();
+    CashDAO cashDAO = new CashDAO();
     ReviewDAO reviewDAO = new ReviewDAO();
     static CouponDAO couponDAO;
     
@@ -41,14 +41,14 @@ public class UserMenu {
 
 
 
-	public void u_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
+	public void u_Menu(BufferedReader br, User user,Review review, UserDAO udserDAO, CashDAO dcashDAO,ReviewDAO re31viewDAO
 			           ,CouponDAO couponDAO,String ID)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
 		this.user = user;
 		this.review = review;
-		UserMenu.userDAO = userDAO;
-		UserMenu.cashDAO = cashDAO;
+		this.userDAO = userDAO;
+		this.cashDAO = cashDAO;
 		UserMenu.couponDAO = couponDAO;
 		
 		
@@ -77,6 +77,7 @@ public class UserMenu {
 					System.out.println("1. 이름 2. 이메일");
                     int num1 = Integer.parseInt(br.readLine());
 					try {
+						
 						if(num1 == 1) {
 							System.out.println("이름을 변경하세요 : ");
 							String name = br.readLine();
@@ -94,7 +95,8 @@ public class UserMenu {
 							System.out.println("1 ~ 2 의 숫자를 입력하세요");
 							continue;
 						} // if
-					}catch(Exception e) {
+					}catch(NumberFormatException e ) {
+						e.printStackTrace();
 						System.out.println("오로지. 오직. 무조건. [숫자]만 입력하세요");
 						continue;
 					} // catch
@@ -127,7 +129,9 @@ public class UserMenu {
 
 					try {
 						System.out.println("금액 및 포인트 관리");
-						
+						System.out.println("1. 금액 충전");
+						System.out.println("2. 금액 확인");
+						System.out.println("3. 포인트 확인");
 						int num =Integer.parseInt(br.readLine());
 						
 						try {
@@ -137,11 +141,11 @@ public class UserMenu {
 								System.out.println("충전할 금액을 입력하세요.");
 								cash = Integer.parseInt(br.readLine());
 								cashDAO.chargeCash(ID, cash, br);
-								cashDAO.showCash(ID, cash);
+								cashDAO.showCash(ID);
 							}
 							else if(num == 2){
 								System.out.println("금액 확인");
-								
+								cashDAO.showCash(ID);
 							}
 							else if(num == 3) {
 								System.out.println("포인트 확인");
@@ -150,6 +154,7 @@ public class UserMenu {
 							
 						} catch (Exception e) {
 							// TODO: handle exception
+							e.printStackTrace();
 						}
 						
 					}catch(NumberFormatException e) {
@@ -202,7 +207,8 @@ public class UserMenu {
 			}
 
 		}catch(NumberFormatException | IOException e) {
-			e.printStackTrace();	
+			System.err.println("입력 오류 ! ! ! ");	
+			System.err.println("숫자만 입력하세요 !");	
 
 		}catch(Exception e) {
 			System.out.println("오류발생");

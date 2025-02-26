@@ -15,8 +15,8 @@ public class ReservationMenu {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
-	static ReservationDAO reserVationDAO = new ReservationDAO();
-	ReservationDAO reservationDAO;
+    ReservationDAO reserVationDAO = new ReservationDAO();
+	
 	User user;
 	PaymentDAO paymentDAO;
 	
@@ -28,7 +28,8 @@ public class ReservationMenu {
 		System.out.println("에약하기");
 		System.out.println("1. 국내");
 		System.out.println("2. 해외");
-        System.out.println("3. 예약 목록 조회 및 삭제");
+        System.out.println("3. 예약 관리");
+        
 		int areaNum;
 		try {
 			areaNum = Integer.parseInt(br.readLine());
@@ -51,8 +52,8 @@ public class ReservationMenu {
 					        
 					    
 					        
-							if(reservationDAO.select_domestic(br,num)) {
-								reservationDAO.domestic_reservation(num);
+							if(reserVationDAO.select_domestic(br,num)) {
+								reserVationDAO.domestic_reservation(num);
 							}
 					        
 							 
@@ -63,7 +64,7 @@ public class ReservationMenu {
 						}
 
 					}catch (Exception e) {
-						
+						e.printStackTrace();
 					}
 
 
@@ -88,8 +89,8 @@ public class ReservationMenu {
 				        System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
 				        int num = Integer.parseInt(br.readLine());
 				        
-						if(reservationDAO.select_overseas(br,"해외",num)) {
-							reservationDAO.overeas_reservation(num);
+						if(reserVationDAO.select_overseas(br,"해외",num)) {
+							reserVationDAO.overeas_reservation(num);
 						}
 
 					}
@@ -100,6 +101,7 @@ public class ReservationMenu {
 
 				}catch (Exception e) {
 					// TODO: handle exception
+					e.printStackTrace();
 				}
 
 			
@@ -107,19 +109,22 @@ public class ReservationMenu {
 				
 			}
 			else if(areaNum == 3) {
-				System.out.println("1. 예약 목록 조회");
+				System.out.println("1. 예약 목록 조회 및 결제");
 				System.out.println("2. 예약 삭제");
 				int num = Integer.parseInt(br.readLine());
 				if(num == 1) {
-					reservationDAO.showReservation();
+					reserVationDAO.showReservation();
 					//여기
+					
+					
+					// 결제 기능 
 					// 여기에 그 메뉴 가져와
 					paymentDAO.select_CheckPayment();
 				}else if(num == 2) {
 					System.out.println("삭제할 번호를 입력하세요");
 					int num2  = Integer.parseInt(br.readLine());
-					reservationDAO.showReservation();
-					reservationDAO.deleteReservation(num2);
+					reserVationDAO.showReservation();
+					reserVationDAO.deleteReservation(num2);
 				}
 			}
 

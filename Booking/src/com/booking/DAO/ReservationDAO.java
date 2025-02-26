@@ -132,6 +132,7 @@ public class ReservationDAO {
 	        // 운영 여부 체크
 	        boolean isOpen = openCheck(accommodationDAO.getAccommodationID(num));
 	        
+	        this.reservation_number = mem;
 	        this.accommodation_ID = num;
 
 	        // 예약 가능 여부 확인
@@ -181,7 +182,8 @@ public class ReservationDAO {
 	        int allowedMem = accommodationDAO.getAllowedMem(mem);
 	        boolean isMemValid = memCheck(num, mem, allowedMem); // 인원 수 체크
 
-	        
+
+	        this.reservation_number = mem;
 	        this.accommodation_ID = num;
 	        // 운영 여부 체크
 	        boolean isOpen = openCheck(accommodationDAO.getAccommodationID(num));
@@ -221,7 +223,7 @@ public class ReservationDAO {
 							+ "ACCOMMODATION_ID, "
 							+ "RESERVATION_START_DATE, "
 							+ "RESERVATION_END_DATE, "
-							+ "RESERVATION_PRICE"
+							+ "RESERVATION_PRICE, "
 							+ "RESERVATION_NUMBER)"
 							+ "VALUES (RESERVATION_SEQ.NEXTVAL, ?, ?, ?, ?, ?,?)";
 
@@ -282,7 +284,7 @@ public class ReservationDAO {
 							+ "ACCOMMODATION_ID, "
 							+ "RESERVATION_START_DATE, "
 							+ "RESERVATION_END_DATE, "
-							+ "RESERVATION_PRICE"
+							+ "RESERVATION_PRICE, "
 							+ "RESERVATION_NUMBER)"
 							+ "VALUES (RESERVATION_SEQ.NEXTVAL, ?, ?, ?, ?, ?,?)";
 

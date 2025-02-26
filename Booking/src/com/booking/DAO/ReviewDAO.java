@@ -108,12 +108,12 @@ public class ReviewDAO {
 						if(s_num == review.getReview_ID()) {
 							System.out.println("수정할 내용을 입력하세요");
 							review_content = br.readLine();
-							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE USER_ID=?";
+							sql ="UPDATE REVIEW SET REVIEW_CONTENT=? WHERE USER_ID=? AND REVIEW_ID=?";
 							pstmt = conn.prepareStatement(sql);
 
 							pstmt.setString(1, review_content);
 							pstmt.setString(2, ID);
-							
+							pstmt.setInt(3, s_num);
 
 							int update = pstmt.executeUpdate();
 							if(update == 1) {
@@ -129,6 +129,7 @@ public class ReviewDAO {
 						}
 					}catch(NumberFormatException  | InputMismatchException e)
 					{
+						
 						System.out.println("목록 내 번호만 입력하세요.");
 					}
 					finally {

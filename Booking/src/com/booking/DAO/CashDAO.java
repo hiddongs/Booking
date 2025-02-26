@@ -12,6 +12,7 @@ import com.dbutil.DBUtil;
 
 public class CashDAO {
 	
+	static UserDAO userDAO;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public void chargeCash(String ID, int cash, BufferedReader br) {
@@ -21,7 +22,8 @@ public class CashDAO {
 
 			try {
 				conn = DBUtil.getConnection();
-			    sqlU =  "UPDATE \"USER\" SET CASH =? WHERE USER_ID=?";
+				// 기존 금액 유지함녀서 충전 기능 추가
+			    sqlU =  "UPDATE \"USER\" SET CASH = CASH + ? WHERE USER_ID=?";
 			    pstmtU = conn.prepareStatement(sqlU);
 			    pstmtU.setInt(1, cash);
 			    pstmtU.setString(2, ID);
@@ -48,7 +50,7 @@ public class CashDAO {
 
 
 	
-	public void showCash(String ID, int cash) {
+	public void showCash(String ID) {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -59,10 +61,10 @@ public class CashDAO {
 			conn = DBUtil.getConnection();
 			   
 			System.out.println("사용자 보유 금액 확인");
-			sql = "SELECT CASH FROM \"USER\" WHERE USER_ID=?";
+			sql = "SELECT USER_ID, CASH FROM \"USER\" WHERE USER_ID=?";
 			pstmt = conn.prepareStatement(sql);
 		//	pstmt.setString(1,user.getID());
-		    pstmt.setString(1,UserDAO.getCurrentUserID());
+		    pstmt.setString(1,ID);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				do {
