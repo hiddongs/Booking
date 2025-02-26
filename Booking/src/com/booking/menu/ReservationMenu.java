@@ -19,6 +19,7 @@ public class ReservationMenu {
 	ReservationDAO reservationDAO;
 	User user;
 	PaymentDAO paymentDAO;
+	PaymentMenu paymentMenu;
 	
 //	public ReservationMenu()
 //	{
@@ -102,8 +103,6 @@ public class ReservationMenu {
 					// TODO: handle exception
 				}
 
-			
-				
 				
 			}
 			else if(areaNum == 3) {
@@ -115,6 +114,10 @@ public class ReservationMenu {
 					//여기
 					// 여기에 그 메뉴 가져와
 					paymentDAO.select_CheckPayment();
+					paymentMenu.P_menu(br, null, user, null);
+					
+					
+					
 				}else if(num == 2) {
 					System.out.println("삭제할 번호를 입력하세요");
 					int num2  = Integer.parseInt(br.readLine());

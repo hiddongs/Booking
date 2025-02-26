@@ -14,6 +14,8 @@ import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Admin;
 import com.booking.member.Coupon;
+import com.booking.member.Payment;
+import com.booking.member.Reservation;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
@@ -23,10 +25,10 @@ import com.booking.menu.UserMenu;
 
 public class Main {
 
-	static BufferedReader br;
+	BufferedReader br;
 	static Admin admin;
 	static UserDAO userDAO;
-	static User user;
+	User user;
 	static com.booking.member.Review review;
 	static ReviewDAO reviewDAO;
 	static Accommodation accommodation; 
@@ -38,7 +40,8 @@ public class Main {
 	static CouponDAO couponDAO;
 	static PaymentDAO paymentDAO;
 	static PaymentMenu paymentMenu;
-	
+	Payment payment;
+	Reservation reservation;
 	
 	
 	public Main(){
@@ -50,10 +53,19 @@ public class Main {
 
 		couponDAO = new CouponDAO();
 		reviewDAO = new ReviewDAO();
+		
+	
+		
+		
 
 		callMenu();
 	}
-
+public Main(BufferedReader br, Payment payment, User user,Reservation reservation) {
+	this.br = new BufferedReader(br);
+	this.payment = new Payment();
+	this.user = new User();
+	this.reservation = new Reservation();
+}
 	private void callMenu(){
 
 
@@ -100,7 +112,7 @@ public class Main {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
 						UserDAO.setCurrentUserID(ID);
-
+						// 객체
 
 						System.out.println("숙소 메뉴 입니다.");
 						AccommodationMenu accommodationMenu = new AccommodationMenu();
@@ -111,7 +123,7 @@ public class Main {
 
 						//UserMenu userMenu = new UserMenu();
 						//userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
-
+						
 					
 					}
 				} catch (Exception e) {
