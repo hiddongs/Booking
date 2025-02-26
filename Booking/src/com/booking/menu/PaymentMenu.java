@@ -61,11 +61,16 @@ public class PaymentMenu {
 				PaymentDAO paymentDAO = new PaymentDAO(user, reservation);
 				paymentDAO.Check_cashandPoint(br, user_id);
 				
-				
-					
+	
 			}else if(choice == 3) {
 				// 3.현금+쿠폰
+				
+				
+				
+				
+				
 			}else if(choice == 4) {
+				// 4. 현금+포인트+쿠폰
 				
 			}
 		}
