@@ -82,7 +82,7 @@ public class ReviewDAO {
 
 	}
 	// 사용자 리뷰 수정
-	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) {
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -98,7 +98,7 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-					review = reviewDAO.showReview(ID);
+					review = showReview(ID);
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
 					

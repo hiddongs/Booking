@@ -38,8 +38,15 @@ public class Main {
 	static CouponDAO couponDAO;
 	static PaymentDAO paymentDAO;
 	static PaymentMenu paymentMenu;
+	static Enum grade;
 	
 	
+	public Main(User user,BufferedReader br, Enum grade) {
+		this.user = user;
+		this.br = br;
+		this.grade = grade;
+	
+	}
 	
 	public Main(){
 		br = new BufferedReader(new InputStreamReader(System.in));
@@ -99,14 +106,15 @@ public class Main {
 					else if((user = userDAO.login(ID, passwd)) != null) {
 						loginStatus = true;
 						System.out.println("로그인이 완료되었습니다.");
+						
 						UserDAO.setCurrentUserID(ID);
 
-
-						System.out.println("숙소 메뉴 입니다.");
-						AccommodationMenu accommodationMenu = new AccommodationMenu();
+						
+						
+						AccommodationMenu accommodationMenu = new AccommodationMenu(user, br, grade);
 						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
 						
-						//UserMenu userMenu = new UserMenu();
+						
 						//userMenu.U_Menu(br, user, userDAO);
 
 						//UserMenu userMenu = new UserMenu();

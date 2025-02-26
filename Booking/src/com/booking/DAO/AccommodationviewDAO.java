@@ -1,5 +1,6 @@
 package com.booking.DAO;
 
+import java.awt.image.DataBufferInt;
 import java.io.BufferedReader;
 
 import java.sql.Connection;
@@ -12,11 +13,7 @@ import com.booking.accommodation.Accommodation;
 import com.dbutil.DBUtil;
 
 public class AccommodationviewDAO {
-<<<<<<< HEAD
-	// 국내
-=======
-	// 국내만 보여주기
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 	public void selectdomesticInfo() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -24,12 +21,12 @@ public class AccommodationviewDAO {
 		String sql = null;
 		
 		try {
+
 			conn = DBUtil.getConnection();
-<<<<<<< HEAD
-			sql = "select * from accommodation where location_name != '해외'";
-=======
+			
+
 			sql = "select * from accommodation where location_name != '해외' order by accommodation_id desc";
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			System.out.println("================================================");
@@ -61,7 +58,7 @@ public class AccommodationviewDAO {
 			DBUtil.executeClose(rs, pstmt, conn);
 		}
 	}
-<<<<<<< HEAD
+
 	
 	// 해외
 		public void selectOverseasInfo() {
@@ -99,7 +96,7 @@ public class AccommodationviewDAO {
 			}
 		}
 	
-=======
+
 	// 해외만 보여주기
 		public void selectoverseasInfo() {
 			Connection conn = null;
@@ -140,7 +137,7 @@ public class AccommodationviewDAO {
 				DBUtil.executeClose(rs, pstmt, conn);
 			}
 		}
->>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
+
 	public void selectDetailInfo(int accommodation_id) {
 		// 숙소 상세 정보 보기
 		// 정보 : 숙소ID(시퀀스), 숙소이름, 설명, 가격, 추천계절, 숙소 정원

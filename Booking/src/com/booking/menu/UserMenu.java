@@ -14,25 +14,41 @@ import com.booking.member.User;
 public class UserMenu {
 
 //	private BufferedReader br = null;
-	static User user;
-	static Review review;
+	BufferedReader br;
+	User user;
+	
+	Review review;
 	static UserDAO userDAO;
     static CashDAO cashDAO;
-    static ReviewDAO reviewDAO;
+    ReviewDAO reviewDAO = new ReviewDAO();
     static CouponDAO couponDAO;
     
   
    
   
+	public UserMenu(BufferedReader br, User user) {
+		// TODO Auto-generated constructor stub
+		this.br = br;
+		this.user = user;
+	}
+
+	public UserMenu(BufferedReader br, Review review) {
+	
+		this.review = review;
+		this.br= br;
+		
+	}
+
+
+
 	public void u_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
 			           ,CouponDAO couponDAO,String ID)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
-		UserMenu.user = user;
-		UserMenu.review = review;
+		this.user = user;
+		this.review = review;
 		UserMenu.userDAO = userDAO;
 		UserMenu.cashDAO = cashDAO;
-		UserMenu.reviewDAO = reviewDAO;
 		UserMenu.couponDAO = couponDAO;
 		
 		
@@ -100,6 +116,7 @@ public class UserMenu {
 				else if(no == 3) {
 					
 					try {
+						
 						System.out.println("등급 확인");
 						Enum grade = user.getGrade();
 						userDAO.checkGrade(ID,grade);
@@ -149,9 +166,11 @@ public class UserMenu {
 						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
 						char answer = br.readLine().charAt(0);
 						if(answer == 'y') {
+							ID = UserDAO.getCurrentUserID();
+							review = reviewDAO.showReview(ID);
 							int review_ID = review.getReview_ID();
 							String review_content = review.getReview_content();
-							reviewDAO.manageReview(ID, br,review_ID, review_content,reviewDAO);
+							reviewDAO.manageReview(ID, br,review_ID, review_content);
 						}else if(answer == 'n') {
 							
 						}
