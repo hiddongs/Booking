@@ -16,7 +16,7 @@ public class ReservationMenu {
 	static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
     ReservationDAO reserVationDAO = new ReservationDAO();
-	
+	PaymentMenu paymentMenu = new PaymentMenu();
 	User user;
 	PaymentDAO paymentDAO;
 	
@@ -120,13 +120,15 @@ public class ReservationMenu {
 						System.out.println("2. 예약 삭제");
 						int num = Integer.parseInt(br.readLine());
 						if(num == 1) {
-							reserVationDAO.showReservation();
+							
+							paymentMenu.P_menu(br, null, user, null);
+							
 							//여기
 
 
 							// 결제 기능 
 							// 여기에 그 메뉴 가져와
-							paymentDAO.select_CheckPayment();
+							
 						}else if(num == 2) {
 							System.out.println("삭제할 번호를 입력하세요");
 							int num2  = Integer.parseInt(br.readLine());

@@ -4,9 +4,11 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.PaymentDAO;
+import com.booking.DAO.ReservationDAO;
 import com.booking.DAO.UserDAO;
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Payment;
@@ -21,24 +23,37 @@ public class PaymentMenu {
 	static UserDAO userDAO;
 	static Accommodation accommodation;
 	static AccommodationviewDAO accommodationviewDAO;
-	
+	static ReservationDAO reservationDAO;
 		
-	public void P_menu(BufferedReader br, Payment payment, User user, Accommodation accommodation) throws NumberFormatException, IOException {
-		
-		PaymentMenu.payment = payment;
-		PaymentMenu.accommodationviewDAO = new AccommodationviewDAO();
-		PaymentMenu.paymentDAO = new PaymentDAO(user); // user객체를 전달하여 paymentDAO 생성
-	
-		
+	public void P_menu(BufferedReader br, Payment payment, User user, Accommodation accommodation) {
 		
 		while (true) {
 			System.out.println("결제 메뉴입니다.");
 			System.out.println("1.예약현황 보기");
-			int no = Integer.parseInt(br.readLine());
-			if(no == 1) {
-				String user_id = user.getID();
-				paymentDAO.select_procesPayment();
+			int no;
+			try {
+				no = Integer.parseInt(br.readLine());
+				if(no == 1) {
+					
+					reservationDAO.showReservation();
+					
+					int payNum = Integer.parseInt(br.readLine());
+					List<Integer> list = reservationDAO.reservationIDlist();
+					if(list.contains(payNum)) {
+						// 결제 진행
+						
+					}
+					
+					paymentDAO.select_procesPayment();
+				}
+				else if (no == 2) {
+					paymentDAO.select_CheckPayment();
+				}
+			} catch (NumberFormatException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
 		}
 	}
 	
