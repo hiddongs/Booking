@@ -25,6 +25,8 @@ public class ReservationMenu {
 //		reservationDAO = new ReservationDAO(user);
 //	}
 	public void reservationMenu() {
+		
+		while(true) {
 		System.out.println("에약하기");
 		System.out.println("1. 국내");
 		System.out.println("2. 해외");
@@ -74,7 +76,7 @@ public class ReservationMenu {
 			}
 			else if(areaNum == 2) {
 				
-				
+				while(true) {
 				try {
 					
 					System.out.println("1. 해외 예약");
@@ -91,48 +93,62 @@ public class ReservationMenu {
 				        
 						if(reserVationDAO.select_overseas(br,"해외",num)) {
 							reserVationDAO.overeas_reservation(num);
+							break;
 						}
 
 					}
 					else if(sugNum == 2) { // 추천 여행지 메뉴판
 						System.out.println("추천 여행지 보기");
 						accommodationDAO.suggest_accommodation(br, "해외");
+						break;
 					}
 
 				}catch (Exception e) {
 					// TODO: handle exception
-					e.printStackTrace();
+				System.err.println("1 아니면 2 숫자만 입력하세요 ");
+				continue;
 				}
 
 			
-				
-				
-			}
-			else if(areaNum == 3) {
-				System.out.println("1. 예약 목록 조회 및 결제");
-				System.out.println("2. 예약 삭제");
-				int num = Integer.parseInt(br.readLine());
-				if(num == 1) {
-					reserVationDAO.showReservation();
-					//여기
-					
-					
-					// 결제 기능 
-					// 여기에 그 메뉴 가져와
-					paymentDAO.select_CheckPayment();
-				}else if(num == 2) {
-					System.out.println("삭제할 번호를 입력하세요");
-					int num2  = Integer.parseInt(br.readLine());
-					reserVationDAO.showReservation();
-					reserVationDAO.deleteReservation(num2);
+
 				}
 			}
+			else if(areaNum == 3) {
+				while(true) {
+					try {
+						System.out.println("1. 예약 목록 조회 및 결제");
+						System.out.println("2. 예약 삭제");
+						int num = Integer.parseInt(br.readLine());
+						if(num == 1) {
+							reserVationDAO.showReservation();
+							//여기
+
+
+							// 결제 기능 
+							// 여기에 그 메뉴 가져와
+							paymentDAO.select_CheckPayment();
+						}else if(num == 2) {
+							System.out.println("삭제할 번호를 입력하세요");
+							int num2  = Integer.parseInt(br.readLine());
+							reserVationDAO.showReservation();
+							reserVationDAO.deleteReservation(num2);
+							break;
+						}
+					}catch(Exception e) {
+						System.err.println("1에서 2 숫자만 입력하세요.");
+						continue;
+
+					}
+				}
+				}
 
 		}catch(Exception e) {
 
+			System.out.println("1 ~ 3 숫자만 입력하세요.");
+			continue;
 		}
 
-
+		}
 	}
-	
+
 }

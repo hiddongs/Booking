@@ -158,8 +158,8 @@ public class UserMenu {
 						}
 						
 					}catch(NumberFormatException e) {
-						e.printStackTrace();
-						System.out.println("숫자만 입력하세요 ");
+						
+						System.err.println("숫자만 입력하세요 ");
 
 						
 					}
@@ -213,7 +213,6 @@ public class UserMenu {
 		}catch(Exception e) {
 			System.out.println("오류발생");
 
-			e.printStackTrace();
 		}
 	} // userMenu	
 } // class

@@ -14,6 +14,7 @@ import com.booking.accommodation.Accommodation;
 import com.booking.member.Reservation;
 import com.booking.member.Review;
 import com.booking.member.User;
+import com.dbutil.DBUtil;
 
 public class AccommodationMenu { 
 	private BufferedReader br;
@@ -68,12 +69,12 @@ public class AccommodationMenu {
 				System.out.println("==========================================");
 				System.out.println("          🌟 W O W 🌟");
 				System.out.println("=========================================");
-				  System.out.println(" __      __________  __      __ ");
-			        System.out.println("/  \\    /  \\_____  \\/  \\    /  \\");
-			        System.out.println("\\   \\/\\/   //   |   \\   \\/\\/   /");
-			        System.out.println(" \\        //    |    \\        / ");
-			        System.out.println("  \\__/\\  / \\_______  /\\__/\\  /  ");
-			        System.out.println("       \\/          \\/      \\/");
+				System.out.println(" __      __________  __      __ ");
+				System.out.println("/  \\    /  \\_____  \\/  \\    /  \\");
+				System.out.println("\\   \\/\\/   //   |   \\   \\/\\/   /");
+				System.out.println(" \\        //    |    \\        / ");
+				System.out.println("  \\__/\\  / \\_______  /\\__/\\  /  ");
+				System.out.println("       \\/          \\/      \\/");
 
 				System.out.println("=========================================");
 
@@ -95,6 +96,7 @@ public class AccommodationMenu {
 
 
 
+
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
 					System.out.println("1.국내 / 2.해외 선택하세요");
@@ -103,60 +105,75 @@ public class AccommodationMenu {
 						// 국내 숙소만 보여줘
 						if (num == 1) {
 							accommodationviewDAO.selectdomesticInfo();
-							System.out.println("숙소 상세정보 보시겠습니까? ( y / n ) ");
-							try {
-								char answer = br.readLine().charAt(0);
+							while(true) {
+								System.out.println("숙소 상세정보 보시겠습니까? ( y / n ) ");
+								try {
+									char answer = br.readLine().charAt(0);
 
 
-								if(answer == 'y') {
-									while(true) {
-										try {
-											System.out.print("선택한 숙소 번호 >");
-											int num1 = Integer.parseInt(br.readLine());
-											System.out.println("============================");
-											accommodationviewDAO.selectDetailInfo(num1);
-											// 생성하고 다음 메뉴 부르기(reviewMenu)
-											ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
-											reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
-											break;
-										}catch(Exception e) {
-											System.err.println("번호 형식으로 입력하세요 ! ! !");
-											continue;
+									if(answer == 'y') {
+										while(true) {
+											try {
+												System.out.print("선택한 숙소 번호 >");
+												int num1 = Integer.parseInt(br.readLine());
+												System.out.println("============================");
+												accommodationviewDAO.selectDetailInfo(num1);
+												// 생성하고 다음 메뉴 부르기(reviewMenu)
+												ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
+												reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
+												break;
+											}catch(Exception e) {
+												System.err.println("번호 형식으로 입력하세요 ! ! !");
+												continue;
+											}
 										}
+									}else if(answer == 'n') {
+
+										AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
+										accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+										break;
 									}
-								}else if(answer == 'n') {
 
+								}catch(Exception e) {
+									System.err.println("y/n을 입력하세요");
+									continue;
 								}
-
-							}catch(Exception e) {
-								System.err.println("y/n을 입력하세요");
 							}
-
 							// 해외숙소만 보여주기
 						}else if(num == 2) {
 							accommodationviewDAO.selectOverseasInfo();
 							System.out.println("숙소 상세정보 보시겠습니까? ( y / n ) ");
 							char answer2 = br.readLine().charAt(0);
 
-							if(answer2 == 'y') {
-								System.out.print("선택한 숙소 번호 >");
-								int num2 = Integer.parseInt(br.readLine());
-								System.out.println("============================");
-								accommodationviewDAO.selectDetailInfo(num2);
-								ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
-								reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
-							}else if(answer2 == 'n') {
 
+							if(answer2 == 'y') {
+								while(true) {
+									System.out.print("선택한 숙소 번호 >");
+
+									try {
+										int num2 = Integer.parseInt(br.readLine());
+										System.out.println("============================");
+										accommodationviewDAO.selectDetailInfo(num2);
+										ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
+										reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
+										break;
+									}catch(NumberFormatException e) {
+										System.out.println("숫자만 입력하세요");
+										continue;
+									}
+								}
+							}else if(answer2 == 'n') {
+								AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
+								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
 							}
 						}else {
 							System.out.println("잘못된 선택입니다.");
 						}
 					} catch (NumberFormatException e) {
-						e.printStackTrace();
+
 						System.out.println("숫자만 입력하세요 !");
 					}
 
-					System.out.println("1.국내 2.해외");
 
 					int num1 = Integer.parseInt(br.readLine());
 
@@ -176,33 +193,15 @@ public class AccommodationMenu {
 					//상세 글 한번 보기
 					// 목록에서 선택할 글 번호 확인
 					// (숙소정보 한번 더 보여주기)
-					System.out.println("국내 숙소 정보");
-					accommodationviewDAO.selectdomesticInfo();
-					System.out.println("=============================");
-
-
-					System.out.println("해외 숙소 정보");
-					accommodationviewDAO.selectoverseasInfo();
-					System.out.println("=============================");
-					System.out.print("선택한 숙소 번호 >");
-					int num = Integer.parseInt(br.readLine());
-					System.out.println("============================");
-					accommodationviewDAO.selectDetailInfo(num);
-
-
-				}	else if(no == 2) {
-					AccommodationDAO accommodationDAO = new AccommodationDAO();
-
+			
+				
 					System.out.println();
-					System.out.println("예약을 위해 국내 / 해외 선택하세요.");
-					System.out.println("1번을 누르면 [국내] 2번을 누르면 [해외] 입니다 ");
-					System.out.println();
+				    
 					reservationMenu.reservationMenu();
 
 
 
-				}
-
+				}	
 
 
 				else if(no == 3 ) {
@@ -216,8 +215,6 @@ public class AccommodationMenu {
 			} 
 		}catch(NumberFormatException e){
 			System.out.println("[숫자만 입력 가능]");
-		}finally {
-
 		}
 
 
@@ -229,7 +226,7 @@ public class AccommodationMenu {
 				System.out.println("> 숙소 정보 확인하시겠습니까? 1. 예 / 2. 아니오 [1 or 2 중에서 선택해주세요]");
 				int detailnum = Integer.parseInt(br.readLine());
 				// 숙소정보 확인하시겠습니까?
-				
+
 				try {
 					if (detailnum == 1) {
 						System.out.print("숙소번호 선택 >");
