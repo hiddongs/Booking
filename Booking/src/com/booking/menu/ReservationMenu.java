@@ -109,8 +109,7 @@ public class ReservationMenu {
                             int num = Integer.parseInt(br.readLine());
 
                             if (num == 1) {
-//                                break; // 있으면 안되고 
-                               
+//                                break; // 있으면 안되고                          
                                 PaymentMenu paymentMenu = new PaymentMenu(user, reservation, paymentDAO);
                                 paymentMenu.P_menu(br, paymentDAO, payment, user, reservation); // 결제메뉴호출
                             
