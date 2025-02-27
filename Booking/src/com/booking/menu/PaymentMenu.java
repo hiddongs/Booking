@@ -16,30 +16,33 @@ import com.booking.member.Payment;
 import com.booking.member.Reservation;
 import com.booking.member.User;
 
+
 public class PaymentMenu {
 
 	private Reservation reservation;
 	private User user;
-	CashDAO cashDAO = new CashDAO();
+	private CashDAO cashDAO = new CashDAO();
+	private PaymentDAO PaymentDAO; // 선언
 
-
-	//결제(결제, 사용자, 숙소
+	//결제 메뉴 생성자(결제, 사용자, 숙소)
 	public PaymentMenu(User user, Reservation reservation, PaymentDAO paymentDAO) {
 		this.user=user;
 		this.reservation= reservation;
-		this.paymentDAO = paymentDAO;
+		this.paymentDAO = paymentDAO; // 객체 할당
+		this.reserVationDAO = reserVationDAO;
 	}
 
-	static Payment payment;
 	static PaymentDAO paymentDAO;
 	static UserDAO userDAO;
-	static ReservationDAO reserVationDAO;
+	ReservationDAO reserVationDAO = new ReservationDAO();
+	Payment payment = new Payment();
+	// PaymentMenu paymentmenu = new PaymentMenu(user,reservation,paymentDAO);
 	
-	public void P_menu(BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation, String ID) throws NumberFormatException, IOException, ClassNotFoundException {
-		PaymentMenu.payment = payment;
+	public void P_menu(BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation) throws NumberFormatException, IOException, ClassNotFoundException {
 		PaymentMenu.paymentDAO = new PaymentDAO(user, reservation); // user객체를 전달하여 paymentDAO 생성
 
 		// 현재 로그인한 사용자 아이디 가져오기
+		String ID;
 		if (user != null && user.getID() != null) {
 			ID = user.getID(); // user객체에서 가져옴
 		}else {
@@ -58,6 +61,8 @@ public class PaymentMenu {
 			if (no == 1) {  // 예약 현황 조회
 				// 예약현황 보기
 				// 예약 현황을 보여주고 예약 번호 입력 받기
+				// 호출이 된 것
+				reserVationDAO.showReservation(); // 예약 목록 보여주기
 				System.out.println("예약 번호를 입력해주세요:");
 				int reservationId = Integer.parseInt(br.readLine());
 
@@ -101,17 +106,22 @@ public class PaymentMenu {
 						cashDAO.chargeCash(ID, userCash, br);
 					}
 				}else if(paymentMethod == 2) {
-					// 2.현금 + 포인트 결제
-
-
+					// 2. 현금 + 포인트 결제
+					
+					
 				}else if(paymentMethod == 3) {
-					// 3.현금+쿠폰
+					// 3. 현금 + 쿠폰
+					// 쿠폰 있는지 확인하고
+					
+					
+					
           // 결제 내역 보기
 	     }else if (no == 2) {
 	System.out.println("결제내역 조회");
 	//결제 로직 조회
 	paymentDAO.select_PaymentHistory();
 }
+				break;
 				} 
 
 			}

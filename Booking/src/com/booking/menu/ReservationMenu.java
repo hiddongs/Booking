@@ -8,6 +8,8 @@ import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.PaymentDAO;
 import com.booking.DAO.ReservationDAO;
+import com.booking.member.Payment;
+import com.booking.member.Reservation;
 import com.booking.member.User;
 
 public class ReservationMenu {
@@ -16,10 +18,22 @@ public class ReservationMenu {
     static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
     ReservationDAO reserVationDAO = new ReservationDAO();
-   //aymentMenu paymentMenu = new PaymentMenu(user, null, paymentDAO);
-    User user;
-    PaymentDAO paymentDAO;
-
+    //
+    User user; // 객체선언
+    Reservation reservation; // 객체 선언
+    PaymentDAO paymentDAO; // 객체 선언
+    Payment payment;
+    
+ 
+    public ReservationMenu(){}
+	public ReservationMenu(User user, Reservation reservation, PaymentDAO paymentDAO, Payment payment) {
+		super();
+		this.user = user;
+		this.reservation = reservation;
+		this.paymentDAO = paymentDAO;
+		this.payment = payment;
+	}
+    
     public void reservationMenu() {
         while (true) {
             System.out.println("예약하기");
@@ -95,12 +109,15 @@ public class ReservationMenu {
                             int num = Integer.parseInt(br.readLine());
 
                             if (num == 1) {
-                               //paymentMenu.P_menu(br, null, user, null);
-                                break;
+//                                break; // 있으면 안되고 
+                               
+                                PaymentMenu paymentMenu = new PaymentMenu(user, reservation, paymentDAO);
+                                paymentMenu.P_menu(br, paymentDAO, payment, user, reservation); // 결제메뉴호출
+                            
                             } else if (num == 2) {
                                 System.out.println("삭제할 번호를 입력하세요:");
                                 int num2 = Integer.parseInt(br.readLine());
-
+                                // 객체 (소문자)
                                 reserVationDAO.showReservation();
                                 reserVationDAO.deleteReservation(num2);
                                 break;
@@ -109,7 +126,10 @@ public class ReservationMenu {
                             }
                         } catch (NumberFormatException | IOException e) {
                             System.err.println("숫자만 입력하세요.");
-                        }
+                        } catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }
                 } else {
                     System.err.println("1 ~ 3 사이의 숫자만 입력하세요.");
@@ -119,4 +139,6 @@ public class ReservationMenu {
             }
         }
     }
+
+
 }
