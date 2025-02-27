@@ -1,6 +1,7 @@
 package com.booking.DAO;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -139,13 +140,12 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 			try {
 				if(conn!=null)conn.rollback();
 			}
 			catch(SQLException e1){
-				
-				e1.printStackTrace();
+			
 			}
 		}finally {
 			DBUtil.executeClose(null, pstmtU, conn);
@@ -173,7 +173,7 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 		try {	conn.rollback(); }catch(SQLException e1){}
 		finally {DBUtil.executeClose(null, pstmtU, conn);}
 		}
@@ -208,7 +208,7 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println("제대로된 형식으로 입력하세요 !");
 
 		}finally {
 			DBUtil.executeClose(null, pstmtU, conn);
@@ -245,13 +245,7 @@ public class UserDAO {
 		}finally {DBUtil.executeClose(null, pstmtS, conn);}
 	}
 	
-	public int showCash(String ID, int cash) {
-		return 0;
-	}
-	
-    public void chargeCash(String ID){
-		
-	}
+
     public void deleteUser(String ID,BufferedReader br) {
     	Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -285,7 +279,7 @@ public class UserDAO {
 					
 				}
 			} catch (InputMismatchException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
-				e.printStackTrace();
+				
 				System.out.println("y/n글자만 입력하세요");
 			} 
 			
@@ -358,6 +352,32 @@ public class UserDAO {
             e.printStackTrace();
         }
         return id; // 숙소가 없으면 null 반환
+    }
+    
+    public void showAllUser() {
+    	   
+           String sql = "SELECT USER_ID FROM \"USER\"";
+
+           try (
+        		   Connection conn = DBUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                
+               ResultSet rs = pstmt.executeQuery();
+
+               if (rs.next()) {
+            	   do
+            	   {
+            		   
+            		   System.out.println("USER ID : " + rs.getString("USER_ID"));
+                   
+            	   }
+            	   while(rs.next());
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           
     }
    
 }

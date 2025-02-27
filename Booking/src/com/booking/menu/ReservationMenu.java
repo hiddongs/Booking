@@ -12,125 +12,143 @@ import com.booking.member.User;
 
 public class ReservationMenu {
 
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static AccommodationDAO accommodationDAO = new AccommodationDAO();
+   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+   static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
-	static ReservationDAO reserVationDAO = new ReservationDAO();
-	ReservationDAO reservationDAO;
-	User user;
-	PaymentDAO paymentDAO;
-	PaymentMenu paymentMenu;
-	
-//	public ReservationMenu()
-//	{
-//		reservationDAO = new ReservationDAO(user);
-//	}
-	public void reservationMenu() {
-		System.out.println("에약하기");
-		System.out.println("1. 국내");
-		System.out.println("2. 해외");
-        System.out.println("3. 예약 목록 조회 및 삭제");
-		int areaNum;
-		try {
-			areaNum = Integer.parseInt(br.readLine());
-		
-			
-			
-			if(areaNum == 1) {
-				System.out.println("국내 예약");
-				try {
-					System.out.println("1. 국내 여행지");	
-					System.out.println("2. 추천여행지 보기");
-					int sugNum = Integer.parseInt(br.readLine());
-					try {
-						if(sugNum == 1) {
-							System.out.println("국내 여행지 목록");
-							 accommodationViewDAO.selectdomesticInfo();
-							 // 숙소 번호 체크
-					        System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
-					        int num = Integer.parseInt(br.readLine());
-					        
-					    
-					        
-							if(reservationDAO.select_domestic(br,num)) {
-								reservationDAO.domestic_reservation(num);
-							}
-					        
-							 
-						}
-						else if(sugNum == 2) { // 추천 여행지 메뉴판
-							System.out.println("추천 여행지 보기");
-							accommodationDAO.suggest_accommodation(br, null);
-						}
+    ReservationDAO reserVationDAO = new ReservationDAO();
+   
+   User user;
+   PaymentDAO paymentDAO;
+   
+//   public ReservationMenu()
+//   {
+//      reservationDAO = new ReservationDAO(user);
+//   }
+   public void reservationMenu() {
+      
+      while(true) {
+      System.out.println("에약하기");
+      System.out.println("1. 국내");
+      System.out.println("2. 해외");
+        System.out.println("3. 예약 관리");
+        
+      int areaNum;
+      try {
+         areaNum = Integer.parseInt(br.readLine());
+      
+         
+         
+         if(areaNum == 1) {
+            System.out.println("국내 예약");
+            try {
+               System.out.println("1. 국내 여행지");   
+               System.out.println("2. 추천여행지 보기");
+               int sugNum = Integer.parseInt(br.readLine());
+               try {
+                  if(sugNum == 1) {
+                     System.out.println("국내 여행지 목록");
+                      accommodationViewDAO.selectdomesticInfo();
+                      // 숙소 번호 체크
+                       System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
+                       int num = Integer.parseInt(br.readLine());
+                       
+                   
+                       
+                     if(reserVationDAO.select_domestic(br,num)) {
+                        reserVationDAO.domestic_reservation(num);
+                     }
+                       
+                      
+                  }
+                  else if(sugNum == 2) { // 추천 여행지 메뉴판
+                     System.out.println("추천 여행지 보기");
+                     accommodationDAO.suggest_accommodation(br, null);
+                  }
 
-					}catch (Exception e) {
-						
-					}
-
-
-				}catch (Exception e) {
-					
-				}
-			}
-			else if(areaNum == 2) {
-				
-				
-				try {
-					
-					System.out.println("1. 해외 예약");
-					System.out.println("2. 추천 여행지 보기");
-					int sugNum = Integer.parseInt(br.readLine());
-					if(sugNum == 1) {
-						System.out.println("1. 해외 예약");
-						System.out.println("해외 여행지 목록");
-						accommodationViewDAO.selectoverseasInfo();
-						
-						 // 숙소 번호 체크
-				        System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
-				        int num = Integer.parseInt(br.readLine());
-				        
-						if(reservationDAO.select_overseas(br,"해외",num)) {
-							reservationDAO.overeas_reservation(num);
-						}
-
-					}
-					else if(sugNum == 2) { // 추천 여행지 메뉴판
-						System.out.println("추천 여행지 보기");
-						accommodationDAO.suggest_accommodation(br, "해외");
-					}
-
-				}catch (Exception e) {
-					// TODO: handle exception
-				}
-
-				
-			}
-			else if(areaNum == 3) {
-				System.out.println("1. 예약 목록 조회");
-				System.out.println("2. 예약 삭제");
-				int num = Integer.parseInt(br.readLine());
-				if(num == 1) {
-					reservationDAO.showReservation();
-					//여기
-					// 여기에 그 메뉴 가져와
-					paymentDAO.select_CheckPayment();
-					paymentMenu.P_menu(br, null, user, null);
-					
-					
-					
-				}else if(num == 2) {
-					System.out.println("삭제할 번호를 입력하세요");
-					int num2  = Integer.parseInt(br.readLine());
-					reservationDAO.showReservation();
-					reservationDAO.deleteReservation(num2);
-				}
-			}
-
-		}catch(Exception e) {
-
-		}
+               }catch (Exception e) {
+                  e.printStackTrace();
+               }
 
 
-	}
-	
+            }catch (Exception e) {
+               
+            }
+         }
+         else if(areaNum == 2) {
+            
+            while(true) {
+            try {
+               
+               System.out.println("1. 해외 예약");
+               System.out.println("2. 추천 여행지 보기");
+               int sugNum = Integer.parseInt(br.readLine());
+               if(sugNum == 1) {
+                  System.out.println("1. 해외 예약");
+                  System.out.println("해외 여행지 목록");
+                  accommodationViewDAO.selectoverseasInfo();
+                  
+                   // 숙소 번호 체크
+                    System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
+                    int num = Integer.parseInt(br.readLine());
+                    
+                  if(reserVationDAO.select_overseas(br,"해외",num)) {
+                     reserVationDAO.overeas_reservation(num);
+                     break;
+                  }
+
+               }
+               else if(sugNum == 2) { // 추천 여행지 메뉴판
+                  System.out.println("추천 여행지 보기");
+                  accommodationDAO.suggest_accommodation(br, "해외");
+                  break;
+               }
+
+            }catch (Exception e) {
+
+            System.err.println("1 아니면 2 숫자만 입력하세요 ");
+            continue;
+            }
+
+         
+
+            }
+         }
+         else if(areaNum == 3) {
+            while(true) {
+               try {
+                  System.out.println("1. 예약 목록 조회 및 결제");
+                  System.out.println("2. 예약 삭제");
+                  int num = Integer.parseInt(br.readLine());
+                  if(num == 1) {
+                     reserVationDAO.showReservation();
+                     //여기
+
+
+                     // 결제 기능 
+                     // 여기에 그 메뉴 가져와
+                     
+                  }else if(num == 2) {
+                     System.out.println("삭제할 번호를 입력하세요");
+                     int num2  = Integer.parseInt(br.readLine());
+                     reserVationDAO.showReservation();
+                     reserVationDAO.deleteReservation(num2);
+                     break;
+                  }
+               }catch(Exception e) {
+                  System.err.println("1에서 2 숫자만 입력하세요.");
+                  continue;
+
+               }
+            }
+            }
+
+      }catch(Exception e) {
+
+         System.out.println("1 ~ 3 숫자만 입력하세요.");
+         continue;
+      }
+
+      }
+   }
+
 }

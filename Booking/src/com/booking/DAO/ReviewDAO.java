@@ -34,11 +34,16 @@ public class ReviewDAO {
 		userid, accomodationid reviewcontent reviewrating
 		REVIEW_CONTENT 
 		숙소 목록 보여준 후 => 리뷰작성
-	 */
+<<<<<<< HEAD
+		 */
+		
+	// 목록 출력
+	// 리뷰 작성
 	// 리뷰 작성
 	// 로그인 되어 있음 -> getUser
 
 	// 목록 출력
+
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	public void insertReview(int USER_ID, int ACCOMMODATION_ID, String REVIEW_CONTENT, int REVIEW_RATING) {
@@ -51,6 +56,7 @@ public class ReviewDAO {
 			//JDBC 수행 1,2 단계
 			conn=DBUtil.getConnection();
 			// 목록 출력
+			// 우선 시퀀스 받아야 함
 			sql = "INSERT INTO REVIEW (REVIEW_ID, ACCOMMODATION_ID, REVIEW_DATE, REVIEW_CONTENT, REVIEW_RATING) VALUES(?,?,?,SYSDATE,?,?)";
 			// JDBC 수행 3단계
 			pstmt = conn.prepareStatement(sql);
@@ -76,7 +82,7 @@ public class ReviewDAO {
 
 	}
 	// 사용자 리뷰 수정
-	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content,ReviewDAO reviewDAO) {
+	public void manageReview(String ID, BufferedReader br, int review_ID, String review_content) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -92,7 +98,7 @@ public class ReviewDAO {
 			conn = DBUtil.getConnection();
 			try {
 				if(num == 1) {
-					review = reviewDAO.showReview(ID);
+					review = showReview(ID);
 					System.out.println("리뷰 수정하기");
 					System.out.println("수정할 리뷰 번호 선택");
 					
@@ -102,12 +108,12 @@ public class ReviewDAO {
 						if(s_num == review.getReview_ID()) {
 							System.out.println("수정할 내용을 입력하세요");
 							review_content = br.readLine();
-							sql ="UPDATE \"REVIEW\" SET REVIEW_CONTENT=? WHERE USER_ID=?";
+							sql ="UPDATE REVIEW SET REVIEW_CONTENT=? WHERE USER_ID=? AND REVIEW_ID=?";
 							pstmt = conn.prepareStatement(sql);
 
 							pstmt.setString(1, review_content);
 							pstmt.setString(2, ID);
-							
+							pstmt.setInt(3, s_num);
 
 							int update = pstmt.executeUpdate();
 							if(update == 1) {
@@ -123,6 +129,7 @@ public class ReviewDAO {
 						}
 					}catch(NumberFormatException  | InputMismatchException e)
 					{
+						
 						System.out.println("목록 내 번호만 입력하세요.");
 					}
 					finally {
@@ -262,15 +269,14 @@ public class ReviewDAO {
 			}else {
 				System.out.println("검색된 숙소 리뷰가 없습니다.");
 			}
-			System.out.println("========================");
+			//System.out.println("========================");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 
 			DBUtil.executeClose(rs, pstmt, conn);
 
-//			DBUtil.executeClose(rs,  pstmt, conn);
 
 		}
-	}
+	} 
 }

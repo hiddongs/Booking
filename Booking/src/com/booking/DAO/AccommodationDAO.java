@@ -140,13 +140,17 @@ public class AccommodationDAO {
 		int accommodation_id = Integer.MIN_VALUE;
 
 		while(true) {
-			System.out.println("관리를 희망하는 숙소를 선택해주세요");
-			accommodation_id = selectAccommodation(br);
-			if(accommodation_id != 0 || accommodation_id != -1) {
-				break;
-			}else {
-				System.out.println("잘못된 숙소번호입니다.");
-				return;
+			try {
+				System.out.println("관리를 희망하는 숙소를 선택해주세요");
+				accommodation_id = selectAccommodation(br);
+				if(accommodation_id != 0 || accommodation_id != -1) {
+					break;
+				}else {
+					System.out.println("잘못된 숙소번호입니다.");
+					return;
+				}
+			}catch(NumberFormatException e) {
+				System.err.println("숫자만 입력 가능합니다.");
 			}
 		}
 

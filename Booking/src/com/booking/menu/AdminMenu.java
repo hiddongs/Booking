@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.booking.DAO.AccommodationDAO;
 import com.booking.DAO.CouponDAO;
 import com.booking.DAO.QnADAO;
+import com.booking.DAO.UserDAO;
 import com.booking.member.Admin;
 import com.booking.member.Coupon;
 import com.booking.member.User;
@@ -18,6 +19,8 @@ public class AdminMenu {
 	User user;
 	Coupon coupon;
 	
+	static UserDAO userDAO = new UserDAO();
+	static CouponDAO couponDAO = new CouponDAO();
 	
 	public AdminMenu(BufferedReader br, Admin admin,User user,Coupon coupon){
 		this.br = br;
@@ -165,7 +168,16 @@ public class AdminMenu {
 					}
 					else if(num == 4) {
 						System.out.println("사용자에게 쿠폰 발급");
-						//coupondao.giveCouponUser(admin);
+						userDAO.showAllUser();
+						System.out.println("쿠폰을 지급할 사용자 아이디를 입력하세요");
+						String ID = br.readLine();
+						
+						
+						coupondao.showAllCoupon(admin.getID());
+						System.out.println("사용자에게 줄 쿠폰 번호를 입력하세요");
+						int coupon_id = Integer.parseInt(br.readLine());
+						couponDAO.giveCouponUser("ADMIN",coupon_id,ID);
+						
 					}
 				}catch (Exception e) {
 					// TODO: handle exception

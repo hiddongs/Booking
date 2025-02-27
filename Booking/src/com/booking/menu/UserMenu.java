@@ -1,7 +1,6 @@
 package com.booking.menu;
 
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.util.InputMismatchException;
 
@@ -15,25 +14,41 @@ import com.booking.member.User;
 public class UserMenu {
 
 //	private BufferedReader br = null;
-	static User user;
-	static Review review;
-	static UserDAO userDAO;
-    static CashDAO cashDAO;
-    static ReviewDAO reviewDAO;
+	BufferedReader br;
+	User user;
+	
+	Review review;
+	UserDAO userDAO = new UserDAO();
+    CashDAO cashDAO = new CashDAO();
+    ReviewDAO reviewDAO = new ReviewDAO();
     static CouponDAO couponDAO;
     
-    
+  
    
   
-	public void u_Menu(BufferedReader br, User user,Review review, UserDAO userDAO, CashDAO cashDAO,ReviewDAO reviewDAO
+	public UserMenu(BufferedReader br, User user) {
+		// TODO Auto-generated constructor stub
+		this.br = br;
+		this.user = user;
+	}
+
+	public UserMenu(BufferedReader br, Review review) {
+	
+		this.review = review;
+		this.br= br;
+		
+	}
+
+
+
+	public void u_Menu(BufferedReader br, User user,Review review, UserDAO udserDAO, CashDAO dcashDAO,ReviewDAO re31viewDAO
 			           ,CouponDAO couponDAO,String ID)  {
 		// TODO Auto-generated method stub 
 		// 사용자 정보 메뉴 
-		UserMenu.user = user;
-		UserMenu.review = review;
-		UserMenu.userDAO = userDAO;
-		UserMenu.cashDAO = cashDAO;
-		UserMenu.reviewDAO = reviewDAO;
+		this.user = user;
+		this.review = review;
+		this.userDAO = userDAO;
+		this.cashDAO = cashDAO;
 		UserMenu.couponDAO = couponDAO;
 		
 		
@@ -47,7 +62,7 @@ public class UserMenu {
 				System.out.println("1. 회원 이름 변경");
                 System.out.println("2. 비밀번호 변경");
                 System.out.println("3. 등급 확인");
-                System.out.println("4. 금액 충전");
+                System.out.println("4. 금액 및 포인트 관리");
                 System.out.println("5. 작성 리뷰 내역");
                 System.out.println("6. 쿠폰 확인");
                 System.out.println("7. 로그아웃");
@@ -62,6 +77,7 @@ public class UserMenu {
 					System.out.println("1. 이름 2. 이메일");
                     int num1 = Integer.parseInt(br.readLine());
 					try {
+						
 						if(num1 == 1) {
 							System.out.println("이름을 변경하세요 : ");
 							String name = br.readLine();
@@ -79,7 +95,8 @@ public class UserMenu {
 							System.out.println("1 ~ 2 의 숫자를 입력하세요");
 							continue;
 						} // if
-					}catch(Exception e) {
+					}catch(NumberFormatException e ) {
+						e.printStackTrace();
 						System.out.println("오로지. 오직. 무조건. [숫자]만 입력하세요");
 						continue;
 					} // catch
@@ -101,6 +118,7 @@ public class UserMenu {
 				else if(no == 3) {
 					
 					try {
+						
 						System.out.println("등급 확인");
 						Enum grade = user.getGrade();
 						userDAO.checkGrade(ID,grade);
@@ -110,14 +128,40 @@ public class UserMenu {
 				}else if(no == 4) {
 
 					try {
-						System.out.println("금액 충전");
-						int cash = user.getCash();
-						System.out.println("충전할 금액을 입력하세요.");
-						cash = Integer.parseInt(br.readLine());
-						cashDAO.chargeCash(ID, cash, br);
-						}catch(NumberFormatException e) {
-						e.printStackTrace();
-						System.out.println("숫자만 입력하세요 ");
+						System.out.println("금액 및 포인트 관리");
+						System.out.println("1. 금액 충전");
+						System.out.println("2. 금액 확인");
+						System.out.println("3. 포인트 확인");
+						int num =Integer.parseInt(br.readLine());
+						
+						try {
+							if(num == 1) {
+								System.out.println("금액 충전");
+								int cash = user.getCash();
+								System.out.println("충전할 금액을 입력하세요.");
+								cash = Integer.parseInt(br.readLine());
+								cashDAO.chargeCash(ID, cash, br);
+								cashDAO.showCash(ID);
+							}
+							else if(num == 2){
+								System.out.println("금액 확인");
+								cashDAO.showCash(ID);
+							}
+							else if(num == 3) {
+								System.out.println("포인트 확인");
+								cashDAO.showPoint(ID);
+							}
+							
+						} catch (Exception e) {
+							// TODO: handle exception
+							e.printStackTrace();
+						}
+						
+					}catch(NumberFormatException e) {
+						
+						System.err.println("숫자만 입력하세요 ");
+
+						
 					}
 			
 				}else if(no == 5) {
@@ -127,9 +171,11 @@ public class UserMenu {
 						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
 						char answer = br.readLine().charAt(0);
 						if(answer == 'y') {
+							ID = UserDAO.getCurrentUserID();
+							review = reviewDAO.showReview(ID);
 							int review_ID = review.getReview_ID();
 							String review_content = review.getReview_content();
-							reviewDAO.manageReview(ID, br,review_ID, review_content,reviewDAO);
+							reviewDAO.manageReview(ID, br,review_ID, review_content);
 						}else if(answer == 'n') {
 							
 						}
@@ -161,12 +207,12 @@ public class UserMenu {
 			}
 
 		}catch(NumberFormatException | IOException e) {
-			e.printStackTrace();	
+			System.err.println("입력 오류 ! ! ! ");	
+			System.err.println("숫자만 입력하세요 !");	
 
 		}catch(Exception e) {
 			System.out.println("오류발생");
 
-			e.printStackTrace();
 		}
 	} // userMenu	
 } // class
