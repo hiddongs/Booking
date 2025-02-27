@@ -188,8 +188,7 @@ public class CouponDAO {
 			DBUtil.executeClose(rs, select_pstmt,conn);
 		}
 	}
-	
-	// 사용자가 보유한 쿠폰 보여주기
+
 	public void showUserCoupon(String ID) {
 		
 		Connection conn = null;
@@ -204,12 +203,6 @@ public class CouponDAO {
 				      "FROM CP_POSSESS cp " +
 				      "LEFT JOIN coupon c ON cp.coupon_id = c.coupon_id " + 
 				      "WHERE cp.user_id = ?";
-
-			
-			
-			
-
-			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ID);
 			
@@ -383,7 +376,7 @@ public class CouponDAO {
 
 	    return couponID;
 	}
-	
+	// 쿠혼아이디를 리스트로
 	 public List<Integer> coupon_ID() {
 	        List<Integer> coupon_ID = new ArrayList<>();
 	        Connection conn = null;
