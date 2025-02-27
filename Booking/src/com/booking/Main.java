@@ -113,14 +113,7 @@ public class Main {
                   
                   AccommodationMenu accommodationMenu = new AccommodationMenu(user, br, grade);
                   accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
-                  
-                  
-                  //userMenu.U_Menu(br, user, userDAO);
-
-                  //UserMenu userMenu = new UserMenu();
-                  //userMenu.U_Menu(br, user, review,userDAO, cashDAO,reviewDAO);
-
-               
+        
                }
             } catch (Exception e) {
                e.printStackTrace();

@@ -61,7 +61,7 @@ public class CashDAO {
 
 		try {
 			conn = DBUtil.getConnection();		   
-			System.out.println("사용자 보유 금액 확인");
+			
 			sql = "SELECT USER_ID, CASH FROM \"USER\" WHERE USER_ID=?";
 			pstmt = conn.prepareStatement(sql);
 		//	pstmt.setString(1,user.getID());
@@ -92,7 +92,7 @@ public class CashDAO {
 	    
 	    try {
 	        conn = DBUtil.getConnection();
-	        System.out.println("사용자 보유 포인트 확인");
+	       
 
 	        String sql = "SELECT POINT FROM \"USER\" WHERE USER_ID=?";
 	        pstmt = conn.prepareStatement(sql);
@@ -187,6 +187,39 @@ public class CashDAO {
 		}
 
 	}
+	public void useCash(String ID,int cash) {
+		Connection conn = null;
+		PreparedStatement pstmtU = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = DBUtil.getConnection();
+			// 기존 금액 유지하면서 포인트 충전 
+		    String sqlU =  "UPDATE \"USER\" SET CASH = CASH - ? WHERE USER_ID=?";
+		    pstmtU = conn.prepareStatement(sqlU);
+		    pstmtU.setInt(1, cash);
+		    pstmtU.setString(2, ID);
+		    int update = pstmtU.executeUpdate();
+		    if(update == 1) {
+		    	conn.commit();
+		    	System.out.println(cash + "원화 사용 성공 !");
+		    }else {
+		    	conn.rollback();
+		    	System.out.println("원화 사용 실패 ! ! ! ");
+		    }
+		    
+		}catch(NumberFormatException | InputMismatchException | ClassNotFoundException | SQLException e1) {
+			
+			e1.printStackTrace();
+			
+			 			    
+		}finally {
+		DBUtil.executeClose(null, pstmtU, conn);
+		}
+
+	}
+        
         
 	
 	public boolean checkPay(int reservation_ID) {

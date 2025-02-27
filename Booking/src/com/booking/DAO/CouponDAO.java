@@ -188,6 +188,8 @@ public class CouponDAO {
 			DBUtil.executeClose(rs, select_pstmt,conn);
 		}
 	}
+	
+	// 사용자가 보유한 쿠폰 보여주기
 	public void showUserCoupon(String ID) {
 		
 		Connection conn = null;
