@@ -97,7 +97,7 @@ public class UserMenu {
 						} // if
 					}catch(NumberFormatException e ) {
 						e.printStackTrace();
-						System.out.println("오로지. 오직. 무조건. [숫자]만 입력하세요");
+						System.err.println("오로지. 오직. 무조건. [숫자]만 입력하세요");
 						continue;
 					} // catch
 				}
@@ -127,6 +127,7 @@ public class UserMenu {
 					}
 				}else if(no == 4) {
 
+					while(true) {
 					try {
 						System.out.println("금액 및 포인트 관리");
 						System.out.println("1. 금액 충전");
@@ -134,38 +135,49 @@ public class UserMenu {
 						System.out.println("3. 포인트 확인");
 						int num =Integer.parseInt(br.readLine());
 						
-						try {
+						
 							if(num == 1) {
+								cashDAO.showCash(ID);
 								System.out.println("금액 충전");
 								int cash = user.getCash();
 								System.out.println("충전할 금액을 입력하세요.");
 								cash = Integer.parseInt(br.readLine());
-								cashDAO.chargeCash(ID, cash, br);
+								if(cash <= 0 ) {
+								    System.err.println("충전하려는 금액은 0원 이상이어야 합니다");
+								    continue;
+								}else 
+								{
+									cashDAO.chargeCash(ID, cash, br);
+								}
 								cashDAO.showCash(ID);
+								break;
 							}
 							else if(num == 2){
 								System.out.println("금액 확인");
 								cashDAO.showCash(ID);
+								break;
 							}
 							else if(num == 3) {
 								System.out.println("포인트 확인");
 								cashDAO.showPoint(ID);
+								break;
+							}
+							else {
+								System.err.println("1 ~ 3 사이의 숫자만 입력하세요.");
+								continue;
 							}
 							
-						} catch (Exception e) {
-							// TODO: handle exception
-							e.printStackTrace();
-						}
-						
 					}catch(NumberFormatException e) {
 						
 						System.err.println("숫자만 입력하세요 ");
+						continue;
 
 						
 					}
+					}
 			
 				}else if(no == 5) {
-					
+					while(true) {
 					try {
 						System.out.println("작성 리뷰 내역 확인");
 						System.out.println("리뷰 관리하시겠습니까? ( y / n )");
@@ -176,17 +188,21 @@ public class UserMenu {
 							int review_ID = review.getReview_ID();
 							String review_content = review.getReview_content();
 							reviewDAO.manageReview(ID, br,review_ID, review_content);
+							break;
 						}else if(answer == 'n') {
 							
 						}
 					} catch (InputMismatchException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
-						e.printStackTrace();
-						System.out.println("y/n글자만 입력하세요");
+						
+						System.err.println("y/n글자만 입력하세요");
+						continue;
 					} 
 					
+					}
 				}else if(no == 6) {
 					System.out.printf("%s 님이 보유하신 쿠폰입니다 \n", ID);
 					couponDAO.showUserCoupon(ID);
+					continue;
 					
 
 				}else if(no == 7) {
@@ -197,11 +213,12 @@ public class UserMenu {
 				}else if(no == 8) {
 
 					userDAO.deleteUser(ID,br);
+					break;
 					
 				}
 
 				else if(no > 8 ) { 
-					System.out.println("1 ~ 8 의 숫자를 입력하세요");
+					System.err.println("1 ~ 8 의 숫자를 입력하세요");
 					continue;
 				}
 			}
@@ -211,7 +228,7 @@ public class UserMenu {
 			System.err.println("숫자만 입력하세요 !");	
 
 		}catch(Exception e) {
-			System.out.println("오류발생");
+			System.err.println("오류발생");
 
 		}
 	} // userMenu	

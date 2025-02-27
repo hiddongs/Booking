@@ -17,7 +17,7 @@ import com.booking.member.Coupon;
 import com.booking.member.User;
 import com.booking.menu.AccommodationMenu;
 import com.booking.menu.AdminMenu;
-import com.booking.menu.PaymentMenu;
+//import com.booking.menu.PaymentMenu;
 import com.booking.menu.UserMenu;
 
 
@@ -37,7 +37,7 @@ public class Main {
    static Coupon coupon;
    static CouponDAO couponDAO;
    static PaymentDAO paymentDAO;
-   static PaymentMenu paymentMenu;
+   //static PaymentMenu paymentMenu;
    static Enum grade;
    
    

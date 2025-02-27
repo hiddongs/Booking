@@ -9,7 +9,7 @@ import com.booking.accommodation.Accommodation;
 import com.booking.member.Payment;
 import com.booking.member.User;
 import com.booking.menu.AdminMenu;
-import com.booking.menu.PaymentMenu;
+//import com.booking.menu.PaymentMenu;
 
 public class Run {
 

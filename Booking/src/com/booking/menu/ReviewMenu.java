@@ -2,6 +2,7 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.ReservationDAO;
@@ -43,18 +44,28 @@ public class ReviewMenu {
 		ReviewMenu.reviewDAO = new ReviewDAO();
 
 
-		try {
+		
 			while(true) {
 				System.out.println("숙소 리뷰 확인하시겠습니까?");
 				System.out.println("1. 예 2. 아니오");
 
 				int no = Integer.parseInt(br.readLine());
 				if(no == 1) {
-					System.out.println("숙소번호 입력하세요>");
-					int num = Integer.parseInt(br.readLine());
 
-					ReviewMenu.reviewDAO.selectdetailReview(num);
+					while(true) {
+					 try {
+			                System.out.print("숙소번호 입력하세요> ");
+			                int num = Integer.parseInt(br.readLine()); // int로 변환
 
+			                // 정상적인 정수 입력 시 실행
+			                ReviewMenu.reviewDAO.selectdetailReview(num);
+			                break;
+			            } catch (NumberFormatException e) {
+			                // 숫자가 아닌 경우 예외 처리
+			                System.out.println("호수에 맞는 숫자만 입력하세요.");
+			                continue;
+			            }
+					}
 					while(true) {
 
 						System.out.println("예약을 원하시면 y 아니면 n를 입력하세요");
@@ -62,12 +73,14 @@ public class ReviewMenu {
 						if(answer == 'y') {
 							ReservationMenu reservationMenu = new ReservationMenu();
 							reservationMenu.reservationMenu();
+							break;
 
 						}
 						else if(answer == 'n') {
 							System.out.println("처음 화면으로 돌아갑니다.");
 							AccommodationMenu accommodationMenu= new AccommodationMenu(user, br,grade);
 							accommodationMenu.AccMenu(br,accommodation, adao);
+							break;
 
 						}
 						else
@@ -77,19 +90,22 @@ public class ReviewMenu {
 						}
 
 					}
-				}else if(no == 2) {
-					while(true) {
+
+					}else if(no == 2) {
+						while(true) {
 
 						System.out.println("예약을 원하시면 y 아니면 n를 입력하세요");
 						char answer = br.readLine().charAt(0);
 						if(answer == 'y') {
 							ReservationMenu reservationMenu = new ReservationMenu();
 							reservationMenu.reservationMenu();
+							break;
 
 						}else if(answer == 'n') {
 							System.out.println("처음 화면으로 돌아갑니다.");
 							AccommodationMenu accommodationMenu= new AccommodationMenu(user, br,grade);
 							accommodationMenu.AccMenu(br,accommodation, adao);
+							break;
 
 						}
 						else
@@ -104,14 +120,11 @@ public class ReviewMenu {
 					continue;
 				}
 			}
+			
 
-
-		} catch (NumberFormatException e) {
-			System.out.println("숫자로 입력해주세요");
-
-		}finally {
 
 		}
-	}
+		
+	
 
 }// class
