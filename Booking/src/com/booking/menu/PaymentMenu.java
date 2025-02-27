@@ -22,8 +22,9 @@ public class PaymentMenu {
 	private Reservation reservation;
 	private User user;
 	private CashDAO cashDAO = new CashDAO();
-	private PaymentDAO PaymentDAO; // 선언
+	//private PaymentDAO PaymentDAO; // 선언
 
+	public PaymentMenu(){}
 	//결제 메뉴 생성자(결제, 사용자, 숙소)
 	public PaymentMenu(User user, Reservation reservation, PaymentDAO paymentDAO) {
 		this.user=user;
@@ -32,14 +33,16 @@ public class PaymentMenu {
 		this.reserVationDAO = reserVationDAO;
 	}
 
-	static PaymentDAO paymentDAO;
+	PaymentDAO paymentDAO = new PaymentDAO(user, reservation);
 	static UserDAO userDAO;
 	ReservationDAO reserVationDAO = new ReservationDAO();
 	Payment payment = new Payment();
-	// PaymentMenu paymentmenu = new PaymentMenu(user,reservation,paymentDAO);
+	// PaymentDAO paymentDAO = new PaymentDAO();
+	
 	
 	public void P_menu(BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation) throws NumberFormatException, IOException, ClassNotFoundException {
-		PaymentMenu.paymentDAO = new PaymentDAO(user, reservation); // user객체를 전달하여 paymentDAO 생성
+		// 선언된거를 또 불러왔던 문제
+		paymentDAO = new PaymentDAO(user, reservation); // user객체를 전달하여 paymentDAO 생성
 
 		// 현재 로그인한 사용자 아이디 가져오기
 		String ID;
@@ -73,6 +76,7 @@ public class PaymentMenu {
 				// BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation,String ID
 				if (paymentMethod == 1) {
 					// 현금 결제 처리
+					// paymentDAO : null 오류 뜸
 					int[] result = paymentDAO.processCashPayment(ID, reservationId);
 					if (result != null) {
 						int userCash = result[0];

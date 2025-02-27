@@ -54,7 +54,7 @@ public class PaymentDAO {
      
      try {
          conn = DBUtil.getConnection();
-         String sql = "SELECT CASH, PRICE FROM \"USER\" U "
+         String sql = "SELECT CASH, RESERVATION_PRICE FROM \"USER\" U "
                  + "JOIN RESERVATION R ON U.USER_ID = R.USER_ID "
                  + "WHERE U.USER_ID = ? AND R.RESERVATION_ID = ?";
          pstmt = conn.prepareStatement(sql);
@@ -64,7 +64,7 @@ public class PaymentDAO {
          
          if (rs.next()) {
              int userCash = rs.getInt("CASH"); // 현금 내역
-             int accommodationPrice = rs.getInt("PRICE"); // 예약 금액
+             int accommodationPrice = rs.getInt("RESERVATION_PRICE"); // 예약 금액
              return new int[] {userCash, accommodationPrice}; // 현금이랑 예약 금액 배열로 받아옴
          } else {
              System.out.println("해당 예약 사항이 없습니다.");
