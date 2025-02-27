@@ -208,14 +208,14 @@ public class ReviewDAO {
 				    review = new Review(); // Review 객체 생성
 			        review.setReview_ID(rs.getInt("REVIEW_ID"));
 			        review.setID(rs.getString("USER_ID"));
-			        review.setAccomodation_ID(rs.getInt("ACCOMODATION_ID"));
+			        review.setAccomodation_ID(rs.getInt("ACCOMMODATION_ID"));
 			        review.setReview_date(rs.getDate("REVIEW_DATE"));
 			        review.setReview_content(rs.getString("REVIEW_CONTENT"));
 			        review.setReview_rating(rs.getInt("REVIEW_RATING"));
 					System.out.println("----------------------------------------------");
 					System.out.println("번호 : " + rs.getInt("REVIEW_ID"));
 					System.out.println("작성자 이름 : " + rs.getString("USER_ID"));
-					System.out.println("숙소 번호 : " + rs.getInt("ACCOMODATION_ID"));
+					System.out.println("숙소 번호 : " + rs.getInt("ACCOMMODATION_ID"));
 					System.out.println("리뷰 작성 날짜 : " + rs.getDate("REVIEW_DATE"));
 					System.out.println("리뷰 내용 : " + rs.getString("REVIEW_CONTENT"));
 					System.out.println("평점 : " + rs.getInt("REVIEW_RATING"));

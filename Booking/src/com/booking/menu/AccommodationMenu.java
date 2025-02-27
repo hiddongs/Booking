@@ -58,7 +58,7 @@ public class AccommodationMenu {
 
 
 
-		try {
+		
 
 			while (true) {
 				System.out.println();
@@ -82,6 +82,8 @@ public class AccommodationMenu {
 				System.out.println("  🌟 최고의 여행을 위한 최고의 숙소! 🌟");
 				System.out.println("==========================================");
 
+				
+				try {
 				System.out.println("와우 ! 환영합니다! 😊 우와놀자에서 최고의 여행을 경험하세요!");
 
 				System.out.println("==========================================");
@@ -215,10 +217,11 @@ public class AccommodationMenu {
 
 				}
 
-			} 
-		}catch(NumberFormatException e){
-			System.out.println("[숫자만 입력 가능]");
-			System.out.println("1, 2사이의 숫자만 입력하세요");
+			} catch(NumberFormatException e){
+				System.out.println("[숫자만 입력 가능]");
+				System.out.println("1, 2, 3사이의 숫자만 입력하세요");
+				continue;
+			}
 		}
 
 

@@ -16,7 +16,7 @@ public class ReservationMenu {
     static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
     ReservationDAO reserVationDAO = new ReservationDAO();
-    PaymentMenu paymentMenu = new PaymentMenu();
+   //aymentMenu paymentMenu = new PaymentMenu(user, null, paymentDAO);
     User user;
     PaymentDAO paymentDAO;
 
@@ -30,50 +30,45 @@ public class ReservationMenu {
             try {
                 int areaNum = Integer.parseInt(br.readLine());
 
-                if (areaNum == 1) {
+                if (areaNum == 1) { // 국내 예약
                     System.out.println("국내 예약");
-                    while (true) {
+                    try {
                         System.out.println("1. 국내 여행지");
                         System.out.println("2. 추천 여행지 보기");
+                        int sugNum = Integer.parseInt(br.readLine());
 
-                        try {
-                            int sugNum = Integer.parseInt(br.readLine());
+                        if (sugNum == 1) {
+                            System.out.println("국내 여행지 목록");
+                            accommodationViewDAO.selectdomesticInfo();
 
-                            if (sugNum == 1) {
-                                System.out.println("국내 여행지 목록");
-                                accommodationViewDAO.selectdomesticInfo();
+                            // 숙소 번호 체크
+                            System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
+                            int num = Integer.parseInt(br.readLine());
 
-                                System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
-                                int num = Integer.parseInt(br.readLine());
-
-                                if (reserVationDAO.select_domestic(br, num)) {
-                                    reserVationDAO.domestic_reservation(num);
-                                    break;
-                                }
-                            } else if (sugNum == 2) {
-                                System.out.println("추천 여행지 보기");
-                                accommodationDAO.suggest_accommodation(br, null);
-                                break;
-                            } else {
-                                System.err.println("1 또는 2만 입력하세요.");
+                            if (reserVationDAO.select_domestic(br, num)) {
+                                reserVationDAO.domestic_reservation(num);
                             }
-                        } catch (NumberFormatException | IOException e) {
-                            System.err.println("숫자만 입력하세요.");
+                        } else if (sugNum == 2) { // 추천 여행지
+                            System.out.println("추천 여행지 보기");
+                            accommodationDAO.suggest_accommodation(br, null);
+                        } else {
+                            System.err.println("1 또는 2만 입력하세요.");
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                } else if (areaNum == 2) {
+                } else if (areaNum == 2) { // 해외 예약
                     while (true) {
-                        System.out.println("1. 해외 예약");
-                        System.out.println("2. 추천 여행지 보기");
-
                         try {
+                            System.out.println("1. 해외 예약");
+                            System.out.println("2. 추천 여행지 보기");
                             int sugNum = Integer.parseInt(br.readLine());
 
                             if (sugNum == 1) {
                                 System.out.println("해외 여행지 목록");
                                 accommodationViewDAO.selectoverseasInfo();
 
+                                // 숙소 번호 체크
                                 System.out.println("예약하고 싶은 숙소 번호를 입력하세요:");
                                 int num = Integer.parseInt(br.readLine());
 
@@ -81,7 +76,7 @@ public class ReservationMenu {
                                     reserVationDAO.overeas_reservation(num);
                                     break;
                                 }
-                            } else if (sugNum == 2) {
+                            } else if (sugNum == 2) { // 추천 여행지
                                 System.out.println("추천 여행지 보기");
                                 accommodationDAO.suggest_accommodation(br, "해외");
                                 break;
@@ -92,17 +87,15 @@ public class ReservationMenu {
                             System.err.println("숫자만 입력하세요.");
                         }
                     }
-
-                } else if (areaNum == 3) {
+                } else if (areaNum == 3) { // 예약 관리
                     while (true) {
-                        System.out.println("1. 예약 목록 조회 및 결제");
-                        System.out.println("2. 예약 삭제");
-
                         try {
+                            System.out.println("1. 예약 목록 조회 및 결제");
+                            System.out.println("2. 예약 삭제");
                             int num = Integer.parseInt(br.readLine());
 
                             if (num == 1) {
-                                paymentMenu.P_menu(br, null, user, null);
+                               //paymentMenu.P_menu(br, null, user, null);
                                 break;
                             } else if (num == 2) {
                                 System.out.println("삭제할 번호를 입력하세요:");
@@ -118,11 +111,9 @@ public class ReservationMenu {
                             System.err.println("숫자만 입력하세요.");
                         }
                     }
-
                 } else {
                     System.err.println("1 ~ 3 사이의 숫자만 입력하세요.");
                 }
-
             } catch (NumberFormatException | IOException e) {
                 System.err.println("숫자만 입력하세요.");
             }
