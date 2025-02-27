@@ -37,21 +37,27 @@ public class PaymentMenu {
 					
 					reservationDAO.showReservation();
 					
+					System.out.println("예약할 번호를 입력하세요");
 					int payNum = Integer.parseInt(br.readLine());
 					List<Integer> list = reservationDAO.reservationIDlist();
 					if(list.contains(payNum)) {
 						// 결제 진행
 						
+						
+						// 원화 결ㅈ[
 					}
 					
 					paymentDAO.select_procesPayment();
+					break;
 				}
 				else if (no == 2) {
 					paymentDAO.select_CheckPayment();
+					break;
 				}
 			} catch (NumberFormatException | IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("제대로 된 값을 입력하세요.");
+				continue;
 			}
 			
 		}

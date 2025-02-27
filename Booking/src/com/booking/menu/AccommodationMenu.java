@@ -92,11 +92,6 @@ public class AccommodationMenu {
 				System.out.println("2.예약하기");
 				System.out.println("3.마이페이지");
 
-
-
-
-
-
 				int no = Integer.parseInt(br.readLine());
 				if(no==1) {
 					System.out.println("1.국내 / 2.해외 선택하세요");
@@ -141,6 +136,8 @@ public class AccommodationMenu {
 							}
 							// 해외숙소만 보여주기
 						}else if(num == 2) {
+
+							try {
 							accommodationviewDAO.selectOverseasInfo();
 							System.out.println("숙소 상세정보 보시겠습니까? ( y / n ) ");
 							char answer2 = br.readLine().charAt(0);
@@ -148,9 +145,9 @@ public class AccommodationMenu {
 
 							if(answer2 == 'y') {
 								while(true) {
-									System.out.print("선택한 숙소 번호 >");
 
 									try {
+										System.out.print("선택한 숙소 번호 >");
 										int num2 = Integer.parseInt(br.readLine());
 										System.out.println("============================");
 										accommodationviewDAO.selectDetailInfo(num2);
@@ -165,38 +162,44 @@ public class AccommodationMenu {
 							}else if(answer2 == 'n') {
 								AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
 								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								break;
 							}
+							}catch(Exception e) {
+								System.err.println("y 아니면 n 만 입력하세요");
+							}
+
 						}else {
-							System.out.println("잘못된 선택입니다.");
+							System.err.println("잘못된 선택입니다.");
 						}
-					} catch (NumberFormatException e) {
-
-						System.out.println("숫자만 입력하세요 !");
+						
+					
+					}catch(Exception e) {
+						System.err.println("1에서 2 숫자만 입력하세요");
 					}
 
-
-					int num1 = Integer.parseInt(br.readLine());
-
-
-					accommodationviewDAO.selectdomesticInfo();
-
-					if(num1 == 1) {
-						accommodationviewDAO.selectdomesticInfo();
-					}else if(num1 == 2) {
-						accommodationviewDAO.selectoverseasInfo();
-					}
-					// 생성하고 다음 메뉴 부르기(reviewMenu)
-					ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
-					reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
+//					int num1 = Integer.parseInt(br.readLine());
+//
+//
+//					accommodationviewDAO.selectdomesticInfo();
+//
+//					if(num1 == 1) {
+//						accommodationviewDAO.selectdomesticInfo();
+//					}else if(num1 == 2) {
+//						accommodationviewDAO.selectoverseasInfo();
+//					}
+//					// 생성하고 다음 메뉴 부르기(reviewMenu)
+//					ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
+//					reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
+//					}
 
 				}else if(no==2){
 					//상세 글 한번 보기
 					// 목록에서 선택할 글 번호 확인
 					// (숙소정보 한번 더 보여주기)
-			
-				
+
+
 					System.out.println();
-				    
+
 					reservationMenu.reservationMenu();
 
 
@@ -215,77 +218,89 @@ public class AccommodationMenu {
 			} 
 		}catch(NumberFormatException e){
 			System.out.println("[숫자만 입력 가능]");
+			System.out.println("1, 2사이의 숫자만 입력하세요");
 		}
 
 
 		// 목록을 보여주고
-		int menunum = Integer.parseInt(br.readLine());
-		try {
-			if(menunum == 1) {
-				accommodationviewDAO.selectdomesticInfo();
-				System.out.println("> 숙소 정보 확인하시겠습니까? 1. 예 / 2. 아니오 [1 or 2 중에서 선택해주세요]");
-				int detailnum = Integer.parseInt(br.readLine());
-				// 숙소정보 확인하시겠습니까?
+		while(true) {
+			try {
+				int menunum = Integer.parseInt(br.readLine());
+				if(menunum == 1) {
+					accommodationviewDAO.selectdomesticInfo();
 
-				try {
-					if (detailnum == 1) {
+					// 숙소정보 확인하시겠습니까?
+
+					while(true) {
+						try {
+
+							System.out.println("> 숙소 정보 확인하시겠습니까? 1. 예 / 2. 아니오 [1 or 2 중에서 선택해주세요]");
+							int detailnum = Integer.parseInt(br.readLine());
+
+
+							if (detailnum == 1) {
+								System.out.print("숙소번호 선택 >");
+								int acconum = Integer.parseInt(br.readLine());
+								System.out.println("============================");
+								accommodationviewDAO.selectDetailInfo(acconum);
+
+								// 생성하고 다음 메뉴 부르기(reviewMenu)
+								ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
+								reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
+								break;
+
+								// 숙소 상세정보 안봄	-> 전체 메뉴로 돌아가
+							}
+							else if(detailnum == 2 ) {
+								AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
+								accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+								break;
+							}
+						}catch(Exception e) {
+
+							System.out.println("1에서 2 숫자만 입력하세요");
+						} 
+					}
+				}
+				// 해외숙소보기
+				else if(menunum == 2 ){
+					accommodationviewDAO.selectoverseasInfo();
+					System.out.println("> 숙소 정보 확인하시겠습니까? 1. 예 / 2. 아니오 [1 or 2 중에서 선택해주세요]");
+					// 숙소정보 번호 작성
+					int detailnum2 = Integer.parseInt(br.readLine());
+					if (detailnum2 == 1) {
 						System.out.print("숙소번호 선택 >");
-						int acconum = Integer.parseInt(br.readLine());
+						int acconum2 = Integer.parseInt(br.readLine());
 						System.out.println("============================");
-						accommodationviewDAO.selectDetailInfo(acconum);
-
-						// 생성하고 다음 메뉴 부르기(reviewMenu)
+						accommodationviewDAO.selectDetailInfo(acconum2);
+						// 생성하고 리뷰 메뉴 부르기(reviewMenu)
 						ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
 						reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
-
+						break;
 						// 숙소 상세정보 안봄	-> 전체 메뉴로 돌아가
-					}else if(menunum == 2) {
+					}else if(detailnum2 == 2) {
 						AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
 						accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
+						break;
 					}
-					// 해외숙소보기
-					else if(menunum == 2 ){
-						accommodationviewDAO.selectoverseasInfo();
-						System.out.println("> 숙소 정보 확인하시겠습니까? 1. 예 / 2. 아니오 [1 or 2 중에서 선택해주세요]");
-						// 숙소정보 번호 작성
-						int detailnum2 = Integer.parseInt(br.readLine());
-						if (detailnum2 == 1) {
-							System.out.print("숙소번호 선택 >");
-							int acconum2 = Integer.parseInt(br.readLine());
-							System.out.println("============================");
-							accommodationviewDAO.selectDetailInfo(acconum2);
-							// 생성하고 리뷰 메뉴 부르기(reviewMenu)
-							ReviewMenu reviewMenu = new ReviewMenu(br, user, grade);
-							reviewMenu.R_menu(br,review, reviewDAO, accommodation,accommodationviewDAO );
-							// 숙소 상세정보 안봄	-> 전체 메뉴로 돌아가
-						}else if(detailnum2 == 2) {
-							AccommodationMenu accommodationMenu = new AccommodationMenu(user, br,grade);
-							accommodationMenu.AccMenu(br,accommodation, accommodationviewDAO);
-						}
 
-					}else {
-						System.out.println("번호 잘못 입력했습니다.");
-					}
-				}catch(Exception e1) {
-
-					System.out.println("잘못된 값을 입력했습니다.");
-					System.out.println("번호로 입력하세요.");
+				}else {
+					System.err.println("번호 잘못 입력했습니다.");
+					continue;
 				}
 
+
+			}catch(Exception e1) {
+
+				System.err.println("잘못된 값을 입력했습니다.");
+				System.err.println("번호로 입력하세요.");
+				continue;
+
 			}
-		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
-			System.out.println("잘못된 값을 입력했습니다.");
-			System.out.println("번호로 입력하세요.");
+
 		}
-
-
 	}
-
 	// 희동쿤이 해야할 예약 하기
-
-
-
 
 } // class
 
