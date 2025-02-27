@@ -104,18 +104,21 @@ public class PaymentDAO {
 	    }
 
 	 // 결제 내역 기록
-	    public void recordPaymentHistory(String PAYMENT_ID, String USER_ID,int RESERVATION_ID, int PAYMENT_USED_CASH, int PAYMENT_METHOD ) throws SQLException, ClassNotFoundException {
+	    public void recordPaymentHistory(String USER_ID,int RESERVATION_ID, int PAYMENT_USED_CASH, int PAYMENT_METHOD ) throws SQLException, ClassNotFoundException {
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
-	        String sql = "INSERT INTO PAYMENT(USER_ID, RESERVATION_ID, PAYMENT_USED_CASH, PAYMENT_DATE, PAYMENT_METHOD)"
-	                   + "VALUES(PAYMENT_SEQ.NEXTVAL, ?, ?, ?, SYSDATE,?)";
+	        String sql = "INSERT INTO PAYMENT(PAYMENT_ID,USER_ID, RESERVATION_ID, PAYMENT_USED_CASH,PAYMENT_USED_POINT,PAYMENT_TOTAL_PRICE, PAYMENT_DATE, PAYMENT_METHOD)"
+	                   + "VALUES(PAYMENT_SEQ.NEXTVAL, ?, ?, ?, ?, ?, SYSDATE, ?)";
 	        try {
 	            conn = DBUtil.getConnection();
 	            pstmt = conn.prepareStatement(sql);	            
 	            pstmt.setString(1, USER_ID);
 	            pstmt.setInt(2, RESERVATION_ID);
 	            pstmt.setInt(3, PAYMENT_USED_CASH);
-	            pstmt.setInt(4, PAYMENT_METHOD);
+	            pstmt.setInt(4, 0);
+	            pstmt.setInt(5, PAYMENT_USED_CASH);
+	            pstmt.setInt(6, PAYMENT_METHOD);
+	            
 	            int count = pstmt.executeUpdate();
 	            
 	            System.out.println(count+"개의 행을 결제 내역에 기록되었습니다.");
@@ -139,17 +142,21 @@ public class PaymentDAO {
 				rs = pstmt.executeQuery();
 				System.out.println("=============================");
 				if (rs.next()) {
-					System.out.println("번호\t결제유저\t결제 진행한 예약 ID\t사용한 현금\t결제날짜\t결제 방법");
+					System.out.println("번호\t결제유저\t결제 진행한 예약 ID\t사용한 현금 \t결제날짜");
 				do {
 					System.out.print(rs.getInt("PAYMENT_ID"));
-					System.out.print("\t");
+					System.out.print("      ");
+					
 					System.out.print(rs.getString("USER_ID"));
-					System.out.print("\t");
+					System.out.print("     ");
 					System.out.print(rs.getInt("RESERVATION_ID"));
-					System.out.print("\t");
-					System.out.println(rs.getInt("PAYMENT_USED_CASH"));
-					System.out.print("\t");
-					System.out.println(rs.getInt("PAYMENT_METHOD"));
+					System.out.print("           ");
+					System.out.print(rs.getInt("PAYMENT_USED_CASH"));
+					System.out.print("            ");
+					System.out.print(rs.getDate("PAYMENT_DATE"));
+					System.out.println();
+
+					
 				}while(rs.next());
 				}else {
 					System.out.println("표시할 데이터 없습니다.");
@@ -161,6 +168,10 @@ public class PaymentDAO {
 				DBUtil.executeClose(rs,pstmt, conn);
 			}
 	    }
+
+
+
+		
 
 	 
 	//2 = 현금+포인트

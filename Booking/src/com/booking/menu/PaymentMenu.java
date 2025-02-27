@@ -95,6 +95,12 @@ public class PaymentMenu {
 							paymentDAO.updateCashPayment(ID, userCash-accommodationPrice);
 							paymentDAO.select_PaymentHistory(); // 결제 내역 select
 							System.out.println("결제가 완료되었습니다.");
+							try {
+								paymentDAO.recordPaymentHistory(ID, reservationId, userCash-accommodationPrice,paymentMethod );
+							} catch (ClassNotFoundException | SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}else {
 							//잔액부족
 							int requiredCash = accommodationPrice-userCash;
@@ -103,31 +109,34 @@ public class PaymentMenu {
 							int num1 = Integer.parseInt(br.readLine());
 							if(num1 == 1) {
 								cashDAO.chargeCash(ID, requiredCash, br);
+								
+								continue;
 							}else {
 								System.out.println("결제가 취소되었습니다.");
+								break;
 							}
 						}
 						cashDAO.chargeCash(ID, userCash, br);
 					}
 				}else if(paymentMethod == 2) {
 					// 2. 현금 + 포인트 결제
+					// 쿠폰을 쓰면 포인트가 충전된다?
+					
 					
 					
 				}else if(paymentMethod == 3) {
 					// 3. 현금 + 쿠폰
 					// 쿠폰 있는지 확인하고
 					
-					
-					
-          // 결제 내역 보기
-	     }else if (no == 2) {
-	System.out.println("결제내역 조회");
-	//결제 로직 조회
-	paymentDAO.select_PaymentHistory();
 }
-				break;
-				} 
-
+				// 결제 내역 보기
+				} else if (no == 2) {
+					System.out.println("결제내역 조회");
+					//결제 로직 조회 (재귀호출)
+					paymentDAO.select_PaymentHistory();
+                    System.out.println("종료합니다.");
+                    System.exit(0); // 프로그램 완전 종료
 			}
 		}
 	}
+}

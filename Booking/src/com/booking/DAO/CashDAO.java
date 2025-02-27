@@ -15,6 +15,7 @@ public class CashDAO {
 	static UserDAO userDAO;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+	// int cash : 이름은 아무거나 해도 됨
 	public void chargeCash(String ID, int cash, BufferedReader br) {
 		Connection conn = null;
 		PreparedStatement pstmtU = null;
@@ -22,7 +23,7 @@ public class CashDAO {
 
 			try {
 				conn = DBUtil.getConnection();
-				// 기존 금액 유지함녀서 충전 기능 추가
+				// 기존 금액 유지함녀서 충전 기능 추가 + ( 필요한 것만 )
 			    sqlU =  "UPDATE \"USER\" SET CASH = CASH + ? WHERE USER_ID=?";
 			    pstmtU = conn.prepareStatement(sqlU);
 			    pstmtU.setInt(1, cash);
