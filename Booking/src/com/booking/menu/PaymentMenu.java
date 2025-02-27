@@ -52,6 +52,7 @@ public class PaymentMenu {
 			System.out.println("결제 메뉴입니다.");
 			System.out.println("1.예약 현황 조회");
 			System.out.println("2.결제 내역 조회");
+			
 
 
 			int no = Integer.parseInt(br.readLine());
@@ -65,6 +66,7 @@ public class PaymentMenu {
 				System.out.println("결제 방법을 선택하세요: 1.현금 2.현금+포인트 3.현금+쿠폰");
 				int paymentMethod = Integer.parseInt(br.readLine());
 
+				
 				// BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation,String ID
 				if (paymentMethod == 1) {
 					// 현금 결제 처리
@@ -102,6 +104,23 @@ public class PaymentMenu {
 					}
 				}else if(paymentMethod == 2) {
 					// 2.현금 + 포인트 결제
+					
+					// 1. 보유한 포인트 확인
+					// 2. 알마 쓸지 결정
+					// 3. 포인트 쓴 만큼 나머지 원화
+					// 4. 만약 원화 결제 부족하면 원화 충전 창으로 
+					// 5. 있으면 합산해서 결제
+					// 6. 포인트 차감
+					// 7. 원화 차감
+					System.out.printf("숙소 가격: %d원\n", );
+					System.out.println("현재 보유한 포인트입니다.");
+					cashDAO.showPoint(ID);
+					System.out.println("사용할 포인트를 입력하세요");
+					int point = Integer.parseInt(br.readLine());
+					
+					
+					if(point )
+					
 
 
 				}else if(paymentMethod == 3) {
