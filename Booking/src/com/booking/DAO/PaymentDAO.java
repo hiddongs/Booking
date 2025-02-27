@@ -44,7 +44,9 @@ public class PaymentDAO {
 		 BufferedReader br;
 	 }
 	 
-	 //private static String currentUserID; // 현재 로그인한 유저 ID 저장
+	
+
+	//private static String currentUserID; // 현재 로그인한 유저 ID 저장
 	 public int[] processCashPayment(String user_id, int reservation_id) throws ClassNotFoundException {
      Connection conn = null;
      PreparedStatement pstmt = null;
@@ -161,26 +163,13 @@ public class PaymentDAO {
 	    }
 
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-
-	
 	//2 = 현금+포인트
 	
 			
 	
 	// 3. 현금+쿠폰
 
-	
-	
-	// 4. 현금+포인트 + 쿠폰
-	
+
 	
 
 } // class
