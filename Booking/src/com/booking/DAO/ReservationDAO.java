@@ -5,9 +5,12 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.booking.accommodation.Accommodation;
 import com.booking.member.Reservation;
@@ -530,4 +533,38 @@ public class ReservationDAO {
 	        DBUtil.executeClose(rs, pstmt, conn);
 	    }
 	}
+	
+	public List<Integer> reservationIDlist() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		UserDAO userDAO = new UserDAO();
+		String user_id = userDAO.getCurrentUserID(); // ID를 받아옴
+		ResultSet rs = null;
+		String sql = null;
+
+		List<Integer> reservationId = new ArrayList<>();
+		try {
+			conn = DBUtil.getConnection();
+		
+		sql = "SELECT RESERVATION_ID FROM RESERVATION WHERE USER_ID=?";
+
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					reservationId.add(rs.getInt("RESERVATION_ID"));
+				}
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		finally {
+			DBUtil.executeClose(rs, pstmt, conn);
+		}
+			return reservationId;
+		
+	}
+
 }

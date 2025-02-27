@@ -16,6 +16,7 @@ public class ReservationMenu {
    static AccommodationDAO accommodationDAO = new AccommodationDAO();
     static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
     ReservationDAO reserVationDAO = new ReservationDAO();
+<<<<<<< HEAD
    
    User user;
    PaymentDAO paymentDAO;
@@ -30,6 +31,22 @@ public class ReservationMenu {
       System.out.println("에약하기");
       System.out.println("1. 국내");
       System.out.println("2. 해외");
+=======
+	PaymentMenu paymentMenu = new PaymentMenu();
+	User user;
+	PaymentDAO paymentDAO;
+	
+//	public ReservationMenu()
+//	{
+//		reservationDAO = new ReservationDAO(user);
+//	}
+	public void reservationMenu() {
+		
+		while(true) {
+		System.out.println("에약하기");
+		System.out.println("1. 국내");
+		System.out.println("2. 해외");
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
         System.out.println("3. 예약 관리");
         
       int areaNum;
@@ -109,6 +126,7 @@ public class ReservationMenu {
             continue;
             }
 
+<<<<<<< HEAD
          
 
             }
@@ -122,8 +140,24 @@ public class ReservationMenu {
                   if(num == 1) {
                      reserVationDAO.showReservation();
                      //여기
+=======
+				}
+			}
+			else if(areaNum == 3) {
+				while(true) {
+					try {
+						System.out.println("1. 예약 목록 조회 및 결제");
+						System.out.println("2. 예약 삭제");
+						int num = Integer.parseInt(br.readLine());
+						if(num == 1) {
+							
+							paymentMenu.P_menu(br, null, user, null);
+							
+							//여기
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 
 
+<<<<<<< HEAD
                      // 결제 기능 
                      // 여기에 그 메뉴 가져와
                      
@@ -137,6 +171,21 @@ public class ReservationMenu {
                }catch(Exception e) {
                   System.err.println("1에서 2 숫자만 입력하세요.");
                   continue;
+=======
+							// 결제 기능 
+							// 여기에 그 메뉴 가져와
+							
+						}else if(num == 2) {
+							System.out.println("삭제할 번호를 입력하세요");
+							int num2  = Integer.parseInt(br.readLine());
+							reserVationDAO.showReservation();
+							reserVationDAO.deleteReservation(num2);
+							break;
+						}
+					}catch(Exception e) {
+						System.err.println("1에서 2 숫자만 입력하세요.");
+						continue;
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 
                }
             }

@@ -4,7 +4,11 @@ package com.booking.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.sql.SQLException;
+=======
+import java.util.List;
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 
 import com.booking.DAO.AccommodationviewDAO;
 import com.booking.DAO.CashDAO;
@@ -33,6 +37,7 @@ public class PaymentMenu {
 	static Payment payment;
 	static PaymentDAO paymentDAO;
 	static UserDAO userDAO;
+<<<<<<< HEAD
 	static ReservationDAO reserVationDAO;
 	
 	public void P_menu(BufferedReader br, PaymentDAO paymentDAO,Payment payment, User user, Reservation reservation, String ID) throws NumberFormatException, IOException, ClassNotFoundException {
@@ -48,8 +53,17 @@ public class PaymentMenu {
 
 		System.out.println("현재 아이디:" +ID);
 
+=======
+	static Accommodation accommodation;
+	static AccommodationviewDAO accommodationviewDAO;
+	static ReservationDAO reservationDAO;
+		
+	public void P_menu(BufferedReader br, Payment payment, User user, Accommodation accommodation) {
+		
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 		while (true) {
 			System.out.println("결제 메뉴입니다.");
+<<<<<<< HEAD
 			System.out.println("1.예약 현황 조회");
 			System.out.println("2.결제 내역 조회");
 
@@ -114,7 +128,33 @@ public class PaymentMenu {
 }
 				} 
 
+=======
+			System.out.println("1.예약현황 보기");
+			int no;
+			try {
+				no = Integer.parseInt(br.readLine());
+				if(no == 1) {
+					
+					reservationDAO.showReservation();
+					
+					int payNum = Integer.parseInt(br.readLine());
+					List<Integer> list = reservationDAO.reservationIDlist();
+					if(list.contains(payNum)) {
+						// 결제 진행
+						
+					}
+					
+					paymentDAO.select_procesPayment();
+				}
+				else if (no == 2) {
+					paymentDAO.select_CheckPayment();
+				}
+			} catch (NumberFormatException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+>>>>>>> branch 'main' of https://github.com/hiddongs/Booking.git
 			}
+			
 		}
 	}
 
