@@ -233,6 +233,7 @@ public class PaymentMenu {
                      // 결제 진행
                      cashDAO.useCash(ID,discountPrice);
                      System.out.println("결제 완료 !!");
+                    
                      
                      //사용자가 사용한 쿠폰 삭제하기
                      couponDAO.useCoupon(ID, availableCoupon);
@@ -272,6 +273,7 @@ public class PaymentMenu {
             }else if (no == 2) {
                System.out.println("결제내역 조회");
                //결제 로직 조회
+               
                paymentDAO.select_PaymentHistory();
             }
             break;

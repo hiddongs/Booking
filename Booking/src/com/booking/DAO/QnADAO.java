@@ -3,6 +3,7 @@ package com.booking.DAO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,13 +19,16 @@ public class QnADAO {
 
 	BufferedReader br;
 	Admin admin;
+	
 
+	
 	public QnADAO(BufferedReader br , Admin admin){
 		this.br = br;
 		this.admin = admin;
 	}
 
 	public void answerToQNA() { //미답변 문의 메서드 
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;

@@ -25,13 +25,17 @@ public class ReservationDAO {
 	static AccommodationDAO accommodationDAO;
 	static AccommodationviewDAO accommodationViewDAO = new AccommodationviewDAO();
 	
+	
 	Reservation reservation;
     User user;
+    
+    PaymentDAO paymentDAO = new PaymentDAO(user, reservation);
 	private LocalDate s_date;
 	private LocalDate e_date;
 	private int price;
 	private int accommodation_ID;
 	private int reservation_number;
+	private int reservation_ID;
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	/* 더 좋은 코드
@@ -541,7 +545,13 @@ public class ReservationDAO {
 					System.out.println("예약 시작일 : " + rs.getDate("RESERVATION_START_DATE"));
 					System.out.println("예약 종료일 : " + rs.getDate("RESERVATION_END_DATE"));
 					System.out.println("가격 : " + rs.getInt("RESERVATION_PRICE"));
-					System.out.println("예약 인원 : " + rs.getInt("RESERVATION_NUMBER") + "명");
+					System.out.println("예약 인원 : " + rs.getInt("RESERVATION_NUMBER") + "명");					
+					if(paymentDAO.isPayed(reservation_ID)) {
+						System.out.println("<-----결제 완료 및 에약 확정----->");
+					}
+					else {
+						System.err.println("미결제로 인한 예약 진행중");
+					}
 					System.out.println("============================================================");
 				}
 				while(rs.next());
