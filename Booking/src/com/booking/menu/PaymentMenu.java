@@ -25,7 +25,7 @@ public class PaymentMenu {
    private User user;
    private CashDAO cashDAO = new CashDAO();
    private PaymentDAO paymentDAO = new PaymentDAO(user, reservation);;
-   private CouponDAO couponDAO = new CouponDAO();
+  CouponDAO couponDAO = new CouponDAO();
 
    //결제 메뉴 생성자(결제, 사용자, 숙소)
    public PaymentMenu(User user, Reservation reservation, PaymentDAO paymentDAO) {
@@ -91,7 +91,7 @@ public class PaymentMenu {
                   // 현금 결제 처리
 
 
-                  System.out.printf("현재 보유한 캐시: %d원\n", userCash);
+                  System.out.printf("현재 보유한 원화: %d원\n", userCash);
                   System.out.printf("숙소 가격: %d원\n", accommodationPrice);
 
                   //캐시 있는지 확인
@@ -116,8 +116,7 @@ public class PaymentMenu {
                         System.out.println("결제가 취소되었습니다.");
                      }
                   }
-                  // if문 밖에있어서 무조건 실행
-                  //cashDAO.chargeCash(ID, userCash, br);
+                  cashDAO.chargeCash(ID, userCash, br);
                }
             
             else if(paymentMethod == 2) {
@@ -188,27 +187,84 @@ public class PaymentMenu {
                   e.printStackTrace();
                }
 
-               // 2. 현금 + 포인트 결제
-
-
-
             }else if(paymentMethod == 3) {
                // 3. 현금 + 쿠폰
-               // 쿠폰 있는지 확인하고
-            	// showUserCoupon
-            	System.out.printf("숙소 가격: %d원\n", accommodationPrice);
+                // 1. 보유한 쿠폰 확인
+                // 2. 얼마 쓸지 결정
+                // 3. 전체 금액 - 쿠폰, 나머지 원화
+               // 4. 할인된 가격으로 계산
+               // 5. 만약 원화 결제 부족하면 원화 충전 창으로 
+                // 6. 쿠폰 삭제
+                // 7. 현금 차감
+               System.out.printf("숙소 가격: %d원\n", accommodationPrice);
                 System.out.println("현재 보유한 원화입니다.");
+                cashDAO.showCash(ID);
                 System.out.println("현재 보유한 쿠폰입니다.");
+                
                 couponDAO.showUserCoupon(ID);
-                System.out.println("사용할 쿠폰 번호를 입력하세요");
-                int coupon = Integer.parseInt(br.readLine());
-                System.out.println("결제 예정 금액 : "+ (accommodationPrice - coupon));
-                // 나의 캐시가 숙소 가격 - 쿠폰 사용까지 했는데도 적으면
-                // 리스트 안에 사용자가 입력한 값이 있는가?
-                List<Integer> usercoupons = couponDAO.coupon_ID();
-                if(couponDAO.coupon_ID().contains(coupon)) {
-                	// 있어야 사용 가능
-                }
+                //쿠폰 ID
+                System.out.println("쿠폰 ID목록:");
+                List<Integer> coupons = couponDAO.coupon_ID(ID); // 쿠폰DAO에서 쿠폰들의 ID목록ㄱ 가져옴
+                for (Integer coupon :  coupons) {
+               System.out.println("쿠폰번호:"+coupons);
+            }
+                System.out.println("사용할 사용할 쿠폰번호를 입력하세요");
+                // 쿠폰 번호를 입력하기
+                int availableCoupon = Integer.parseInt(br.readLine());
+                if (coupons.contains(availableCoupon)) {
+               System.out.println("쿠폰 적용 완료. 할인금액:"+availableCoupon);
+               //쿠폰 적용 후 결제 예정 금액 계산
+               int discountPrice = accommodationPrice - availableCoupon;
+               System.out.println("할인된 결제 금액:"+discountPrice);
+               //현재 보유한 캐시 목록 보기
+               cashDAO.showCash(ID);
+               if(userCash < discountPrice) {
+                  System.out.println("결제 금액이 모자랍니다");
+                  System.out.println("모자란 금액 : " + (discountPrice - userCash));
+                  System.out.println("필요한 금액만큼 충전 하시겠습니까?");
+                  System.out.println("(1.예 / 2.아니오) 선택하세요");
+                  
+                  int num = Integer.parseInt(br.readLine());
+                  // 충전하러
+                  if (num == 1) {
+                     cashDAO.chargeCash(ID, discountPrice - userCash, br);
+                     System.out.println("결제를 진행합니다.");
+                     
+                     // 결제 진행
+                     cashDAO.useCash(ID,discountPrice);
+                     System.out.println("결제 완료 !!");
+                     
+                     //사용자가 사용한 쿠폰 삭제하기
+                     couponDAO.useCoupon(ID, availableCoupon);
+                     System.out.println("사용한 쿠폰이 삭제 되었습니다.");
+                     
+                     System.out.println("현재 보유한 원화입니다.");
+                           cashDAO.showCash(ID);
+                           System.out.println("현재 보유한 쿠폰입니다.");
+                           couponDAO.showUserCoupon(ID);
+                        }else if(num == 2) {
+                           System.out.println("결제 취소");
+                           continue;
+                     
+                  }else {
+                     System.out.println("올바른 값을 선택하세요 (1 / 2)");
+                  }
+               }else {
+                  //현금이 충분한 경우
+                   System.out.println("결제를 진행합니다.");
+                   paymentDAO.updateCashPayment(ID, discountPrice);
+                   couponDAO.useCoupon(ID,availableCoupon);
+                   
+                   System.out.println("현재 보유한 원화입니다.");
+                        cashDAO.showCash(ID);
+                        
+                        System.out.println("현재 보유한 쿠폰입니다.");
+                        couponDAO.showUserCoupon(ID);
+               }
+               
+                }else {
+                   System.out.println("선택한 쿠폰은 존재하지 않습니다. 다시 입력해주세요");
+                }   
             }
 
 

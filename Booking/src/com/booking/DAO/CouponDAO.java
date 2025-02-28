@@ -376,22 +376,54 @@ public class CouponDAO {
 
 	    return couponID;
 	}
+	
+	
+	   // 사용한 쿠폰 삭제
+	   public int useCoupon(String USER_ID, int COUPON_ID ) {
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      //String sql = null;
+	      int Result = 0; //삭제 성공? 실패? - 성공 1 실패2
+	      // CP_POSSESS
+	      String deletecp_sql = "DELETE FROM CP_POSSESS WHERE USER_ID = ? AND COUPON_ID=?";
+	    
+	       try {
+	          conn = DBUtil.getConnection();
+	          //cp
+	          pstmt = conn.prepareStatement(deletecp_sql);
+	          pstmt.setString(1, USER_ID);
+	          pstmt.setInt(2, COUPON_ID);
+	          pstmt.executeUpdate();
+	  
+	          Result = 1; //성공적으로 삭제 완료
+	       }catch(Exception e){
+	          e.printStackTrace();
+	          Result = 0;
+	       } finally {
+	         DBUtil.executeClose(null,pstmt, conn);
+	      }
+	      return Result; // 삭제된 개수 (성공 1 실패 0)
+	      
+	   }
+	
+	
+	
 	// 쿠혼아이디를 리스트로
-	 public List<Integer> coupon_ID() {
+	 public List<Integer> coupon_ID(String USER_ID) {
 	        List<Integer> coupon_ID = new ArrayList<>();
 	        Connection conn = null;
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
 
-	        String sql = "SELECT COUPON_ID FROM COUPON";
+	        String sql = "SELECT COUPON_ID FROM CP_POSSESS WHERE USER_ID=?";
 
 	        try {
 	            conn = DBUtil.getConnection();
 	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setString(1, USER_ID);
 	            rs = pstmt.executeQuery();
-
 	            while (rs.next()) {
-	            	coupon_ID.add(rs.getInt("Coupon_ID"));
+	            	coupon_ID.add(rs.getInt("COUPON_ID"));
 	            }
 
 	        } catch (Exception e) {
