@@ -9,15 +9,15 @@ import com.booking.member.Payment;
 import com.booking.member.User;
 
 //public class PaymentDAO {
-//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//	// 결제할 때 필요한 것
-//	// 결제, 쿠폰, 숙소, 장바구니, 사용자(포인트) 클래스 필요
-//	static User user; // 포인트 가져오려고 
-//	static Payment payment;
-//	static Coupon coupon;
-//	static Accommodation accomodation;
-//	// 장바구니도 가져와야 할 것 같음 - 장바구니의 ID를 가져와야 할거같은디
-//	// create, update, insert, delete
+//   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//   // 결제할 때 필요한 것
+//   // 결제, 쿠폰, 숙소, 장바구니, 사용자(포인트) 클래스 필요
+//   static User user; // 포인트 가져오려고 
+//   static Payment payment;
+//   static Coupon coupon;
+//   static Accommodation accomodation;
+//   // 장바구니도 가져와야 할 것 같음 - 장바구니의 ID를 가져와야 할거같은디
+//   // create, update, insert, delete
 //}
 
 
@@ -33,19 +33,23 @@ import com.booking.member.Reservation;
 import com.dbutil.DBUtil;
 //userDAO 사용
 public class PaymentDAO {
-	// user를 받아서 가져오기
-	 User user;
-	 Reservation reservation;
-	 UserDAO userDAO;
+
+   // user를 받아서 가져오기
+    User user;
+    Reservation reservation;
+    UserDAO userDAO;
+    // 생성자
+   
+   
 	 // 생성자
 	 public PaymentDAO(User user, Reservation reservation) {
 		 this.user = user;
 		 this.reservation = reservation;
 		 BufferedReader br;
 	 }
-	 
-	//private static String currentUserID; // 현재 로그인한 유저 ID 저장
+	
 	 public int[] processCashPayment(String user_id, int reservation_id) throws ClassNotFoundException {
+
      Connection conn = null;
      PreparedStatement pstmt = null;
      ResultSet rs = null;
@@ -75,32 +79,36 @@ public class PaymentDAO {
      return null;
  }
 
-	// 현금 결제 후 잔액 업데이트
-	    public void updateCashPayment(String userId, int newCashBalance) throws ClassNotFoundException {
-	        Connection conn = null;
-	        PreparedStatement pstmt = null;
-	        String sql = "UPDATE \"USER\" SET CASH = ? WHERE USER_ID = ?";
-	        
-	        try {
-	            conn = DBUtil.getConnection();
-	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setInt(1, newCashBalance);
-	            pstmt.setString(2, userId);
-	            int update = pstmt.executeUpdate();
-	            if (update == 1) {
-	                conn.commit();
-	                System.out.println("잔액 업데이트 완료");
-	            } else {
-	                conn.rollback();
-	                System.out.println("잔액 업데이트 실패");
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } finally {
-	            DBUtil.executeClose(null, pstmt, conn);
-	        }
-	    }
+   // 현금 결제 후 잔액 업데이트
+       public void updateCashPayment(String userId, int newCashBalance) throws ClassNotFoundException {
+           Connection conn = null;
+           PreparedStatement pstmt = null;
+           String sql = "UPDATE \"USER\" SET CASH = ? WHERE USER_ID = ?";
+           
+           try {
+               conn = DBUtil.getConnection();
+               pstmt = conn.prepareStatement(sql);
+               pstmt.setInt(1, newCashBalance);
+               pstmt.setString(2, userId);
+               int update = pstmt.executeUpdate();
+               if (update == 1) {
+                   conn.commit();
+                   System.out.println("잔액 업데이트 완료");
+               } else {
+                   conn.rollback();
+                   System.out.println("잔액 업데이트 실패");
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           } finally {
+               DBUtil.executeClose(null, pstmt, conn);
+           }
+       }
 
+
+    // 결제 내역 기록
+       
+       
 	 // 결제 내역 기록
 	    public void recordPaymentHistory(String USER_ID,int RESERVATION_ID, int PAYMENT_USED_CASH, int PAYMENT_METHOD ) throws SQLException, ClassNotFoundException {
 	        Connection conn = null;
@@ -167,22 +175,14 @@ public class PaymentDAO {
 			}
 	    }
 
-
-
-		
-
-	 
-	//2 = 현금+포인트
-	
-			
-	
-	// 3. 현금+쿠폰
-
-
-	
+           
 
 } // class
-	
+   
+   
+      
+
+
 	
 		
 
